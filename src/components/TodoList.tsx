@@ -10,23 +10,23 @@ import { Label } from '@/components/ui/label';
 import TodoForm from './TodoForm';
 
 type TodoListProps = {
-  initialTodos: Awaited<ReturnType<(typeof serverClient)['getTodos']>>;
+  initialTodos: Awaited<ReturnType<(typeof serverClient)['todo']['getTodos']>>;
 };
 
 const TodoList: FC<TodoListProps> = ({ initialTodos }) => {
-  const getTodos = trpc.getTodos.useQuery(undefined, {
+  const getTodos = trpc.todo.getTodos.useQuery(undefined, {
     initialData: initialTodos,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });
 
-  const addTodo = trpc.addTodo.useMutation({
+  const addTodo = trpc.todo.addTodo.useMutation({
     onSettled: () => {
       getTodos.refetch();
     },
   });
 
-  const checkTodo = trpc.checkTodo.useMutation({
+  const checkTodo = trpc.todo.checkTodo.useMutation({
     onSettled: () => {
       getTodos.refetch();
     },
