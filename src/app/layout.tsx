@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'bg-oxford-blue-dark dark:bg-oxford-blue-dark antialiased',
+          'bg-oxford-blue-dark antialiased dark:bg-oxford-blue-dark',
           inter.variable,
           quantico.variable
         )}>

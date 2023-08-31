@@ -17,7 +17,7 @@ const Line = React.forwardRef<
       ref={ref}
       decorative={decorative}
       className={cn(
-        'relative shrink-0 h-[3px] w-full bg-crayola-blue after:absolute after:w-1/6 after:h-full after:bg-gradient-to-l after:from-oxford-blue-dark after:right-0 before:absolute before:w-1/6 before:h-full before:bg-gradient-to-r before:from-oxford-blue-dark before:left-0',
+        'relative h-[3px] w-full shrink-0 bg-crayola-blue before:absolute before:left-0 before:h-full before:w-1/6 before:bg-gradient-to-r before:from-oxford-blue-dark after:absolute after:right-0 after:h-full after:w-1/6 after:bg-gradient-to-l after:from-oxford-blue-dark',
         className
       )}
       {...props}
