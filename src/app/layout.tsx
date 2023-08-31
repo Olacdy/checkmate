@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter, Quantico } from 'next/font/google';
+import { Inter, Questrial } from 'next/font/google';
 
 import Providers from '@/components/Providers';
 import { cn } from '@/lib/utils';
 
+import Header from '@/components/Header';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
-const quantico = Quantico({ subsets: ['latin'], weight: ['400', '700'] });
+const inter = Inter({ subsets: ['latin'], variable: '--headings-font' });
+const quantico = Questrial({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--body-font',
+});
 
 export const metadata: Metadata = {
   title: 'CheckMate',
@@ -21,8 +26,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={cn(inter.className, quantico.className)}>
-        <Providers>{children}</Providers>
+      <body
+        className={cn(
+          'bg-oxford-blue-dark dark:bg-oxford-blue-dark antialiased',
+          inter.variable,
+          quantico.variable
+        )}>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );

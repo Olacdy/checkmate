@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Header Section */
+
+.nav-link {
+  @apply text-lg font-semibold text-oxford-blue-dark;
+}
+
+/* All Section */
+
+h1 {
+  @apply font-headings;
+}
