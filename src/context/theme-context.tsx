@@ -1,6 +1,5 @@
 'use client';
 
-import { getCurrentTheme } from '@/lib/utils';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark';
@@ -10,7 +9,7 @@ type ThemeContextProviderProps = {
 };
 
 type ThemeContextType = {
-  theme: Theme;
+  theme?: Theme;
   toggleTheme: () => void;
 };
 
@@ -19,7 +18,7 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 export default function ThemeContextProvider({
   children,
 }: ThemeContextProviderProps) {
-  const [theme, setTheme] = useState<Theme>(getCurrentTheme());
+  const [theme, setTheme] = useState<Theme>();
 
   const toggleTheme = () => {
     if (theme === 'light') {

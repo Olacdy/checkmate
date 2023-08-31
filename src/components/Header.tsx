@@ -22,7 +22,7 @@ const Header: FC<HeaderProps> = ({}) => {
             </Link>
           </li>
           <li className='flex-1'>
-            <ul className='flex items-center justify-center gap-10'>
+            <ul className='flex items-center justify-center gap-10 pt-1'>
               <li>
                 <Link href='#product'>
                   <Button

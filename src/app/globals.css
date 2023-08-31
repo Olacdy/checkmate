@@ -10,6 +10,10 @@
 
 /* All Section */
 
-h1 {
-  @apply font-headings;
+.main-header {
+  @apply text-center font-headings text-7xl font-semibold leading-snug text-off-white;
+}
+
+.body-text {
+  @apply text-center font-body leading-relaxed text-alabaster;
 }
