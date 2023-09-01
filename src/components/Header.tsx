@@ -14,7 +14,7 @@ const Header: FC<HeaderProps> = ({}) => {
           <li className='flex-1'>
             <Link href='/'>
               <Image
-                src='/Logo.webp'
+                src='/logo.webp'
                 alt='CheckMate Logo'
                 width={280}
                 height={100}

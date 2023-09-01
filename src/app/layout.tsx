@@ -4,6 +4,7 @@ import { Courier_Prime, Inter, Questrial } from 'next/font/google';
 import Providers from '@/components/Providers';
 import { cn } from '@/lib/utils';
 
+import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import './globals.css';
 
@@ -41,6 +42,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
