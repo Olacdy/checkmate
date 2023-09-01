@@ -8,7 +8,7 @@ type HeaderProps = {};
 
 const Header: FC<HeaderProps> = ({}) => {
   return (
-    <header className='fixed inset-x-0 mx-auto mt-4 w-full max-w-5xl rounded-full bg-off-white font-body'>
+    <header className='fixed inset-x-0 z-50 mx-auto mt-4 w-full max-w-5xl rounded-full bg-off-white font-body'>
       <nav className='px-4'>
         <ul className='flex items-center justify-between'>
           <li className='flex-1'>

@@ -8,6 +8,8 @@ import { SessionProvider } from 'next-auth/react';
 
 import { client, trpc } from '@/trpc/client';
 
+import { LazyMotion, domMax } from 'framer-motion';
+
 import ThemeContextProvider from '@/context/theme-context';
 
 type ProvidersProps = {
@@ -22,7 +24,9 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
-          <ThemeContextProvider>{children}</ThemeContextProvider>
+          <ThemeContextProvider>
+            <LazyMotion features={domMax}>{children}</LazyMotion>
+          </ThemeContextProvider>
         </SessionProvider>
       </QueryClientProvider>
     </trpc.Provider>

@@ -45,6 +45,7 @@ module.exports = {
     fontFamily: {
       headings: 'var(--headings-font)',
       body: 'var(--body-font)',
+      code: 'var(--code-font)',
     },
   },
   plugins: [require('tailwindcss-animate')],

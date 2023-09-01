@@ -27,3 +27,7 @@
 .step-header {
   @apply text-left font-body text-4xl text-off-white;
 }
+
+.code {
+  @apply font-code text-sm text-off-white;
+}

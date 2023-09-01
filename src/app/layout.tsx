@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Questrial } from 'next/font/google';
+import { Courier_Prime, Inter, Questrial } from 'next/font/google';
 
 import Providers from '@/components/Providers';
 import { cn } from '@/lib/utils';
@@ -12,6 +12,11 @@ const quantico = Questrial({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--body-font',
+});
+const courier = Courier_Prime({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--code-font',
 });
 
 export const metadata: Metadata = {
@@ -28,9 +33,10 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'bg-oxford-blue-dark antialiased dark:bg-oxford-blue-dark',
+          'bg-oxford-blue antialiased dark:bg-oxford-blue',
           inter.variable,
-          quantico.variable
+          quantico.variable,
+          courier.variable
         )}>
         <Providers>
           <Header />

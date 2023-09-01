@@ -1,11 +1,26 @@
 import { cn } from '@/lib/utils';
-import { Moon, Sun, type LucideIcon, type LucideProps } from 'lucide-react';
+import {
+  Check,
+  CopyPlus,
+  GripVertical,
+  Moon,
+  Sliders,
+  Sun,
+  Trash2,
+  type LucideIcon,
+  type LucideProps,
+} from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
   sun: Sun,
   moon: Moon,
+  settings: Sliders,
+  delete: Trash2,
+  drag: GripVertical,
+  add: CopyPlus,
+  check: Check,
   copy: ({ ...props }: LucideProps) => (
     <svg
       viewBox='0 0 18 19'

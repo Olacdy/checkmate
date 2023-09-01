@@ -16,8 +16,12 @@ const Line = React.forwardRef<
     <SeparatorPrimitive.Root
       ref={ref}
       decorative={decorative}
+      orientation={orientation}
       className={cn(
-        'relative h-[3px] w-full shrink-0 bg-crayola-blue before:absolute before:left-0 before:h-full before:w-1/6 before:bg-gradient-to-r before:from-oxford-blue-dark after:absolute after:right-0 after:h-full after:w-1/6 after:bg-gradient-to-l after:from-oxford-blue-dark',
+        'relative shrink-0 bg-crayola-blue before:absolute after:absolute',
+        orientation === 'horizontal'
+          ? 'h-[3px] w-full before:left-0 before:h-full before:w-1/6 before:bg-gradient-to-r before:from-oxford-blue-dark after:right-0 after:h-full after:w-1/6 after:bg-gradient-to-l after:from-oxford-blue-dark'
+          : 'h-full w-[3px] before:top-0 before:h-1/6 before:w-full before:bg-gradient-to-b before:from-oxford-blue-dark after:bottom-0 after:h-1/6 after:w-full after:bg-gradient-to-t after:from-oxford-blue-dark',
         className
       )}
       {...props}
