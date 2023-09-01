@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import About from '@/components/landing/About';
+import Contact from '@/components/landing/Contact';
 import Hero from '@/components/landing/Hero';
 import Product from '@/components/landing/Product';
 
@@ -12,6 +13,7 @@ const page: FC<pageProps> = async ({}) => {
       <Hero />
       <Product />
       <About />
+      <Contact />
     </main>
   );
 };

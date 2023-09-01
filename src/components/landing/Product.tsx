@@ -13,7 +13,7 @@ const Product: FC<ProductProps> = ({}) => {
   return (
     <section className='flex w-full flex-col items-center justify-start gap-32 pt-56'>
       <div className='flex flex-col items-center justify-start'>
-        <h2 className='section-header'>Codeless validation</h2>
+        <h2 className='section-header text-center'>Codeless validation</h2>
         <p className='body-text'>Define once - use everywhere</p>
       </div>
 

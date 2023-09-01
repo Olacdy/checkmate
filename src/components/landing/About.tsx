@@ -6,7 +6,7 @@ type AboutProps = {};
 const About: FC<AboutProps> = ({}) => {
   return (
     <section className='flex w-full flex-col items-center justify-start gap-20 pt-56'>
-      <h2 className='section-header max-w-md'>
+      <h2 className='section-header max-w-md text-center'>
         Delegate your data validation to a CheckMate
       </h2>
       <div className='grid w-full grid-cols-1 justify-items-center gap-y-10 md:grid-cols-2'>

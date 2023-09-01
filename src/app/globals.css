@@ -15,7 +15,7 @@
 }
 
 .section-header {
-  @apply text-center font-headings text-5xl font-semibold leading-snug text-off-white;
+  @apply font-headings text-5xl font-semibold leading-snug text-off-white;
 }
 
 .paragraph-header {
@@ -30,4 +30,10 @@
 
 .code {
   @apply font-code text-sm text-off-white;
+}
+
+/* Contact Section */
+
+.input {
+  @apply text-off-white;
 }
