@@ -21,7 +21,7 @@ const Product: FC<ProductProps> = ({}) => {
         <div className='flex max-w-sm flex-col items-start justify-start gap-5'>
           <Step stepCount={1} />
           <div className='flex flex-col gap-2'>
-            <h3 className='step-header'>Create a schema with UI tool</h3>
+            <h3 className='paragraph-header'>Create a schema with UI tool</h3>
             <p className='body-text text-left'>
               Utilize convenient UI tool to create a validation schema by
               defining and ordering fields
@@ -47,7 +47,7 @@ const Product: FC<ProductProps> = ({}) => {
         <div className='flex max-w-sm flex-col items-start justify-start gap-5'>
           <Step stepCount={2} />
           <div className='flex flex-col gap-2'>
-            <h3 className='step-header'>Get a URL to defined scheme</h3>
+            <h3 className='paragraph-header'>Get a URL to defined scheme</h3>
             <p className='body-text text-left'>
               When defining a scheme you get a URL to an endpoint to which you
               can send JSON data that will get validated
@@ -65,7 +65,7 @@ const Product: FC<ProductProps> = ({}) => {
         <div className='flex max-w-sm flex-col items-start justify-start gap-5'>
           <Step stepCount={3} />
           <div className='flex flex-col gap-2'>
-            <h3 className='step-header'>Validate data</h3>
+            <h3 className='paragraph-header'>Validate data</h3>
             <p className='body-text text-left'>
               Send a POST request with your data in JSON format and retrieve
               detailed message of validation results

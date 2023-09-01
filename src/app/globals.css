@@ -18,15 +18,15 @@
   @apply text-center font-headings text-5xl font-semibold leading-snug text-off-white;
 }
 
+.paragraph-header {
+  @apply text-left font-body text-4xl text-off-white;
+}
+
 .body-text {
   @apply font-body leading-relaxed text-alabaster;
 }
 
-/* About Section */
-
-.step-header {
-  @apply text-left font-body text-4xl text-off-white;
-}
+/* Product Section */
 
 .code {
   @apply font-code text-sm text-off-white;
