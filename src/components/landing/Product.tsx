@@ -1,11 +1,13 @@
 import { FC } from 'react';
 
+import { Button } from '@/components/ui/button';
 import CopyLink from '@/components/ui/copy-link';
 import { Line } from '@/components/ui/line';
 import Step from '@/components/ui/step';
 
 import JSONSnippet from '@/components/landing/JSONSnippet';
 import SchemaCreationLayout from '@/components/landing/SchemaCreationLayout';
+import Link from 'next/link';
 
 type ProductProps = {};
 
@@ -75,6 +77,10 @@ const Product: FC<ProductProps> = ({}) => {
         <Line className='hidden flex-1 lg:block' />
         <JSONSnippet className='md:max-w-sm md:pl-10' />
       </div>
+
+      <Link className='mt-12 self-start md:-mt-20' href='/sign-in'>
+        <Button className='px-10 py-7 text-xl'>Try it now</Button>
+      </Link>
     </section>
   );
 };
