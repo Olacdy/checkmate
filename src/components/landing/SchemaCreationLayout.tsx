@@ -70,7 +70,10 @@ const SchemaCreationLayout: FC<SchemaCreationLayoutProps> = ({
           <div className='flex h-40 w-full flex-col items-center justify-between rounded-md border-[1px] border-slate-600/20 p-2 sm:h-44'>
             <div className='flex w-full flex-col gap-1'>
               {['Field 1', 'Field 2', 'Field 3'].map((fieldName) => (
-                <FieldSchemaLayout name={fieldName} />
+                <FieldSchemaLayout
+                  key={fieldName.toLowerCase().replace(' ', '-')}
+                  name={fieldName}
+                />
               ))}
             </div>
             <div className='flex items-center gap-2'>

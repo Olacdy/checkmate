@@ -1,3 +1,5 @@
+'use client';
+
 import { FC } from 'react';
 
 import Link from 'next/link';
@@ -6,11 +8,18 @@ import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/button';
 import { Line } from '@/components/ui/line';
 
+import { useSectionInView } from '@/hooks/useSectionInView';
+
 type HeroProps = {};
 
 const Hero: FC<HeroProps> = ({}) => {
+  const { ref } = useSectionInView('Hero');
+
   return (
-    <section className='flex w-full flex-col items-center justify-start gap-32 pt-24'>
+    <section
+      ref={ref}
+      id='hero'
+      className='flex w-full flex-col items-center justify-start gap-32 pt-24'>
       <div className='flex flex-col items-center justify-start gap-10'>
         <div className='flex flex-col items-center justify-start gap-6'>
           <h1 className='main-header max-w-xl'>

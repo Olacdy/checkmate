@@ -1,12 +1,21 @@
+'use client';
+
 import { FC } from 'react';
+
+import { useSectionInView } from '@/hooks/useSectionInView';
 
 import ContactForm from '@/components/landing/ContactForm';
 
 type ContactProps = {};
 
 const Contact: FC<ContactProps> = ({}) => {
+  const { ref } = useSectionInView('Contact');
+
   return (
-    <section className='flex w-full flex-col items-start gap-16 pt-44'>
+    <section
+      ref={ref}
+      id='contact'
+      className='flex w-full flex-col items-start gap-16 pt-44'>
       <div className='flex flex-col gap-2'>
         <h2 className='section-header'>Have a suggestion?</h2>
         <div className='flex flex-col gap-5'>

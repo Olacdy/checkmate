@@ -1,4 +1,8 @@
+'use client';
+
 import { FC } from 'react';
+
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import CopyLink from '@/components/ui/copy-link';
@@ -7,13 +11,19 @@ import Step from '@/components/ui/step';
 
 import JSONSnippet from '@/components/landing/JSONSnippet';
 import SchemaCreationLayout from '@/components/landing/SchemaCreationLayout';
-import Link from 'next/link';
+
+import { useSectionInView } from '@/hooks/useSectionInView';
 
 type ProductProps = {};
 
 const Product: FC<ProductProps> = ({}) => {
+  const { ref } = useSectionInView('Product');
+
   return (
-    <section className='flex w-full flex-col items-center justify-start gap-24 pt-56 sm:gap-32'>
+    <section
+      ref={ref}
+      id='product'
+      className='flex w-full flex-col items-center justify-start gap-24 pt-56 sm:gap-32'>
       <div className='flex flex-col items-center justify-start'>
         <h2 className='section-header text-center'>Codeless validation</h2>
         <p className='body-text'>Define once - use everywhere</p>

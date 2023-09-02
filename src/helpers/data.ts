@@ -30,3 +30,22 @@ export const about = [
       'Craft, modify, and optimize data schemas using an intuitive UI interface. CheckMate simplifies schema creation, eliminating complexity and reducing the learning curve.',
   },
 ];
+
+export const sections = [
+  {
+    title: 'Home',
+    id: 'home',
+  },
+  {
+    title: 'Product',
+    id: 'product',
+  },
+  {
+    title: 'About',
+    id: 'about',
+  },
+  {
+    title: 'Contact',
+    id: 'contact',
+  },
+];

@@ -10,6 +10,7 @@ import { client, trpc } from '@/trpc/client';
 
 import { LazyMotion, domMax } from 'framer-motion';
 
+import ActiveSectionContextProvider from '@/context/active-section-context';
 import ThemeContextProvider from '@/context/theme-context';
 
 type ProvidersProps = {
@@ -25,7 +26,9 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
           <ThemeContextProvider>
-            <LazyMotion features={domMax}>{children}</LazyMotion>
+            <ActiveSectionContextProvider>
+              <LazyMotion features={domMax}>{children}</LazyMotion>
+            </ActiveSectionContextProvider>
           </ThemeContextProvider>
         </SessionProvider>
       </QueryClientProvider>
