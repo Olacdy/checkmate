@@ -7,6 +7,7 @@ import {
   Sliders,
   Sun,
   Trash2,
+  X,
   type LucideIcon,
   type LucideProps,
 } from 'lucide-react';
@@ -21,6 +22,18 @@ export const Icons = {
   drag: GripVertical,
   add: CopyPlus,
   check: Check,
+  close: X,
+  menu: ({ ...props }: LucideProps) => (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='100'
+      height='100'
+      viewBox='0 0 50 50'
+      fill='current'
+      className={cn('', props.className)}>
+      <path d='M5 8a2 2 0 1 0 0 4h40a2 2 0 1 0 0-4H5zm0 15a2 2 0 1 0 0 4h40a2 2 0 1 0 0-4H5zm0 15a2 2 0 1 0 0 4h40a2 2 0 1 0 0-4H5z' />
+    </svg>
+  ),
   copy: ({ ...props }: LucideProps) => (
     <svg
       viewBox='0 0 18 19'

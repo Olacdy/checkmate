@@ -5,7 +5,7 @@
 /* Header Section */
 
 .nav-link {
-  @apply text-lg font-semibold text-oxford-blue-dark;
+  @apply px-0 font-semibold text-oxford-blue-dark;
 }
 
 /* All Section */

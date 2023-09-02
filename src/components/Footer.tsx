@@ -1,7 +1,9 @@
+import { FC } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { FC } from 'react';
-import { Icons } from './Icons';
+
+import { Icons } from '@/components/Icons';
 
 type FooterProps = {};
 

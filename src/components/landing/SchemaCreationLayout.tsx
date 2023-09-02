@@ -1,8 +1,10 @@
 import { FC, HTMLProps } from 'react';
 
 import { Separator } from '@/components/ui/separator';
+
+import { Icons } from '@/components/Icons';
+
 import { cn } from '@/lib/utils';
-import { Icons } from '../Icons';
 
 type SchemaCreationLayoutProps = {} & HTMLProps<HTMLDivElement>;
 

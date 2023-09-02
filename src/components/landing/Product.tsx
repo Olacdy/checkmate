@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
+import CopyLink from '@/components/ui/copy-link';
 import { Line } from '@/components/ui/line';
 import Step from '@/components/ui/step';
 
+import JSONSnippet from '@/components/landing/JSONSnippet';
 import SchemaCreationLayout from '@/components/landing/SchemaCreationLayout';
-import CopyLink from '@/components/ui/copy-link';
-import JSONSnippet from './JSONSnippet';
 
 type ProductProps = {};
 

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import ContactForm from './ContactForm';
+import ContactForm from '@/components/landing/ContactForm';
 
 type ContactProps = {};
 

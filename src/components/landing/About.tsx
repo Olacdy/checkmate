@@ -1,5 +1,6 @@
-import { about } from '@/helpers/data';
 import { FC } from 'react';
+
+import { about } from '@/helpers/data';
 
 type AboutProps = {};
 

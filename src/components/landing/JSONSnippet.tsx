@@ -1,7 +1,9 @@
-import { cn } from '@/lib/utils';
 import { FC, HTMLProps } from 'react';
-import { Icons } from '../Icons';
-import { Line } from '../ui/line';
+
+import { cn } from '@/lib/utils';
+
+import { Icons } from '@/components/Icons';
+import { Line } from '@/components/ui/line';
 
 type JSONSnippetProps = {} & HTMLProps<HTMLDivElement>;
 

@@ -6,14 +6,17 @@ import { cn } from '@/lib/utils';
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--headings-font' });
+
 const quantico = Questrial({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--body-font',
 });
+
 const courier = Courier_Prime({
   subsets: ['latin'],
   weight: ['400', '700'],

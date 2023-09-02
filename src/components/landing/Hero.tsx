@@ -1,8 +1,10 @@
-import Link from 'next/link';
 import { FC } from 'react';
-import { Icons } from '../Icons';
-import { Button } from '../ui/button';
-import { Line } from '../ui/line';
+
+import Link from 'next/link';
+
+import { Icons } from '@/components/Icons';
+import { Button } from '@/components/ui/button';
+import { Line } from '@/components/ui/line';
 
 type HeroProps = {};
 
