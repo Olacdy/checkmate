@@ -10,6 +10,26 @@
 
 /* All Section */
 
+html {
+  scroll-behavior: smooth;
+}
+
+main *::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  border-radius: 10px;
+}
+
+main *::-webkit-scrollbar-thumb {
+  border-radius: 0.75rem;
+  background-color: rgba(0, 117, 255, 0.7);
+}
+
+main *::-webkit-scrollbar-track {
+  background-color: rgba(68, 84, 88, 0.2);
+  margin: 24px 0;
+}
+
 .main-header {
   @apply text-center font-headings text-6xl font-semibold leading-snug text-off-white md:text-7xl;
 }
@@ -40,8 +60,13 @@
   @apply flex flex-col items-start justify-start gap-5 md:max-w-sm;
 }
 
+.code-container {
+  --scrollbar-x-margin: 8px;
+  @apply overflow-auto;
+}
+
 .code {
-  @apply font-code text-xs text-off-white sm:text-sm;
+  @apply font-code text-sm text-off-white;
 }
 
 /* Contact Section */

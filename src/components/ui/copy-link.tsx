@@ -31,8 +31,11 @@ const CopyLink: FC<CopyLinkProps> = ({ link, className, ...props }) => {
 
   return (
     <div className={cn('w-full', className)} {...props}>
-      <div className='flex w-full items-center justify-between rounded-md border-2 border-slate-600/20 bg-oxford-blue-dark p-1 pl-3 sm:pl-5 sm:pr-3'>
-        <span className='code'>{link}</span>
+      <div className='flex w-full items-center justify-between rounded-md border-2 border-slate-600/20 bg-oxford-blue-dark p-2 pl-3 sm:pl-5 sm:pr-3'>
+        <div className='code-container'>
+          <span className='code'>{link}</span>
+        </div>
+
         <Button
           onClick={handleCopying}
           variant='ghost'
