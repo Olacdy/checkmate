@@ -10,7 +10,7 @@ type FooterProps = {};
 const Footer: FC<FooterProps> = ({}) => {
   return (
     <footer className='mx-auto flex w-full max-w-5xl items-end pt-40'>
-      <div className='flex w-full items-center justify-between'>
+      <div className='flex w-full flex-col-reverse items-center justify-between gap-8 md:flex-row md:gap-0'>
         <div className='flex flex-col items-start gap-1'>
           <Image
             src='/footer-logo.webp'
@@ -18,19 +18,19 @@ const Footer: FC<FooterProps> = ({}) => {
             width={50}
             height={36}
           />
-          <span className='text-sm text-off-white'>
+          <span className='text-xs text-off-white md:text-sm'>
             Copyright &copy; 2023 CheckMate. All rights reserved.
           </span>
         </div>
         <nav>
-          <ul className='flex items-center justify-center gap-3'>
+          <ul className='flex items-center justify-center gap-6 md:gap-3'>
             <li>
               <Link
                 className='group'
                 href='https://www.linkedin.com/in/oleg-didechkin/'
                 target='_blank'
                 rel='noopener noreferrer'>
-                <Icons.linkedin className='h-10 w-10 fill-off-white group-hover:fill-off-white/60' />
+                <Icons.linkedin className='h-7 w-7 fill-off-white group-hover:fill-off-white/60 md:h-10 md:w-10' />
               </Link>
             </li>
             <li>
@@ -39,7 +39,7 @@ const Footer: FC<FooterProps> = ({}) => {
                 href='https://twitter.com/Olacdy'
                 target='_blank'
                 rel='noopener noreferrer'>
-                <Icons.twitter className='h-10 w-10 fill-off-white group-hover:fill-off-white/60' />
+                <Icons.twitter className='h-7 w-7 fill-off-white group-hover:fill-off-white/60 md:h-10 md:w-10' />
               </Link>
             </li>
             <li className='-ml-2'>
@@ -48,7 +48,7 @@ const Footer: FC<FooterProps> = ({}) => {
                 href='https://github.com/Olacdy'
                 target='_blank'
                 rel='noopener noreferrer'>
-                <Icons.github className='h-12 w-12 fill-off-white group-hover:fill-off-white/60' />
+                <Icons.github className='h-9 w-9 fill-off-white group-hover:fill-off-white/60 md:h-12 md:w-12' />
               </Link>
             </li>
           </ul>
