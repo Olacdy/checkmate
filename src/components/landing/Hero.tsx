@@ -13,7 +13,9 @@ const Hero: FC<HeroProps> = ({}) => {
     <section className='flex w-full flex-col items-center justify-start gap-32 pt-24'>
       <div className='flex flex-col items-center justify-start gap-10'>
         <div className='flex flex-col items-center justify-start gap-6'>
-          <h1 className='main-header max-w-xl'>New way of data validation</h1>
+          <h1 className='main-header max-w-xl'>
+            New way of data <span className='wavy-underline'>validation</span>
+          </h1>
           <p className='body-text max-w-sm text-center'>
             Introducing Checkly SchemaFlow: Simplify data schema design with an
             intuitive UI, and ensure data accuracy through dynamically generated

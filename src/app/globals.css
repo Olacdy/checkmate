@@ -26,6 +26,10 @@
   @apply font-body leading-relaxed text-alabaster;
 }
 
+.wavy-underline {
+  @apply underline decoration-error decoration-wavy decoration-[5px];
+}
+
 /* Product Section */
 
 .code {
