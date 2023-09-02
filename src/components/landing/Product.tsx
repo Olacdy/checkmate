@@ -17,8 +17,8 @@ const Product: FC<ProductProps> = ({}) => {
         <p className='body-text'>Define once - use everywhere</p>
       </div>
 
-      <div className='flex w-full items-center justify-between'>
-        <div className='flex max-w-sm flex-col items-start justify-start gap-5'>
+      <div className='step-container'>
+        <div className='step'>
           <Step stepCount={1} />
           <div className='flex flex-col gap-2'>
             <h3 className='paragraph-header'>Create a schema with UI tool</h3>
@@ -28,8 +28,8 @@ const Product: FC<ProductProps> = ({}) => {
             </p>
           </div>
         </div>
-        <Line className='flex-1' />
-        <div className='flex w-full max-w-md flex-col items-center pl-10'>
+        <Line className='hidden flex-1 lg:block' />
+        <div className='flex w-full flex-col items-center md:max-w-md md:pl-10'>
           <div className='w-full rounded-md border-2 border-slate-600/20'>
             <header className='w-full border-slate-600/20 bg-slate-600/20'>
               <div className='flex items-center gap-3 p-2'>
@@ -43,8 +43,8 @@ const Product: FC<ProductProps> = ({}) => {
         </div>
       </div>
 
-      <div className='flex w-full items-center justify-between'>
-        <div className='flex max-w-sm flex-col items-start justify-start gap-5'>
+      <div className='step-container'>
+        <div className='step'>
           <Step stepCount={2} />
           <div className='flex flex-col gap-2'>
             <h3 className='paragraph-header'>Get a URL to defined scheme</h3>
@@ -54,15 +54,15 @@ const Product: FC<ProductProps> = ({}) => {
             </p>
           </div>
         </div>
-        <Line className='flex-1' />
+        <Line className='hidden flex-1 lg:block' />
         <CopyLink
           link={'https://checkmate.com/api/schema/1'}
-          className='pl-10'
+          className='md:max-w-md md:pl-10'
         />
       </div>
 
-      <div className='flex w-full items-center justify-between'>
-        <div className='flex max-w-sm flex-col items-start justify-start gap-5'>
+      <div className='step-container'>
+        <div className='step'>
           <Step stepCount={3} />
           <div className='flex flex-col gap-2'>
             <h3 className='paragraph-header'>Validate data</h3>
@@ -72,8 +72,8 @@ const Product: FC<ProductProps> = ({}) => {
             </p>
           </div>
         </div>
-        <Line className='flex-1' />
-        <JSONSnippet className='pl-10' />
+        <Line className='hidden flex-1 lg:block' />
+        <JSONSnippet className='md:max-w-sm md:pl-10' />
       </div>
     </section>
   );

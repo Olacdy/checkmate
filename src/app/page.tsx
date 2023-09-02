@@ -9,7 +9,7 @@ type pageProps = {};
 
 const page: FC<pageProps> = async ({}) => {
   return (
-    <main className='mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-between pt-28 font-body'>
+    <main className='mx-auto flex min-h-screen w-full max-w-xl flex-col items-center justify-between px-10 pt-16 font-body sm:max-w-2xl md:max-w-3xl md:px-0 md:pt-28 lg:max-w-5xl'>
       <Hero />
       <Product />
       <About />

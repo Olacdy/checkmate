@@ -10,9 +10,9 @@ type JSONSnippetProps = {} & HTMLProps<HTMLDivElement>;
 const JSONSnippet: FC<JSONSnippetProps> = ({ className, ...props }) => {
   return (
     <div
-      className={cn('relative flex flex-col items-center', className)}
+      className={cn('relative flex w-full flex-col items-center', className)}
       {...props}>
-      <div className='w-full max-w-sm'>
+      <div className='w-full'>
         <div className='flex w-full flex-col items-start rounded-md border-2 border-slate-600/20 bg-oxford-blue-dark p-8'>
           <span className='code'>{'{'}</span>
           <div className='flex flex-col pl-10'>
