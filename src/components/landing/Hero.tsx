@@ -33,7 +33,21 @@ const Hero: FC<HeroProps> = ({}) => {
         </Link>
       </div>
 
-      <div className='relative w-full'>
+      <div className='relative h-[28rem] md:hidden'>
+        <Line orientation='vertical' />
+
+        <span className='absolute -inset-x-14 inset-y-0'>
+          <Icons.document className='absolute -inset-y-[3.5rem] inset-x-5 h-20 w-20 fill-off-white' />
+          <Icons.question className='absolute -inset-y-[5rem] inset-x-[5rem] h-10 w-10 fill-yellow-200' />
+        </span>
+
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <Icons.gear className='absolute -inset-16 h-20 w-20 rotate-[20deg] fill-off-white' />
+          <Icons.gear className='absolute -inset-5 h-20 w-20 fill-off-white' />
+        </div>
+      </div>
+
+      <div className='relative hidden w-full md:block'>
         <Line />
         <span className='absolute'>
           <Icons.document className='absolute -inset-y-[3.5rem] inset-x-5 fill-off-white' />
