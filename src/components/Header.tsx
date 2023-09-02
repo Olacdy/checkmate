@@ -14,7 +14,7 @@ type HeaderProps = {};
 
 const Header: FC<HeaderProps> = ({}) => {
   return (
-    <header className='fixed inset-x-0 z-50'>
+    <header className='fixed inset-x-0 z-50 px-5'>
       <nav className='mx-auto mt-4 w-full max-w-sm rounded-full bg-off-white px-4 py-2 font-body sm:max-w-sm sm:py-2 md:max-w-lg md:py-0 lg:max-w-3xl lg:px-6 2xl:max-w-5xl'>
         <ul className='flex items-center justify-between'>
           <li className='flex-1'>

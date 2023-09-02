@@ -15,12 +15,12 @@ const SchemaCreationLayout: FC<SchemaCreationLayoutProps> = ({
   return (
     <div
       className={cn(
-        'flex w-full flex-col items-center rounded-b-md text-sm',
+        'flex w-full flex-col items-center rounded-b-md text-xs sm:text-sm',
         className
       )}
       {...props}>
       <div className='flex w-full items-center justify-between p-4'>
-        <span className='w-36 rounded-md bg-off-white p-1 text-oxford-blue-dark'>
+        <span className='w-24 rounded-md bg-off-white p-1 text-oxford-blue-dark sm:w-36'>
           Schema 1
         </span>
         <div className='flex items-center gap-2'>
@@ -37,26 +37,26 @@ const SchemaCreationLayout: FC<SchemaCreationLayoutProps> = ({
         orientation='horizontal'
         className='bg-slate-600/20 dark:bg-slate-600/20'
       />
-      <div className='flex h-16 w-full items-center p-2'>
+      <div className='flex h-16 w-full items-center p-1 sm:p-2'>
         <div className='flex flex-1 flex-col items-start justify-between text-off-white'>
-          <span className='text-sm'>Total validations</span>
-          <span className='text-lg'>231</span>
+          <span>Total validations</span>
+          <span className='text-base sm:text-lg'>231</span>
         </div>
         <Separator
           orientation='vertical'
           className='bg-slate-600/20 dark:bg-slate-600/20'
         />
         <div className='flex flex-1 flex-col items-start justify-between pl-2 text-off-white'>
-          <span className='text-sm'>Total successes</span>
-          <span className='text-lg text-success'>230</span>
+          <span>Total successes</span>
+          <span className='text-base text-success sm:text-lg'>230</span>
         </div>
         <Separator
           orientation='vertical'
           className='bg-slate-600/20 dark:bg-slate-600/20'
         />
         <div className='flex flex-1 flex-col items-start justify-between pl-2 text-off-white'>
-          <span className='text-sm'>Total fails</span>
-          <span className='text-lg text-error'>1</span>
+          <span>Total fails</span>
+          <span className='text-base text-error sm:text-lg'>1</span>
         </div>
       </div>
       <Separator
@@ -65,9 +65,9 @@ const SchemaCreationLayout: FC<SchemaCreationLayoutProps> = ({
       />
 
       <div className='flex w-full flex-col items-start pt-5'>
-        <h3 className='pl-5 text-sm text-off-white'>Fields</h3>
+        <h3 className='pl-5 text-off-white'>Fields</h3>
         <div className='w-full px-2 pb-2'>
-          <div className='flex h-44 w-full flex-col items-center justify-between rounded-md border-[1px] border-slate-600/20 p-2'>
+          <div className='flex h-40 w-full flex-col items-center justify-between rounded-md border-[1px] border-slate-600/20 p-2 sm:h-44'>
             <div className='flex w-full flex-col gap-1'>
               {['Field 1', 'Field 2', 'Field 3'].map((fieldName) => (
                 <FieldSchemaLayout name={fieldName} />
@@ -93,7 +93,7 @@ type FieldSchemaLayoutProps = {
 const FieldSchemaLayout: FC<FieldSchemaLayoutProps> = ({ name }) => {
   return (
     <div className='w-full rounded-md border-[1px] border-slate-600/20'>
-      <div className='flex items-center justify-between p-2 px-3'>
+      <div className='flex items-center justify-between p-2 px-2 sm:px-3'>
         <div className='flex items-center gap-1'>
           <Icons.drag className='h-4 w-4 stroke-off-white' />
           <span className='text-xs text-off-white'>{name}</span>
