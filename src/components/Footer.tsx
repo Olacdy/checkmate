@@ -45,7 +45,7 @@ const Footer: FC<FooterProps> = ({}) => {
             <li className='-ml-2'>
               <Link
                 className='group'
-                href='https://github.com/Olacdy'
+                href='https://github.com/Olacdy/checkmate'
                 target='_blank'
                 rel='noopener noreferrer'>
                 <Icons.github className='h-9 w-9 fill-off-white group-hover:fill-off-white/60 md:h-12 md:w-12' />

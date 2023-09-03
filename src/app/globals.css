@@ -10,6 +10,11 @@
 
 /* All Section */
 
+:root {
+  --scroll: 0;
+  --document-scale: 100%;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -48,6 +53,27 @@ main *::-webkit-scrollbar-track {
 
 .wavy-underline {
   @apply underline decoration-error decoration-wavy decoration-[5px];
+}
+
+/* Hero Section */
+
+.hero-section {
+  translate: 0 calc(-1% * (max(var(--scroll), 40) - 40) * 100 / 60);
+  @apply sticky top-28 min-h-screen;
+}
+
+.document-container {
+  position: absolute;
+  left: min(max(calc(2% * var(--scroll)), 5%), 88%);
+  scale: calc(1% * var(--document-scale));
+}
+
+.first-gear {
+  rotate: calc(1deg * (var(--scroll) / 100 * (200 - 20) + 20));
+}
+
+.second-gear {
+  rotate: calc(1deg * (var(--scroll) / 100 * 200));
 }
 
 /* Product Section */

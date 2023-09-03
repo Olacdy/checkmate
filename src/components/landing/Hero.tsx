@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
@@ -10,16 +10,46 @@ import { Line } from '@/components/ui/line';
 
 import { useSectionInView } from '@/hooks/useSectionInView';
 
+import { calculateDocumentScale } from '@/lib/utils';
+
 type HeroProps = {};
 
 const Hero: FC<HeroProps> = ({}) => {
   const { ref } = useSectionInView('Hero');
+  const [icon, setIcon] = useState<keyof typeof Icons>('question');
+
+  useEffect(() => {
+    const handleScrollEvent = () => {
+      const htmlElement = document.documentElement;
+      const percentOfScreenHeightScrolled = Math.min(
+        (htmlElement.scrollTop / htmlElement.clientHeight) * 100,
+        100
+      );
+      const documentScale = calculateDocumentScale(
+        percentOfScreenHeightScrolled
+      );
+
+      if (percentOfScreenHeightScrolled > 25 && icon !== 'check') {
+        setIcon('check');
+      }
+
+      htmlElement.style.setProperty('--document-scale', `${documentScale}`);
+    };
+
+    window.addEventListener('scroll', handleScrollEvent, { passive: true });
+    window.addEventListener('resize', handleScrollEvent, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollEvent);
+      window.removeEventListener('resize', handleScrollEvent);
+    };
+  }, [icon]);
 
   return (
     <section
       ref={ref}
       id='hero'
-      className='flex w-full flex-col items-center justify-start gap-32 pt-24'>
+      className='hero-section flex w-full flex-col items-center justify-start gap-32 pt-24'>
       <div className='flex flex-col items-center justify-start gap-10'>
         <div className='flex flex-col items-center justify-start gap-6'>
           <h1 className='main-header max-w-xl'>
@@ -47,25 +77,33 @@ const Hero: FC<HeroProps> = ({}) => {
 
         <span className='absolute -inset-x-14 inset-y-0'>
           <Icons.document className='absolute -inset-y-[3.5rem] inset-x-5 h-20 w-20 fill-off-white' />
-          <Icons.question className='absolute -inset-y-[5rem] inset-x-[5rem] h-10 w-10 fill-yellow-200' />
+          {icon === 'question' ? (
+            <Icons.question className='absolute -inset-y-[5rem] inset-x-[5rem] h-10 w-10 fill-yellow-200' />
+          ) : (
+            <Icons.check className='absolute -inset-y-[5rem] inset-x-[5rem] h-10 w-10 stroke-success' />
+          )}
         </span>
 
         <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <Icons.gear className='absolute -inset-16 h-20 w-20 rotate-[20deg] fill-off-white' />
-          <Icons.gear className='absolute -inset-5 h-20 w-20 fill-off-white' />
+          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-off-white' />
+          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-off-white' />
         </div>
       </div>
 
       <div className='relative hidden w-full md:block'>
         <Line />
-        <span className='absolute'>
-          <Icons.document className='absolute -inset-y-[3.5rem] inset-x-5 fill-off-white' />
-          <Icons.question className='absolute -inset-y-[5.3rem] inset-x-[5.5rem] h-12 w-12 fill-yellow-200' />
+        <span className='document-container'>
+          <Icons.document className='absolute -inset-x-[0.75rem] -inset-y-[3.5rem] fill-off-white' />
+          {icon === 'question' ? (
+            <Icons.question className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] h-12 w-12 fill-yellow-200' />
+          ) : (
+            <Icons.check className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] h-12 w-12 stroke-success' />
+          )}
         </span>
 
         <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <Icons.gear className='absolute -inset-16 h-20 w-20 rotate-[20deg] fill-off-white' />
-          <Icons.gear className='absolute -inset-5 h-20 w-20 fill-off-white' />
+          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-off-white' />
+          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-off-white' />
         </div>
       </div>
     </section>
