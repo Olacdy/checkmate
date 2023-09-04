@@ -68,12 +68,18 @@ main *::-webkit-scrollbar-track {
   scale: calc(1% * var(--document-scale));
 }
 
+.document-container-mobile {
+  position: absolute;
+  top: calc(1% * ((max(var(--scroll), 25) - 25) * 100 / 75));
+  scale: calc(1% * var(--document-scale));
+}
+
 .first-gear {
-  rotate: calc(1deg * (var(--scroll) / 100 * (200 - 20) + 20));
+  rotate: calc(1deg * (min(var(--scroll), 60) / 100 * (200 - 20) + 20));
 }
 
 .second-gear {
-  rotate: calc(1deg * (var(--scroll) / 100 * 200));
+  rotate: calc(1deg * (min(var(--scroll), 60) / 100 * 200));
 }
 
 /* Product Section */

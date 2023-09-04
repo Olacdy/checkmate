@@ -15,6 +15,7 @@ import {
 
 import { Icons } from '@/components/Icons';
 import { ThemeSwitch } from '@/components/ThemeSwitch';
+import { sections } from '@/helpers/data';
 
 type HeaderSheetProps = {};
 
@@ -39,33 +40,21 @@ const HeaderSheet: FC<HeaderSheetProps> = ({}) => {
           </div>
           <nav className='w-full'>
             <ul className='flex flex-col'>
-              <li>
-                <Link href='#product'>
-                  <Button
-                    variant='link'
-                    className='nav-link text-lg dark:text-oxford-blue-dark'>
-                    Product
-                  </Button>
-                </Link>
-              </li>
-              <li>
-                <Link href='#about'>
-                  <Button
-                    variant='link'
-                    className='nav-link text-lg dark:text-oxford-blue-dark'>
-                    About
-                  </Button>
-                </Link>
-              </li>
-              <li>
-                <Link href='#contact'>
-                  <Button
-                    variant='link'
-                    className='nav-link text-lg dark:text-oxford-blue-dark'>
-                    Contact
-                  </Button>
-                </Link>
-              </li>
+              {sections.slice(1).map((section) => {
+                return (
+                  <li key={`${section.id}-mobile`}>
+                    <SheetClose asChild>
+                      <Link href={`#${section.id}`}>
+                        <Button
+                          variant='link'
+                          className='nav-link text-lg dark:text-oxford-blue-dark'>
+                          {section.title}
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
           <ThemeSwitch />

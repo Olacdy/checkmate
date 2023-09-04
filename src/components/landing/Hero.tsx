@@ -33,6 +33,10 @@ const Hero: FC<HeroProps> = ({}) => {
         setIcon('check');
       }
 
+      htmlElement.style.setProperty(
+        '--scroll',
+        `${percentOfScreenHeightScrolled}`
+      );
       htmlElement.style.setProperty('--document-scale', `${documentScale}`);
     };
 
@@ -49,7 +53,7 @@ const Hero: FC<HeroProps> = ({}) => {
     <section
       ref={ref}
       id='hero'
-      className='hero-section flex w-full flex-col items-center justify-start gap-32 pt-24'>
+      className='md:hero-section flex w-full flex-col items-center justify-start gap-32 pt-36'>
       <div className='flex flex-col items-center justify-start gap-10'>
         <div className='flex flex-col items-center justify-start gap-6'>
           <h1 className='main-header max-w-xl'>
@@ -75,12 +79,12 @@ const Hero: FC<HeroProps> = ({}) => {
       <div className='relative h-[28rem] md:hidden'>
         <Line orientation='vertical' />
 
-        <span className='absolute -inset-x-14 inset-y-0'>
-          <Icons.document className='absolute -inset-y-[3.5rem] inset-x-5 h-20 w-20 fill-off-white' />
+        <span className='document-container-mobile'>
+          <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-off-white' />
           {icon === 'question' ? (
-            <Icons.question className='absolute -inset-y-[5rem] inset-x-[5rem] h-10 w-10 fill-yellow-200' />
+            <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-200' />
           ) : (
-            <Icons.check className='absolute -inset-y-[5rem] inset-x-[5rem] h-10 w-10 stroke-success' />
+            <Icons.check className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 stroke-success' />
           )}
         </span>
 
