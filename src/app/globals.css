@@ -58,23 +58,23 @@ main *::-webkit-scrollbar-track {
 
 /* Hero Section */
 
+.document {
+  position: absolute;
+  top: calc(1% * ((min(max(var(--scroll), 25), 75) - 25) * 100 / 50));
+  scale: calc(1% * var(--document-scale-mobile));
+}
+
 @media screen(md) {
   .hero-section {
     translate: 0 calc(-1% * (max(var(--scroll), 40) - 40) * 100 / 60);
     @apply sticky top-28 min-h-screen;
   }
-}
 
-.document-container {
-  position: absolute;
-  left: min(max(calc(2% * var(--scroll)), 5%), 88%);
-  scale: calc(1% * var(--document-scale));
-}
-
-.document-container-mobile {
-  position: absolute;
-  top: calc(1% * ((min(max(var(--scroll), 25), 75) - 25) * 100 / 50));
-  scale: calc(1% * var(--document-scale-mobile));
+  .document {
+    position: absolute;
+    left: min(max(calc(2% * var(--scroll)), 5%), 88%);
+    scale: calc(1% * var(--document-scale));
+  }
 }
 
 .first-gear {

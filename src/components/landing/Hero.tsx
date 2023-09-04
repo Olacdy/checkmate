@@ -106,32 +106,16 @@ const Hero: FC<HeroProps> = ({}) => {
         </Link>
       </div>
 
-      <div className='relative h-[28rem] md:hidden'>
-        <Line orientation='vertical' />
+      <div className='relative h-[28rem] md:h-fit md:w-full'>
+        <Line className='md:hidden' orientation='vertical' />
+        <Line className='hidden md:block' />
 
-        <span className='document-container-mobile'>
-          <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-oxford-blue dark:fill-off-white' />
+        <span className='document'>
+          <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-oxford-blue dark:fill-off-white md:-inset-x-[0.75rem] md:-inset-y-[3.3rem] md:h-fit md:w-fit' />
           {iconMobile === 'question' ? (
-            <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-200' />
+            <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-200 md:-inset-y-[5.3rem] md:inset-x-[3.5rem] md:h-12 md:w-12' />
           ) : (
-            <Icons.check className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 stroke-success' />
-          )}
-        </span>
-
-        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-oxford-blue dark:fill-off-white' />
-          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-oxford-blue dark:fill-off-white' />
-        </div>
-      </div>
-
-      <div className='relative hidden w-full md:block'>
-        <Line />
-        <span className='document-container'>
-          <Icons.document className='absolute -inset-x-[0.75rem] -inset-y-[3.5rem] fill-oxford-blue dark:fill-off-white' />
-          {icon === 'question' ? (
-            <Icons.question className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] h-12 w-12 fill-yellow-200' />
-          ) : (
-            <Icons.check className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] h-12 w-12 stroke-success' />
+            <Icons.check className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 stroke-success md:-inset-y-[5.3rem] md:inset-x-[3.5rem] md:h-12 md:w-12' />
           )}
         </span>
 
