@@ -43,14 +43,14 @@ const Product: FC<ProductProps> = ({}) => {
         <Line className='hidden flex-1 lg:block' />
         <div className='flex w-full flex-col items-center md:max-w-md md:pl-10'>
           <div className='w-full rounded-md border-2 border-slate-600/20'>
-            <header className='w-full border-slate-600/20 bg-slate-600/20'>
+            <header className='w-full rounded-t-[0.25rem] border-slate-600/20 bg-slate-600/20'>
               <div className='flex items-center gap-3 p-2'>
                 <span className='h-3 w-3 rounded-full bg-slate-500' />
                 <span className='h-3 w-3 rounded-full bg-slate-500' />
                 <span className='h-3 w-3 rounded-full bg-slate-500' />
               </div>
             </header>
-            <SchemaCreationLayout className='bg-oxford-blue-dark' />
+            <SchemaCreationLayout className='bg-oxford-blue dark:bg-oxford-blue-dark' />
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@ const Product: FC<ProductProps> = ({}) => {
       </div>
 
       <Link className='mt-12 self-start md:-mt-20' href='/sign-in'>
-        <Button className='px-10 py-7 text-xl'>Try it now</Button>
+        <Button className='px-10 py-7 text-xl '>Try it now</Button>
       </Link>
     </section>
   );

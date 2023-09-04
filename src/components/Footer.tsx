@@ -13,12 +13,20 @@ const Footer: FC<FooterProps> = ({}) => {
       <div className='flex w-full flex-col-reverse items-center justify-between gap-8 md:flex-row md:gap-0'>
         <div className='flex flex-col items-start gap-1'>
           <Image
+            className='hidden dark:block'
             src='/footer-logo.webp'
             alt='Footer logo'
             width={50}
             height={36}
           />
-          <span className='text-xs text-off-white md:text-sm'>
+          <Image
+            className='dark:hidden'
+            src='/footer-logo-dark.webp'
+            alt='Footer logo dark'
+            width={50}
+            height={36}
+          />
+          <span className='text-xs text-oxford-blue/70 dark:text-off-white md:text-sm'>
             Copyright &copy; 2023 CheckMate. All rights reserved.
           </span>
         </div>
@@ -30,7 +38,7 @@ const Footer: FC<FooterProps> = ({}) => {
                 href='https://www.linkedin.com/in/oleg-didechkin/'
                 target='_blank'
                 rel='noopener noreferrer'>
-                <Icons.linkedin className='h-7 w-7 fill-off-white group-hover:fill-off-white/60 md:h-10 md:w-10' />
+                <Icons.linkedin className='h-7 w-7 fill-oxford-blue group-hover:fill-oxford-blue/90 dark:fill-off-white dark:group-hover:fill-off-white/60 md:h-10 md:w-10' />
               </Link>
             </li>
             <li>
@@ -39,7 +47,7 @@ const Footer: FC<FooterProps> = ({}) => {
                 href='https://twitter.com/Olacdy'
                 target='_blank'
                 rel='noopener noreferrer'>
-                <Icons.twitter className='h-7 w-7 fill-off-white group-hover:fill-off-white/60 md:h-10 md:w-10' />
+                <Icons.twitter className='h-7 w-7 fill-oxford-blue group-hover:fill-oxford-blue/90 dark:fill-off-white dark:group-hover:fill-off-white/60 md:h-10 md:w-10' />
               </Link>
             </li>
             <li className='-ml-2'>
@@ -48,7 +56,7 @@ const Footer: FC<FooterProps> = ({}) => {
                 href='https://github.com/Olacdy/checkmate'
                 target='_blank'
                 rel='noopener noreferrer'>
-                <Icons.github className='h-9 w-9 fill-off-white group-hover:fill-off-white/60 md:h-12 md:w-12' />
+                <Icons.github className='h-9 w-9 fill-oxford-blue group-hover:fill-oxford-blue/90 dark:fill-off-white dark:group-hover:fill-off-white/60 md:h-12 md:w-12' />
               </Link>
             </li>
           </ul>

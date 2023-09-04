@@ -37,7 +37,7 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'bg-oxford-blue antialiased dark:bg-oxford-blue',
+          'bg-slate-200 antialiased dark:bg-oxford-blue',
           inter.variable,
           quantico.variable,
           courier.variable

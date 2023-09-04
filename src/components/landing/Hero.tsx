@@ -83,7 +83,7 @@ const Hero: FC<HeroProps> = ({}) => {
     <section
       ref={ref}
       id='hero'
-      className='hero-section flex w-full flex-col items-center justify-start gap-32 pt-36'>
+      className='hero-section flex w-full flex-col items-center justify-start gap-32 pt-36 md:pt-28'>
       <div className='flex flex-col items-center justify-start gap-10'>
         <div className='flex flex-col items-center justify-start gap-6'>
           <h1 className='main-header max-w-xl'>
@@ -100,7 +100,7 @@ const Hero: FC<HeroProps> = ({}) => {
         <Link href='/sign-in'>
           <Button
             variant='ghost'
-            className='border-[1px] border-alabaster px-8 text-lg text-alabaster hover:bg-alabaster hover:text-oxford-blue-dark dark:hover:bg-alabaster dark:hover:text-oxford-blue-dark'>
+            className='border-[1px] border-oxford-blue px-8 text-lg hover:bg-oxford-blue hover:text-alabaster dark:border-alabaster dark:text-alabaster dark:hover:bg-alabaster dark:hover:text-oxford-blue-dark'>
             Start for free
           </Button>
         </Link>
@@ -110,7 +110,7 @@ const Hero: FC<HeroProps> = ({}) => {
         <Line orientation='vertical' />
 
         <span className='document-container-mobile'>
-          <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-off-white' />
+          <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-oxford-blue dark:fill-off-white' />
           {iconMobile === 'question' ? (
             <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-200' />
           ) : (
@@ -119,15 +119,15 @@ const Hero: FC<HeroProps> = ({}) => {
         </span>
 
         <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-off-white' />
-          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-off-white' />
+          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-oxford-blue dark:fill-off-white' />
+          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-oxford-blue dark:fill-off-white' />
         </div>
       </div>
 
       <div className='relative hidden w-full md:block'>
         <Line />
         <span className='document-container'>
-          <Icons.document className='absolute -inset-x-[0.75rem] -inset-y-[3.5rem] fill-off-white' />
+          <Icons.document className='absolute -inset-x-[0.75rem] -inset-y-[3.5rem] fill-oxford-blue dark:fill-off-white' />
           {icon === 'question' ? (
             <Icons.question className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] h-12 w-12 fill-yellow-200' />
           ) : (
@@ -136,8 +136,8 @@ const Hero: FC<HeroProps> = ({}) => {
         </span>
 
         <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-off-white' />
-          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-off-white' />
+          <Icons.gear className='first-gear absolute -inset-16 h-20 w-20 fill-oxford-blue dark:fill-off-white' />
+          <Icons.gear className='second-gear absolute -inset-5 h-20 w-20 fill-oxford-blue dark:fill-off-white' />
         </div>
       </div>
     </section>

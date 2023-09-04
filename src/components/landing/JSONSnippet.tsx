@@ -13,7 +13,7 @@ const JSONSnippet: FC<JSONSnippetProps> = ({ className, ...props }) => {
       className={cn('relative flex w-full flex-col items-center', className)}
       {...props}>
       <div className='w-full'>
-        <div className='flex w-full flex-col items-start rounded-md border-2 border-slate-600/20 bg-oxford-blue-dark p-8'>
+        <div className='flex w-full flex-col items-start rounded-md border-2 border-slate-600/20 bg-oxford-blue p-8 dark:bg-oxford-blue-dark'>
           <span className='code'>{'{'}</span>
           <div className='flex flex-col pl-10'>
             <span className='code'>"firstName": "John"</span>

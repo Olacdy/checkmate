@@ -23,7 +23,7 @@ const HeaderSheet: FC<HeaderSheetProps> = ({}) => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Icons.menu className='h-8 w-8 fill-crayola-blue md:h-10 md:w-10' />
+        <Icons.menu className='h-8 w-8 fill-crayola-blue' />
       </SheetTrigger>
       <SheetContent side='top' className='bg-off-white'>
         <div className='mx-auto flex max-w-md flex-col gap-5'>

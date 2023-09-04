@@ -37,19 +37,19 @@ main *::-webkit-scrollbar-track {
 }
 
 .main-header {
-  @apply text-center font-headings text-6xl font-semibold leading-snug text-off-white md:text-7xl;
+  @apply text-center font-headings text-6xl font-semibold leading-snug text-oxford-blue dark:text-off-white md:text-7xl;
 }
 
 .section-header {
-  @apply font-headings text-5xl font-semibold leading-snug text-off-white;
+  @apply font-headings text-5xl font-semibold leading-snug text-oxford-blue dark:text-off-white;
 }
 
 .paragraph-header {
-  @apply text-left font-body text-4xl text-off-white;
+  @apply text-left font-body text-4xl text-oxford-blue dark:text-off-white;
 }
 
 .body-text {
-  @apply font-body leading-relaxed text-alabaster;
+  @apply font-body leading-relaxed text-oxford-blue/70 dark:text-alabaster;
 }
 
 .wavy-underline {

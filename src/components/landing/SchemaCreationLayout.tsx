@@ -15,7 +15,7 @@ const SchemaCreationLayout: FC<SchemaCreationLayoutProps> = ({
   return (
     <div
       className={cn(
-        'flex w-full flex-col items-center rounded-b-md text-xs sm:text-sm',
+        'flex w-full flex-col items-center rounded-b-[0.175rem] text-xs sm:text-sm',
         className
       )}
       {...props}>

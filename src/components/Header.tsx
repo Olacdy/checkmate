@@ -24,7 +24,7 @@ const Header: FC<HeaderProps> = ({}) => {
 
   return (
     <header className='relative z-50'>
-      <nav className='fixed inset-x-0 mx-auto mt-4 w-[90%] max-w-sm rounded-full bg-off-white px-4 py-2 font-body sm:max-w-sm sm:py-2 md:max-w-lg md:py-0 lg:max-w-3xl lg:px-6 2xl:max-w-5xl'>
+      <nav className='fixed inset-x-0 mx-auto mt-4 w-[90%] max-w-sm rounded-full bg-off-white px-4 py-2 font-body shadow-lg dark:shadow-none sm:max-w-sm sm:py-2 md:max-w-lg md:py-0 lg:max-w-3xl lg:px-6 2xl:max-w-5xl'>
         <ul className='flex items-center justify-between'>
           <li className='flex-1'>
             <Link href='/'>
@@ -55,6 +55,8 @@ const Header: FC<HeaderProps> = ({}) => {
                         {
                           'font-normal text-off-white':
                             activeSection === section.title,
+                          'hover:underline hover:decoration-oxford-blue-dark hover:underline-offset-2':
+                            activeSection !== section.title,
                         }
                       )}
                       href={`#${section.id}`}
