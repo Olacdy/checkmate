@@ -12,11 +12,17 @@ import { useSectionInView } from '@/hooks/useSectionInView';
 
 import { calculateDocumentScale } from '@/lib/utils';
 
+const ANIMATION_START = 0;
+const ANIMATION_END = 50;
+const MOBILE_ANIMATION_START = 25;
+const MOBILE_ANIMATION_END = 75;
+
 type HeroProps = {};
 
 const Hero: FC<HeroProps> = ({}) => {
   const { ref } = useSectionInView('Hero');
   const [icon, setIcon] = useState<keyof typeof Icons>('question');
+  const [iconMobile, setIconMobile] = useState<keyof typeof Icons>('question');
 
   useEffect(() => {
     const handleScrollEvent = () => {
@@ -25,19 +31,43 @@ const Hero: FC<HeroProps> = ({}) => {
         (htmlElement.scrollTop / htmlElement.clientHeight) * 100,
         100
       );
+
       const documentScale = calculateDocumentScale(
-        percentOfScreenHeightScrolled
+        percentOfScreenHeightScrolled,
+        ANIMATION_END,
+        ANIMATION_START
+      );
+      const documentScaleMobile = calculateDocumentScale(
+        percentOfScreenHeightScrolled,
+        MOBILE_ANIMATION_END,
+        MOBILE_ANIMATION_START
       );
 
-      if (percentOfScreenHeightScrolled > 25 && icon !== 'check') {
+      if (
+        percentOfScreenHeightScrolled > (ANIMATION_END + ANIMATION_START) / 2 &&
+        icon !== 'check'
+      ) {
         setIcon('check');
+      }
+
+      if (
+        percentOfScreenHeightScrolled >
+          (MOBILE_ANIMATION_END + MOBILE_ANIMATION_START) / 2 &&
+        iconMobile !== 'check'
+      ) {
+        setIconMobile('check');
       }
 
       htmlElement.style.setProperty(
         '--scroll',
         `${percentOfScreenHeightScrolled}`
       );
+
       htmlElement.style.setProperty('--document-scale', `${documentScale}`);
+      htmlElement.style.setProperty(
+        '--document-scale-mobile',
+        `${documentScaleMobile}`
+      );
     };
 
     window.addEventListener('scroll', handleScrollEvent, { passive: true });
@@ -53,7 +83,7 @@ const Hero: FC<HeroProps> = ({}) => {
     <section
       ref={ref}
       id='hero'
-      className='md:hero-section flex w-full flex-col items-center justify-start gap-32 pt-36'>
+      className='hero-section flex w-full flex-col items-center justify-start gap-32 pt-36'>
       <div className='flex flex-col items-center justify-start gap-10'>
         <div className='flex flex-col items-center justify-start gap-6'>
           <h1 className='main-header max-w-xl'>
@@ -81,7 +111,7 @@ const Hero: FC<HeroProps> = ({}) => {
 
         <span className='document-container-mobile'>
           <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-off-white' />
-          {icon === 'question' ? (
+          {iconMobile === 'question' ? (
             <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-200' />
           ) : (
             <Icons.check className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 stroke-success' />

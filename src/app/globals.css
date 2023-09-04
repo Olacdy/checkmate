@@ -13,6 +13,7 @@
 :root {
   --scroll: 0;
   --document-scale: 100%;
+  --document-scale-mobile: 100%;
 }
 
 html {
@@ -57,9 +58,11 @@ main *::-webkit-scrollbar-track {
 
 /* Hero Section */
 
-.hero-section {
-  translate: 0 calc(-1% * (max(var(--scroll), 40) - 40) * 100 / 60);
-  @apply sticky top-28 min-h-screen;
+@media screen(md) {
+  .hero-section {
+    translate: 0 calc(-1% * (max(var(--scroll), 40) - 40) * 100 / 60);
+    @apply sticky top-28 min-h-screen;
+  }
 }
 
 .document-container {
@@ -70,8 +73,8 @@ main *::-webkit-scrollbar-track {
 
 .document-container-mobile {
   position: absolute;
-  top: calc(1% * ((max(var(--scroll), 25) - 25) * 100 / 75));
-  scale: calc(1% * var(--document-scale));
+  top: calc(1% * ((min(max(var(--scroll), 25), 75) - 25) * 100 / 50));
+  scale: calc(1% * var(--document-scale-mobile));
 }
 
 .first-gear {
