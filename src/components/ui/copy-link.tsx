@@ -39,7 +39,7 @@ const CopyLink: FC<CopyLinkProps> = ({ link, className, ...props }) => {
         <Button
           onClick={handleCopying}
           variant='ghost'
-          className='relative w-10'
+          className='relative w-10 hover:bg-slate-800'
           disabled={isCopied}>
           <motion.span
             className='absolute'
