@@ -24,9 +24,6 @@ export function calculateDocumentScale(
       2) /
     (maxPercent - minPercent);
 
-  console.log('Percent', percentOfScreenHeightScrolled);
-  console.log('TR input', transformedInput);
-
   const input = Math.max(
     multiplier * Math.abs(Math.cbrt(transformedInput - maxPercent)) - gap,
     0

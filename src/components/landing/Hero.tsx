@@ -43,6 +43,10 @@ const Hero: FC<HeroProps> = ({}) => {
         MOBILE_ANIMATION_START
       );
 
+      console.log(percentOfScreenHeightScrolled);
+      console.log((ANIMATION_END + ANIMATION_START) / 2);
+      console.log(icon);
+
       if (
         percentOfScreenHeightScrolled > (ANIMATION_END + ANIMATION_START) / 2 &&
         icon !== 'check'
@@ -62,7 +66,6 @@ const Hero: FC<HeroProps> = ({}) => {
         '--scroll',
         `${percentOfScreenHeightScrolled}`
       );
-
       htmlElement.style.setProperty('--document-scale', `${documentScale}`);
       htmlElement.style.setProperty(
         '--document-scale-mobile',
@@ -113,9 +116,14 @@ const Hero: FC<HeroProps> = ({}) => {
         <span className='document'>
           <Icons.document className='absolute -inset-x-10 -inset-y-[3.5rem] h-20 w-20 fill-oxford-blue dark:fill-off-white md:-inset-x-[0.75rem] md:-inset-y-[3.3rem] md:h-fit md:w-fit' />
           {iconMobile === 'question' ? (
-            <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-200 md:-inset-y-[5.3rem] md:inset-x-[3.5rem] md:h-12 md:w-12' />
+            <Icons.question className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 fill-yellow-600 dark:fill-yellow-200 md:-inset-y-[5.3rem] md:hidden' />
           ) : (
-            <Icons.check className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 stroke-success md:-inset-y-[5.3rem] md:inset-x-[3.5rem] md:h-12 md:w-12' />
+            <Icons.check className='absolute -inset-y-[5rem] inset-x-[1rem] h-10 w-10 stroke-success md:-inset-y-[5.3rem] md:hidden' />
+          )}
+          {icon === 'question' ? (
+            <Icons.question className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] hidden h-12 w-12 fill-yellow-600 dark:fill-yellow-200 md:block' />
+          ) : (
+            <Icons.check className='absolute -inset-y-[5.3rem] inset-x-[3.5rem] hidden h-12 w-12 stroke-success md:block' />
           )}
         </span>
 
