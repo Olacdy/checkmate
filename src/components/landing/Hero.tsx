@@ -25,12 +25,22 @@ const Hero: FC<HeroProps> = ({}) => {
   const [iconMobile, setIconMobile] = useState<keyof typeof Icons>('question');
 
   useEffect(() => {
-    const handleScrollEvent = () => {
-      const htmlElement = document.documentElement;
+    const trackScroll = (htmlElement: HTMLElement) => {
       const percentOfScreenHeightScrolled = Math.min(
         (htmlElement.scrollTop / htmlElement.clientHeight) * 100,
         100
       );
+
+      htmlElement.style.setProperty(
+        '--scroll',
+        `${percentOfScreenHeightScrolled}`
+      );
+
+      return percentOfScreenHeightScrolled;
+    };
+
+    const handleScrollEvent = (htmlElement: HTMLElement) => {
+      const percentOfScreenHeightScrolled = trackScroll(htmlElement);
 
       const documentScale = calculateDocumentScale(
         percentOfScreenHeightScrolled,
@@ -42,10 +52,6 @@ const Hero: FC<HeroProps> = ({}) => {
         MOBILE_ANIMATION_END,
         MOBILE_ANIMATION_START
       );
-
-      console.log(percentOfScreenHeightScrolled);
-      console.log((ANIMATION_END + ANIMATION_START) / 2);
-      console.log(icon);
 
       if (
         percentOfScreenHeightScrolled > (ANIMATION_END + ANIMATION_START) / 2 &&
@@ -62,10 +68,6 @@ const Hero: FC<HeroProps> = ({}) => {
         setIconMobile('check');
       }
 
-      htmlElement.style.setProperty(
-        '--scroll',
-        `${percentOfScreenHeightScrolled}`
-      );
       htmlElement.style.setProperty('--document-scale', `${documentScale}`);
       htmlElement.style.setProperty(
         '--document-scale-mobile',
@@ -73,12 +75,23 @@ const Hero: FC<HeroProps> = ({}) => {
       );
     };
 
-    window.addEventListener('scroll', handleScrollEvent, { passive: true });
-    window.addEventListener('resize', handleScrollEvent, { passive: true });
+    const htmlElement = document.documentElement;
+    trackScroll(htmlElement);
+
+    window.addEventListener('scroll', () => handleScrollEvent(htmlElement), {
+      passive: true,
+    });
+    window.addEventListener('resize', () => handleScrollEvent(htmlElement), {
+      passive: true,
+    });
 
     return () => {
-      window.removeEventListener('scroll', handleScrollEvent);
-      window.removeEventListener('resize', handleScrollEvent);
+      window.removeEventListener('scroll', () =>
+        handleScrollEvent(htmlElement)
+      );
+      window.removeEventListener('resize', () =>
+        handleScrollEvent(htmlElement)
+      );
     };
   }, [icon]);
 
