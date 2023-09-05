@@ -9,8 +9,8 @@ import CopyLink from '@/components/ui/copy-link';
 import { Line } from '@/components/ui/line';
 import Step from '@/components/ui/step';
 
-import JSONSnippet from '@/components/landing/JSONSnippet';
-import SchemaCreationLayout from '@/components/landing/SchemaCreationLayout';
+import JSONSnippet from '@/components/landing/code-snippet';
+import SchemaCreationLayout from '@/components/landing/schema-creation-layout';
 
 import { useSectionInView } from '@/hooks/useSectionInView';
 
@@ -42,8 +42,8 @@ const Product: FC<ProductProps> = ({}) => {
         </div>
         <Line className='hidden flex-1 lg:block' />
         <div className='flex w-full flex-col items-center md:max-w-md md:pl-10'>
-          <div className='w-full rounded-md border-2 border-slate-600/20'>
-            <header className='w-full rounded-t-[0.25rem] border-slate-600/20 bg-slate-600/20'>
+          <div className='w-full rounded-md border-2 border-slate-300 dark:border-slate-700'>
+            <header className='w-full rounded-t-[0.25rem] bg-slate-300 dark:bg-slate-700'>
               <div className='flex items-center gap-3 p-2'>
                 <span className='h-3 w-3 rounded-full bg-slate-500' />
                 <span className='h-3 w-3 rounded-full bg-slate-500' />

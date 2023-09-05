@@ -2,7 +2,7 @@ import { FC, HTMLProps } from 'react';
 
 import { Separator } from '@/components/ui/separator';
 
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 import { cn } from '@/lib/utils';
 

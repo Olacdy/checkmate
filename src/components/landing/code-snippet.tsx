@@ -2,7 +2,7 @@ import { FC, HTMLProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 import { Line } from '@/components/ui/line';
 
 type JSONSnippetProps = {} & HTMLProps<HTMLDivElement>;
@@ -13,7 +13,7 @@ const JSONSnippet: FC<JSONSnippetProps> = ({ className, ...props }) => {
       className={cn('relative flex w-full flex-col items-center', className)}
       {...props}>
       <div className='w-full'>
-        <div className='flex w-full flex-col items-start rounded-md border-2 border-slate-600/20 bg-oxford-blue p-8 dark:bg-oxford-blue-dark'>
+        <div className='flex w-full flex-col items-start rounded-md border-2 border-slate-400 bg-oxford-blue p-8 dark:border-slate-700 dark:bg-oxford-blue-dark'>
           <span className='code'>{'{'}</span>
           <div className='flex flex-col pl-10'>
             <span className='code'>"firstName": "John"</span>

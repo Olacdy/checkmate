@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 
 type FooterProps = {};
 

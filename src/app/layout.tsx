@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { Courier_Prime, Inter, Questrial } from 'next/font/google';
 
-import Providers from '@/components/Providers';
+import Providers from '@/components/providers';
 import { cn } from '@/lib/utils';
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import Footer from '@/components/footer';
+import Header from '@/components/header';
 
 import './globals.css';
 

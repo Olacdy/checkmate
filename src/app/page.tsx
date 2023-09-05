@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import About from '@/components/landing/About';
-import Contact from '@/components/landing/Contact';
-import Hero from '@/components/landing/Hero';
-import Product from '@/components/landing/Product';
+import About from '@/components/landing/about';
+import Contact from '@/components/landing/contact';
+import Hero from '@/components/landing/hero';
+import Product from '@/components/landing/product';
 
 type pageProps = {};
 

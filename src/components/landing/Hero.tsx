@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
-import { Icons } from '@/components/Icons';
+import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Line } from '@/components/ui/line';
 

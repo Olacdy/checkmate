@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 import { useSectionInView } from '@/hooks/useSectionInView';
 
-import ContactForm from '@/components/landing/ContactForm';
+import ContactForm from '@/components/landing/contact-form';
 
 type ContactProps = {};
 
