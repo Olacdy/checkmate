@@ -4,9 +4,6 @@ import { Courier_Prime, Inter, Questrial } from 'next/font/google';
 import Providers from '@/components/providers';
 import { cn } from '@/lib/utils';
 
-import Footer from '@/components/footer';
-import Header from '@/components/header';
-
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--headings-font' });
@@ -42,11 +39,7 @@ export default function RootLayout({
           quantico.variable,
           courier.variable
         )}>
-        <Providers>
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

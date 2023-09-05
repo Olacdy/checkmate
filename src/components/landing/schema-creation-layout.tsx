@@ -1,4 +1,4 @@
-import { FC, HTMLProps } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import { Separator } from '@/components/ui/separator';
 
@@ -6,7 +6,7 @@ import { Icons } from '@/components/icons';
 
 import { cn } from '@/lib/utils';
 
-type SchemaCreationLayoutProps = {} & HTMLProps<HTMLDivElement>;
+type SchemaCreationLayoutProps = {} & HTMLAttributes<HTMLDivElement>;
 
 const SchemaCreationLayout: FC<SchemaCreationLayoutProps> = ({
   className,

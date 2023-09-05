@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, HTMLProps, useState } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 
 import { motion } from 'framer-motion';
 
@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 
 type CopyLinkProps = {
   link: string;
-} & HTMLProps<HTMLDivElement>;
+} & HTMLAttributes<HTMLDivElement>;
 
 const CopyLink: FC<CopyLinkProps> = ({ link, className, ...props }) => {
   const [isCopied, setIsCopied] = useState(false);

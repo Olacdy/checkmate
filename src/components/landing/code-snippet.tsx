@@ -1,11 +1,11 @@
-import { FC, HTMLProps } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import { Icons } from '@/components/icons';
 import { Line } from '@/components/ui/line';
 
-type JSONSnippetProps = {} & HTMLProps<HTMLDivElement>;
+type JSONSnippetProps = {} & HTMLAttributes<HTMLDivElement>;
 
 const JSONSnippet: FC<JSONSnippetProps> = ({ className, ...props }) => {
   return (
