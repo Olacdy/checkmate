@@ -17,30 +17,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+
+import sendEmail from '@/actions/send-email';
+
+import { contactSchema } from '@/helpers/schemas';
 
 type ContactFormProps = {};
 
-const contactSchema = z.object({
-  firstName: z.string().min(1, {
-    message: 'First name must be at least 1 character.',
-  }),
-  lastName: z.string().min(2, {
-    message: 'Last name must be at least 2 characters.',
-  }),
-  email: z.string().email({
-    message: "Doesn't look like an email.",
-  }),
-  message: z
-    .string()
-    .min(20, {
-      message: 'Message must be at least 20 characters.',
-    })
-    .max(500, {
-      message: 'Too long. Max length is 500 characters.',
-    }),
-});
-
 const ContactForm: FC<ContactFormProps> = ({}) => {
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -52,7 +39,14 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
   });
 
   const onSubmit = async (values: z.infer<typeof contactSchema>) => {
-    console.log(values);
+    form.reset();
+
+    toast({
+      title: 'Thank you!',
+      description: 'Your suggestion submitted successfuly.',
+    });
+
+    await sendEmail(values);
   };
 
   return (

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Courier_Prime, Inter, Questrial } from 'next/font/google';
 
 import Providers from '@/components/providers';
+import { Toaster } from '@/components/ui/toaster';
+
 import { cn } from '@/lib/utils';
 
 import './globals.css';
@@ -39,7 +41,10 @@ export default function RootLayout({
           quantico.variable,
           courier.variable
         )}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
