@@ -39,7 +39,3 @@ export function calculateDocumentScale(
 export function getIconByName(iconName: keyof typeof Icons) {
   return Icons[iconName];
 }
-
-export function capitalize(string: string) {
-  return string.replace(/^(.)/, (match) => match.toUpperCase());
-}
