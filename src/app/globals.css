@@ -1,3 +1,111 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Header Section */
+
+.nav-link {
+  @apply px-0 font-semibold text-oxford-blue-dark;
+}
+
+/* All Section */
+
+:root {
+  --scroll: 0;
+  --document-scale: 100%;
+  --document-scale-mobile: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+main *::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  border-radius: 10px;
+}
+
+main *::-webkit-scrollbar-thumb {
+  border-radius: 0.75rem;
+  background-color: rgba(0, 117, 255, 0.7);
+}
+
+main *::-webkit-scrollbar-track {
+  background-color: rgba(68, 84, 88, 0.2);
+  margin: 24px 0;
+}
+
+.main-header {
+  @apply text-center font-headings text-6xl font-semibold leading-snug text-oxford-blue dark:text-off-white md:text-7xl;
+}
+
+.section-header {
+  @apply font-headings text-5xl font-semibold leading-snug text-oxford-blue dark:text-off-white;
+}
+
+.paragraph-header {
+  @apply text-left font-body text-4xl text-oxford-blue dark:text-off-white;
+}
+
+.body-text {
+  @apply font-body leading-relaxed text-oxford-blue/70 dark:text-alabaster;
+}
+
+.wavy-underline {
+  @apply underline decoration-error decoration-wavy decoration-[5px];
+}
+
+/* Hero Section */
+
+.document {
+  position: absolute;
+  top: calc(1% * ((min(max(var(--scroll), 25), 75) - 25) * 100 / 50));
+  scale: calc(1% * var(--document-scale-mobile));
+}
+
+@media screen(md) {
+  .hero-section {
+    translate: 0 calc(-1% * (max(var(--scroll), 40) - 40) * 100 / 60);
+    @apply sticky top-28 min-h-screen;
+  }
+
+  .document {
+    position: absolute;
+    left: min(max(calc(2% * var(--scroll)), 5%), 88%);
+    scale: calc(1% * var(--document-scale));
+  }
+}
+
+.first-gear {
+  rotate: calc(1deg * (min(var(--scroll), 60) / 100 * (200 - 20) + 20));
+}
+
+.second-gear {
+  rotate: calc(1deg * (min(var(--scroll), 60) / 100 * 200));
+}
+
+/* Product Section */
+
+.step-container {
+  @apply flex w-full flex-col items-start justify-between gap-10 md:flex-row md:items-center md:gap-0;
+}
+
+.step {
+  @apply flex flex-col items-start justify-start gap-5 md:max-w-sm;
+}
+
+.code-container {
+  --scrollbar-x-margin: 8px;
+  @apply overflow-auto;
+}
+
+.code {
+  @apply font-code text-sm text-off-white;
+}
+
+/* Contact Section */
+
+.input {
+  @apply text-off-white;
+}

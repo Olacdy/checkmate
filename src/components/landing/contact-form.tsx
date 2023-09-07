@@ -1,0 +1,121 @@
+'use client';
+
+import { FC } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+import { useForm } from 'react-hook-form';
+
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+
+import sendEmail from '@/actions/send-email';
+
+import { contactSchema } from '@/helpers/schemas';
+
+type ContactFormProps = {};
+
+const ContactForm: FC<ContactFormProps> = ({}) => {
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof contactSchema>>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      message: '',
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof contactSchema>) => {
+    form.reset();
+
+    toast({
+      title: 'Thank you!',
+      description: 'Your suggestion submitted successfuly.',
+    });
+
+    await sendEmail(values);
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='flex w-full max-w-md flex-col items-center gap-y-3 self-center'>
+        <FormField
+          control={form.control}
+          name='firstName'
+          render={({ field }) => (
+            <FormItem className='w-full'>
+              <FormControl>
+                <Input className='input' placeholder='John' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='lastName'
+          render={({ field }) => (
+            <FormItem className='w-full'>
+              <FormControl>
+                <Input className='input' placeholder='Doe' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem className='w-full'>
+              <FormControl>
+                <Input
+                  className='input'
+                  placeholder='john.doe@example.com'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='message'
+          render={({ field }) => (
+            <FormItem className='w-full'>
+              <FormControl>
+                <Textarea
+                  placeholder='Tell us about your problem. What kind of suggestion are you willing to share?'
+                  className='input h-40 resize-none'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className='self-end' type='submit'>
+          Send Suggestion
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+export default ContactForm;

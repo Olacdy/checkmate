@@ -1,39 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { httpBatchLink } from '@trpc/client';
-
 import { SessionProvider } from 'next-auth/react';
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { type ThemeProviderProps } from 'next-themes/dist/types';
+import { client, trpc } from '@/trpc/client';
 
-import { trpc } from '@/trpc/client';
+import { LazyMotion, domMax } from 'framer-motion';
 
-const Providers = ({ children }: ThemeProviderProps) => {
+import ActiveSectionContextProvider from '@/context/active-section-context';
+import ThemeContextProvider from '@/context/theme-context';
+
+type ProvidersProps = {
+  children: React.ReactNode;
+};
+
+const Providers: FC<ProvidersProps> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient({}));
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: 'http://localhost:3000/api/trpc',
-        }),
-      ],
-    })
-  );
+  const [trpcClient] = useState(client);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <NextThemesProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem>
-          <SessionProvider>{children}</SessionProvider>
-        </NextThemesProvider>
+        <SessionProvider>
+          <ThemeContextProvider>
+            <ActiveSectionContextProvider>
+              <LazyMotion features={domMax}>{children}</LazyMotion>
+            </ActiveSectionContextProvider>
+          </ThemeContextProvider>
+        </SessionProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
