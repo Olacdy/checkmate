@@ -93,7 +93,7 @@ const Hero: FC<HeroProps> = ({}) => {
         handleScrollEvent(htmlElement)
       );
     };
-  }, [icon]);
+  }, [icon, iconMobile]);
 
   return (
     <section

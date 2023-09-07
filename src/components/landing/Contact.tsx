@@ -20,8 +20,8 @@ const Contact: FC<ContactProps> = ({}) => {
         <h2 className='section-header'>Have a suggestion?</h2>
         <div className='flex flex-col gap-5'>
           <p className='body-text max-w-md'>
-            We'll be glad to hear more about you ideas on how to improve your
-            experience with this application.
+            We&apos;ll be glad to hear more about you ideas on how to improve
+            your experience with this application.
           </p>
           <p className='body-text max-w-md'>
             Be free to fill and submit a contact form so we could start
