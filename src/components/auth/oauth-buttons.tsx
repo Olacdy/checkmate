@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react';
 
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+
 import { capitalize } from '@/lib/utils';
 
 const oauthProviders = [{ name: 'google' }] satisfies {
