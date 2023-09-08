@@ -4,12 +4,12 @@ import {
   ChevronUp,
   CopyPlus,
   GripVertical,
+  LogOut,
   Moon,
   Sliders,
   Sun,
   Trash2,
   X,
-  LogOut,
   type LucideIcon,
   type LucideProps,
 } from 'lucide-react';
@@ -167,8 +167,8 @@ export const Icons = {
       <g
         clip-path='url(#a)'
         stroke='current'
-        stroke-linecap='round'
-        stroke-linejoin='round'>
+        strokeLinecap='round'
+        strokeLinejoin='round'>
         <path d='M13 6.5H9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V7a.5.5 0 0 0-.5-.5Zm0-6H9a.5.5 0 0 0-.5.5v2.01a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V1a.5.5 0 0 0-.5-.5Zm-8 0H1a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V1A.5.5 0 0 0 5 .5Zm0 9.99H1a.5.5 0 0 0-.5.5V13a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-2.01a.5.5 0 0 0-.5-.5Z' />
       </g>
       <defs>
@@ -189,14 +189,14 @@ export const Icons = {
       <path
         d='M9.5 2.5h-6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1ZM4.5 5h4m-4 2.5h4m-4 2.5h2'
         stroke='current'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
       <path
         d='M5 .5h6.5a1 1 0 0 1 1 1V11'
         stroke='current'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   ),
