@@ -1,3 +1,5 @@
+import { Icons } from '@/components/icons';
+
 export const about = [
   {
     title: 'Elevate Data Validation Effortlessly',
@@ -49,3 +51,30 @@ export const sections = [
     id: 'contact',
   },
 ];
+
+export const oauthProviders = [
+  { name: 'google' },
+  { name: 'github' },
+] satisfies {
+  name: keyof typeof Icons;
+}[];
+
+export const sideBarButtons = [
+  {
+    name: 'dashboard',
+    path: '/dashboard',
+    text: 'Dashboard',
+    icon: 'dashboard',
+  },
+  {
+    name: 'schemas',
+    path: '/dashboard/schemas',
+    text: 'Schemas',
+    icon: 'schemas',
+  },
+] satisfies {
+  name: string;
+  path: string;
+  text: string;
+  icon: keyof typeof Icons;
+}[];

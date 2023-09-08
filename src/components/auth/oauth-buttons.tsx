@@ -9,9 +9,7 @@ import { Button } from '@/components/ui/button';
 
 import { cn } from '@/lib/utils';
 
-const oauthProviders = [{ name: 'google' }, { name: 'github' }] satisfies {
-  name: keyof typeof Icons;
-}[];
+import { oauthProviders } from '@/helpers/data';
 
 type OAuthButtonsProps = {};
 

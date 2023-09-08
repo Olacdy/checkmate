@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react';
 
 import { getServerAuthSession } from '@/lib/nextauth';
 
+import Sidebar from '@/components/dashboard/sidebar';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -21,7 +22,12 @@ const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
     redirect('/sign-in');
   }
 
-  return <main>{children}</main>;
+  return (
+    <main className='flex font-body'>
+      <Sidebar />
+      {children}
+    </main>
+  );
 };
 
 export default DashboardLayout;

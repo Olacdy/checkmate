@@ -1,10 +1,13 @@
 'use client';
 
-import * as SwitchPrimitives from '@radix-ui/react-switch';
 import * as React from 'react';
 
+import * as SwitchPrimitives from '@radix-ui/react-switch';
+
 import { Icons } from '@/components/icons';
+
 import { useTheme } from '@/context/theme-context';
+
 import { cn } from '@/lib/utils';
 
 const ThemeSwitch = React.forwardRef<
