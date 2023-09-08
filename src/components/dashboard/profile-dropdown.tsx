@@ -52,7 +52,10 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
         <DropdownMenuLabel>{email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onSelect={toggleTheme}
+          onSelect={(e) => {
+            e.preventDefault();
+            toggleTheme();
+          }}
           className='flex h-10 items-center justify-between hover:bg-slate-200'>
           <span className='font-semibold capitalize'>{`${theme} theme`}</span>
           <ThemeSwitchDropdown />
