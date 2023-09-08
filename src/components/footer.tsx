@@ -14,14 +14,14 @@ const Footer: FC<FooterProps> = ({}) => {
         <div className='flex flex-col items-start gap-1'>
           <Image
             className='hidden dark:block'
-            src='/footer-logo.webp'
+            src='/logo-footer-dark.webp'
             alt='Footer logo'
             width={50}
             height={36}
           />
           <Image
             className='dark:hidden'
-            src='/footer-logo-dark.webp'
+            src='/logo-footer.webp'
             alt='Footer logo dark'
             width={50}
             height={36}

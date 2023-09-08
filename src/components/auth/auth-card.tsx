@@ -22,13 +22,13 @@ const AuthCard: FC<AuthCardProps> = ({ className, ...props }) => {
             <div className='relative h-16 w-16'>
               <Image
                 className='hidden dark:block'
-                src='/footer-logo.webp'
+                src='/logo-footer-dark.webp'
                 alt='Footer logo'
                 fill
               />
               <Image
                 className='dark:hidden'
-                src='/footer-logo-dark.webp'
+                src='/logo-footer.webp'
                 alt='Footer logo dark'
                 fill
               />

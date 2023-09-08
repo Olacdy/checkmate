@@ -16,8 +16,6 @@ const page: FC<pageProps> = ({}) => {
     redirect('/sign-in');
   }
 
-  console.log(session);
-
   return (
     <div>
       <Button
