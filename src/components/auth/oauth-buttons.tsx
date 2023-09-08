@@ -25,7 +25,7 @@ const OAuthButtons: FC<OAuthButtonsProps> = ({}) => {
   ) => {
     setIsLoading(provider);
     try {
-      await signIn(provider);
+      await signIn(provider, { callbackUrl: '/dashboard' });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -45,9 +45,12 @@ const OAuthButtons: FC<OAuthButtonsProps> = ({}) => {
             onClick={() => handleClick(provider.name)}>
             <div className='relative flex items-center justify-center gap-2'>
               <Icon
-                className={cn('h-5 w-5 fill-off-white dark:fill-oxford-blue', {
-                  '-mr-1 mb-1 h-7 w-7': provider.name === 'github',
-                })}
+                className={cn(
+                  'mb-1 h-5 w-5 fill-off-white dark:fill-oxford-blue',
+                  {
+                    '-mr-1 h-7 w-7': provider.name === 'github',
+                  }
+                )}
               />
               <span className='text-lg capitalize dark:font-semibold'>
                 {provider.name}

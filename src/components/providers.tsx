@@ -10,6 +10,8 @@ import { client, trpc } from '@/trpc/client';
 
 import { LazyMotion, domMax } from 'framer-motion';
 
+import { Toaster } from '@/components/ui/toaster';
+
 import ActiveSectionContextProvider from '@/context/active-section-context';
 import ThemeContextProvider from '@/context/theme-context';
 
@@ -22,17 +24,20 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
   const [trpcClient] = useState(client);
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider>
-          <ThemeContextProvider>
-            <ActiveSectionContextProvider>
-              <LazyMotion features={domMax}>{children}</LazyMotion>
-            </ActiveSectionContextProvider>
-          </ThemeContextProvider>
-        </SessionProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SessionProvider>
+            <ThemeContextProvider>
+              <ActiveSectionContextProvider>
+                <LazyMotion features={domMax}>{children}</LazyMotion>
+              </ActiveSectionContextProvider>
+            </ThemeContextProvider>
+          </SessionProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+      <Toaster />
+    </>
   );
 };
 
