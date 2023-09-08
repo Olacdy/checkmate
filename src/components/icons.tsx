@@ -165,7 +165,7 @@ export const Icons = {
       xmlns='http://www.w3.org/2000/svg'
       className={cn('', props.className)}>
       <g
-        clip-path='url(#a)'
+        clipPath='url(#a)'
         stroke='current'
         strokeLinecap='round'
         strokeLinejoin='round'>
