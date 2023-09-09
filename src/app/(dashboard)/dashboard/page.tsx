@@ -36,11 +36,11 @@ const featuredSchemas = [
 
 const page: FC<pageProps> = ({}) => {
   return (
-    <div className='flex flex-1 flex-col justify-between px-5 py-4 text-off-white'>
+    <div className='flex flex-1 flex-col justify-between px-5 py-4 text-oxford-blue dark:text-off-white'>
       <div className='flex flex-col gap-5'>
         <span className='text-3xl'>Overview</span>
         <div className='flex w-full flex-col gap-3'>
-          <Card className='w-full bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+          <Card className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
             <CardContent className='flex items-center justify-between p-3'>
               <span>Total validations:</span>
               <span className='flex items-center gap-2'>
@@ -49,20 +49,20 @@ const page: FC<pageProps> = ({}) => {
               </span>
             </CardContent>
           </Card>
-          <Card className='w-full bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+          <Card className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
             <CardContent className='flex items-center justify-between p-3'>
               <span>Total successes:</span>
               <span className='flex items-center gap-3'>
-                <span className='text-success'>200</span>
-                <Icons.success className='h-5 w-5 stroke-success' />
+                <span className='text-green-600 dark:text-success'>200</span>
+                <Icons.success className='h-5 w-5 stroke-green-600 dark:stroke-success' />
               </span>
             </CardContent>
           </Card>
-          <Card className='w-full bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+          <Card className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
             <CardContent className='flex items-center justify-between p-3'>
               <span>Total errors:</span>
               <span className='flex items-center gap-3'>
-                <span className='text-error'>100</span>
+                <span className='text-red-600 dark:text-error'>100</span>
                 <Icons.error className='h-5 w-5 stroke-error' />
               </span>
             </CardContent>

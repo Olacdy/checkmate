@@ -31,11 +31,11 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ featuresSchemas }) => {
         return (
           <Card
             key={featuredSchema.id}
-            className='w-full bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+            className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
             <CardContent className='relative flex h-24 justify-between p-3 pt-4'>
               <div className='flex flex-col -space-y-1'>
                 <span className='text-xl'>{featuredSchema.name}</span>
-                <span className='text-sm text-slate-400/50'>
+                <span className='text-sm text-slate-600 dark:text-slate-400/50'>
                   {formatDate(featuredSchema.createdAt)}
                 </span>
               </div>
@@ -53,7 +53,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ featuresSchemas }) => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className='flex items-center justify-between'>
                     <span>Review</span>
-                    <Icons.review className='h-4 w-4 dark:stroke-off-white' />
+                    <Icons.review className='h-4 w-4 stroke-slate-600 dark:stroke-off-white' />
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
@@ -71,19 +71,17 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ featuresSchemas }) => {
                     }}
                     className='flex items-center justify-between'>
                     <span>Copy link</span>
-                    <Icons.copy className='h-4 w-4 dark:stroke-off-white' />
+                    <Icons.copy className='h-4 w-4 stroke-slate-500/70 dark:stroke-off-white' />
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className='group flex items-center justify-between focus:bg-error/40 dark:focus:bg-error/40'>
-                    <span className='text-error group-focus:text-off-white/80'>
-                      Delete
-                    </span>
-                    <Icons.delete className='h-4 w-4 stroke-error group-focus:stroke-off-white/80' />
+                    <span className='text-error'>Delete</span>
+                    <Icons.delete className='h-4 w-4 stroke-error' />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardContent>
-            <Separator />
+            <Separator className='bg-oxford-blue/30 dark:bg-slate-300/40' />
             <CardFooter className='flex h-16 w-full justify-around p-2'>
               <span className='flex flex-1 items-center justify-center gap-2'>
                 <Icons.validation className='h-6 w-6' />
@@ -91,14 +89,20 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ featuresSchemas }) => {
                   {featuredSchema.successes + featuredSchema.errors}
                 </span>
               </span>
-              <Separator orientation='vertical' />
+              <Separator
+                className='bg-oxford-blue/30 dark:bg-slate-300/40'
+                orientation='vertical'
+              />
               <span className='flex flex-1 items-center justify-center gap-2'>
-                <Icons.success className='h-6 w-6 stroke-success' />
-                <span className='text-lg text-success'>
+                <Icons.success className='h-6 w-6 stroke-green-600 dark:stroke-success' />
+                <span className='text-lg text-green-600 dark:text-success'>
                   {featuredSchema.successes}
                 </span>
               </span>
-              <Separator orientation='vertical' />
+              <Separator
+                className='bg-oxford-blue/30 dark:bg-slate-300/40'
+                orientation='vertical'
+              />
               <span className='flex flex-1 items-center justify-center gap-2'>
                 <Icons.error className='h-6 w-6 stroke-error' />
                 <span className='text-lg text-error'>
