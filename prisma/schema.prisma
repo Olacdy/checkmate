@@ -42,10 +42,24 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Schema        Schema[]
 }
 
 model Todo {
   id      String  @id @default(cuid())
   content String
   done    Boolean @default(false)
+}
+
+model Schema {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  successes Int      @default(0)
+  errors    Int      @default(0)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schema    Json
+
+  @@index([userId, id])
 }

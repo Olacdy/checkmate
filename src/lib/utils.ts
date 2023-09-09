@@ -39,3 +39,26 @@ export function calculateDocumentScale(
 export function getIconByName(iconName: keyof typeof Icons) {
   return Icons[iconName];
 }
+
+export function formatDate(date: Date): string {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const day = date.getDate();
+  const month = months[date.getMonth() - 1];
+  const year = date.getFullYear() % 100;
+
+  return `${day} ${month}. ${year}`;
+}
