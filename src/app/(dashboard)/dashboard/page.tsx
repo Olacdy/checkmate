@@ -4,7 +4,9 @@ import { Card, CardContent } from '@/components/ui/card';
 
 import FeaturedSchemas from '@/components/dashboard/featured-schemas';
 import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
 import { type Schema } from '@prisma/client';
+import Link from 'next/link';
 
 type pageProps = {};
 
@@ -68,9 +70,20 @@ const page: FC<pageProps> = ({}) => {
         </div>
       </div>
 
-      <div className='flex w-full flex-col gap-5'>
-        <span className='text-2xl'>Featured schemas</span>
-        <FeaturedSchemas featuresSchemas={featuredSchemas} />
+      <div className='flex flex-1'>
+        {featuredSchemas.length !== 0 ? (
+          <div className='flex w-full flex-1 flex-col justify-end gap-5'>
+            <span className='text-2xl'>Featured schemas</span>
+            <FeaturedSchemas featuresSchemas={featuredSchemas} />
+          </div>
+        ) : (
+          <div className='flex w-full flex-1 flex-col items-center justify-center gap-4'>
+            <span className='text-xl text-slate-300/70'>No schemas yet</span>
+            <Link href='/dashboard/create-schema'>
+              <Button className='px-7 py-6 text-lg'>Create schema</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
