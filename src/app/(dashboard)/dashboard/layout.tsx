@@ -25,11 +25,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   return (
     <main className='flex font-body'>
       <Sidebar />
-      <section className='flex flex-1 p-4 pl-0'>
-        <div className='flex flex-1 rounded-lg bg-slate-300 dark:bg-oxford-blue-dark'>
-          {children}
-        </div>
-      </section>
+      <section className='flex flex-1 p-4 pl-0'>{children}</section>
     </main>
   );
 };

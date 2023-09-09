@@ -1,7 +1,9 @@
 import { cn } from '@/lib/utils';
 import {
+  ArrowUpDown,
   Check,
   CheckCircle,
+  ChevronDown,
   ChevronUp,
   CloudCog,
   CopyPlus,
@@ -31,12 +33,14 @@ export const Icons = {
   check: Check,
   close: X,
   chevronUp: ChevronUp,
+  chevronDown: ChevronDown,
   logout: LogOut,
   success: CheckCircle,
   error: XCircle,
   validation: CloudCog,
   more: MoreHorizontal,
   review: Search,
+  sort: ArrowUpDown,
   menu: ({ ...props }: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'

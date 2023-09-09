@@ -109,3 +109,13 @@ main *::-webkit-scrollbar-track {
 .input {
   @apply text-off-white;
 }
+
+/* Dashboard */
+
+.dashboard-section-container {
+  @apply flex flex-1 flex-col justify-between;
+}
+
+.dashboard-section-header {
+  @apply text-3xl;
+}
