@@ -1,15 +1,20 @@
 import { cn } from '@/lib/utils';
 import {
   Check,
+  CheckCircle,
   ChevronUp,
+  CloudCog,
   CopyPlus,
   GripVertical,
   LogOut,
   Moon,
+  MoreHorizontal,
+  Search,
   Sliders,
   Sun,
   Trash2,
   X,
+  XCircle,
   type LucideIcon,
   type LucideProps,
 } from 'lucide-react';
@@ -27,6 +32,11 @@ export const Icons = {
   close: X,
   chevronUp: ChevronUp,
   logout: LogOut,
+  success: CheckCircle,
+  error: XCircle,
+  validation: CloudCog,
+  more: MoreHorizontal,
+  review: Search,
   menu: ({ ...props }: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'

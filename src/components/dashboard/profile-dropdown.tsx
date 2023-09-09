@@ -34,7 +34,7 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className='flex w-full items-center justify-between rounded-md p-2 pl-3 hover:bg-slate-300 focus-visible:ring-red-900 dark:hover:bg-slate-200/30'>
+      <DropdownMenuTrigger className='flex w-full items-center justify-between rounded-md p-2 pl-3 hover:bg-slate-300 focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:bg-slate-200/30'>
         <div className='flex items-center gap-4'>
           <Avatar>
             <AvatarImage src={image} alt={`${name} profile picture`} />
