@@ -3,9 +3,10 @@ import { FC } from 'react';
 import Image from 'next/image';
 
 import ProfileDropdown from '@/components/dashboard/profile-dropdown';
-import SideButtons from '@/components/dashboard/side-buttons';
+import SideButtons from '@/components/dashboard/sidebar/side-buttons';
 
 import { getServerAuthSession } from '@/lib/nextauth';
+import SheetSideButtons from './sheet-side-buttons';
 
 type SidebarProps = {};
 
@@ -13,8 +14,8 @@ const Sidebar: FC<SidebarProps> = async ({}) => {
   const session = await getServerAuthSession();
 
   return (
-    <section className='flex min-h-screen w-full max-w-xs flex-col items-center pb-6'>
-      <div className='flex w-full items-center justify-center'>
+    <section className='flex w-full items-center md:min-h-screen md:max-w-xs md:flex-col md:pb-6'>
+      <div className='hidden w-full items-center justify-center md:flex'>
         <Image
           className='mr-3 dark:hidden'
           src='/logo.webp'
@@ -30,8 +31,9 @@ const Sidebar: FC<SidebarProps> = async ({}) => {
           height={150}
         />
       </div>
-      <div className='flex w-full flex-1 flex-col items-center justify-between px-5 pt-10'>
-        <SideButtons />
+      <div className='flex w-full flex-1 items-center justify-between px-4 pt-3 md:flex-col md:px-5 md:pt-10'>
+        <SheetSideButtons />
+        <SideButtons className='hidden md:flex' />
         <ProfileDropdown
           name={session?.user.name!}
           email={session?.user.email!}

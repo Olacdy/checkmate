@@ -34,7 +34,7 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className='flex w-full items-center justify-between rounded-md p-2 pl-3 hover:bg-slate-300 focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:bg-slate-200/30'>
+      <DropdownMenuTrigger className='flex items-center justify-between rounded-full p-px hover:bg-slate-500/30 focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:bg-slate-100/20 md:w-full md:rounded-md md:p-2 md:pl-3'>
         <div className='flex items-center gap-4'>
           <Avatar>
             <AvatarImage src={image} alt={`${name} profile picture`} />
@@ -42,11 +42,11 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
               {name.charAt(0)}
             </AvatarFallback>
           </Avatar>
-          <span className='text-lg font-semibold text-black/90 dark:font-normal dark:text-off-white'>
+          <span className='hidden text-lg font-semibold text-black/90 dark:font-normal dark:text-off-white md:block'>
             {name}
           </span>
         </div>
-        <Icons.chevronUp className='dark:stroke-off-white' />
+        <Icons.chevronUp className='hidden dark:stroke-off-white md:block' />
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-64'>
         <DropdownMenuLabel>{email}</DropdownMenuLabel>

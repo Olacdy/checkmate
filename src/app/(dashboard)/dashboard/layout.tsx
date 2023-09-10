@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import Sidebar from '@/components/dashboard/sidebar';
+import Sidebar from '@/components/dashboard/sidebar/sidebar';
 
 import { getServerAuthSession } from '@/lib/nextauth';
 
@@ -24,7 +24,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   }
 
   return (
-    <main className='flex font-body'>
+    <main className='flex flex-col font-body md:flex-row'>
       <Sidebar />
       <section className='flex max-h-screen flex-1 p-4 pl-0'>
         {children}

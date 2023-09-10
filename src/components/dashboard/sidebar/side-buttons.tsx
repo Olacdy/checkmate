@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import { usePathname } from 'next/navigation';
 
@@ -13,13 +13,18 @@ import { Button } from '@/components/ui/button';
 import { sideBarButtons } from '@/helpers/data';
 import { cn } from '@/lib/utils';
 
-type SideButtonsProps = {};
+type SideButtonsProps = {} & HTMLAttributes<HTMLUListElement>;
 
-const SideButtons: FC<SideButtonsProps> = ({}) => {
+const SideButtons: FC<SideButtonsProps> = ({ className, ...props }) => {
   const pathname = usePathname();
 
   return (
-    <ul className='flex w-full flex-1 flex-col items-center gap-3'>
+    <ul
+      className={cn(
+        'flex w-full flex-1 flex-col items-center gap-3',
+        className
+      )}
+      {...props}>
       {sideBarButtons.map((button) => {
         const Icon = Icons[button.icon];
 

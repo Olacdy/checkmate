@@ -173,7 +173,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
 
   return (
     <div className='flex flex-1 flex-col gap-3'>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between gap-5'>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
