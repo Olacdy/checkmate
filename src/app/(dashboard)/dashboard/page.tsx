@@ -3,7 +3,13 @@ import { FC } from 'react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 import FeaturedSchemas from '@/components/dashboard/featured-schemas';
 import { Icons } from '@/components/icons';
@@ -16,7 +22,8 @@ const page: FC<pageProps> = ({}) => {
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
       <CardHeader>
-        <span className='dashboard-section-header'>Overview</span>
+        <CardTitle className='dashboard-section-header'>Overview</CardTitle>
+        <CardDescription>Your schemas stats.</CardDescription>
       </CardHeader>
       <CardContent className='flex flex-1 flex-col gap-5'>
         <div className='flex w-full flex-col gap-3'>

@@ -38,7 +38,7 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
         <div className='flex items-center gap-4'>
           <Avatar>
             <AvatarImage src={image} alt={`${name} profile picture`} />
-            <AvatarFallback className='border-[1px] border-oxford-blue bg-off-white shadow-md'>
+            <AvatarFallback className='border-[1px] border-oxford-blue bg-off-white shadow-md dark:bg-off-white'>
               {name.charAt(0)}
             </AvatarFallback>
           </Avatar>

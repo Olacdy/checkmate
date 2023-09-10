@@ -1,6 +1,5 @@
 import { FC, ReactNode } from 'react';
 
-
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -27,7 +26,9 @@ const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   return (
     <main className='flex font-body'>
       <Sidebar />
-      <section className='flex flex-1 p-4 pl-0'>{children}</section>
+      <section className='flex max-h-screen flex-1 p-4 pl-0'>
+        {children}
+      </section>
     </main>
   );
 };
