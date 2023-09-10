@@ -1,5 +1,9 @@
 'use client';
 
+import { FC } from 'react';
+
+import Image from 'next/image';
+
 import {
   Sheet,
   SheetContent,
@@ -7,17 +11,16 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 
-import Image from 'next/image';
-import { FC } from 'react';
-import { Icons } from '../../icons';
-import SideButtons from './side-buttons';
+import SideButtons from '@/components/dashboard/sidebar/side-buttons';
+
+import { Icons } from '@/components/icons';
 
 type SheetSideButtonsProps = {};
 
 const SheetSideButtons: FC<SheetSideButtonsProps> = ({}) => {
   return (
     <Sheet>
-      <SheetTrigger className='flex items-center rounded-md p-2 hover:bg-slate-500/30 dark:hover:bg-slate-100/20 md:hidden'>
+      <SheetTrigger className='flex items-center rounded-md p-2 hover:bg-slate-500/30 dark:hover:bg-slate-100/20 xl:hidden'>
         <Icons.menu className='h-5 w-5 fill-slate-500 dark:fill-off-white' />
       </SheetTrigger>
       <SheetContent

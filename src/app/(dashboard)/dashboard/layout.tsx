@@ -24,9 +24,9 @@ const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   }
 
   return (
-    <main className='flex flex-col font-body md:flex-row'>
+    <main className='flex min-h-screen flex-col font-body xl:flex-row'>
       <Sidebar />
-      <section className='flex max-h-screen flex-1 p-4 pl-0'>
+      <section className='flex max-h-screen flex-1 pt-2 xl:p-4 xl:pl-0 xl:pt-4'>
         {children}
       </section>
     </main>

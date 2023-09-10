@@ -100,26 +100,34 @@ export const columns: ColumnDef<Schema>[] = [
   },
   {
     accessorKey: 'validations',
-    header: () => <div className='text-right'>Validations</div>,
+    header: () => <div className='xs:block hidden text-right'>Validations</div>,
     cell: ({ row }) => {
       const { successes, errors } = row.original;
       const validations = successes + errors;
 
-      return <div className='text-right font-medium'>{validations}</div>;
+      return (
+        <div className='xs:block hidden text-right font-medium'>
+          {validations}
+        </div>
+      );
     },
   },
   {
     accessorKey: 'successes',
-    header: () => <div className='text-right'>Successes</div>,
+    header: () => <div className='hidden text-right sm:block'>Successes</div>,
     cell: ({ row }) => (
-      <div className='text-right font-medium'>{row.original.successes}</div>
+      <div className='hidden text-right font-medium sm:block'>
+        {row.original.successes}
+      </div>
     ),
   },
   {
     accessorKey: 'errors',
-    header: () => <div className='text-right'>Errors</div>,
+    header: () => <div className='hidden text-right sm:block'>Errors</div>,
     cell: ({ row }) => (
-      <div className='text-right font-medium'>{row.original.errors}</div>
+      <div className='hidden text-right font-medium sm:block'>
+        {row.original.errors}
+      </div>
     ),
   },
   {
@@ -175,12 +183,12 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
     <div className='flex flex-1 flex-col gap-3'>
       <div className='flex items-center justify-between gap-5'>
         <Input
-          placeholder='Filter emails...'
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          placeholder='Filter schemas by name...'
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
+            table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
+          className='input max-w-xs'
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -198,6 +206,9 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
                     key={column.id}
                     className={cn('capitalize', {
                       'hidden lg:flex': column.id === 'createdAt',
+                      'hidden sm:flex':
+                        column.id === 'successes' || column.id === 'errors',
+                      'xs:flex hidden': column.id === 'validations',
                     })}
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
