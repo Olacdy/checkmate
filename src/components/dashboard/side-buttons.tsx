@@ -38,7 +38,7 @@ const SideButtons: FC<SideButtonsProps> = ({}) => {
                   {
                     'bg-oxford-blue/90 dark:bg-off-white':
                       pathname === button.path,
-                    'hover:bg-slate-300 dark:hover:bg-slate-200/30':
+                    'hover:bg-slate-50 dark:hover:bg-slate-200/30':
                       pathname !== button.path,
                   }
                 )}>
@@ -53,9 +53,9 @@ const SideButtons: FC<SideButtonsProps> = ({}) => {
                 />
                 <span
                   className={cn(
-                    'text-lg text-oxford-blue/70 dark:text-off-white',
+                    'text-lg font-semibold text-oxford-blue/70 dark:font-normal dark:text-off-white',
                     {
-                      'text-off-white dark:font-semibold dark:text-oxford-blue/90':
+                      'font-normal text-off-white dark:font-semibold dark:text-oxford-blue/90':
                         pathname === button.path,
                     }
                   )}>

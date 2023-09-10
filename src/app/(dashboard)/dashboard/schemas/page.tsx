@@ -11,8 +11,8 @@ type pageProps = {};
 
 const page: FC<pageProps> = ({}) => {
   return (
-    <Card className='dashboard-section-container bg-slate-300 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
-      <CardHeader className='flex w-full items-center justify-between'>
+    <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
+      <CardHeader className='flex w-full flex-row items-center justify-between space-y-0'>
         <span className='dashboard-section-header'>Schemas</span>
         <Link href='/dashboard/create-schema'>
           <Button className='px-7 py-6 text-lg'>Create schema</Button>

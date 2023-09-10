@@ -1,10 +1,12 @@
 import { FC, ReactNode } from 'react';
 
-import { getServerAuthSession } from '@/lib/nextauth';
 
-import Sidebar from '@/components/dashboard/sidebar';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+
+import Sidebar from '@/components/dashboard/sidebar';
+
+import { getServerAuthSession } from '@/lib/nextauth';
 
 type DashboardLayoutProps = {
   children: ReactNode;

@@ -14,7 +14,7 @@ type pageProps = {};
 
 const page: FC<pageProps> = ({}) => {
   return (
-    <Card className='dashboard-section-container bg-slate-300 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
+    <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
       <CardHeader>
         <span className='dashboard-section-header'>Overview</span>
       </CardHeader>
