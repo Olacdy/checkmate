@@ -42,6 +42,9 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      gridTemplateColumns: {
+        '3-featured-schemas': 'repeat(3, minmax(0, 24rem))',
+      },
     },
     fontFamily: {
       headings: 'var(--headings-font)',

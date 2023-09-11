@@ -14,6 +14,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
+
 import { Icons } from '@/components/icons';
 
 import { formatDate } from '@/lib/utils';
@@ -24,12 +25,12 @@ type FeaturedSchemasProps = {
 
 const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ featuresSchemas }) => {
   return (
-    <div className='grid grid-cols-3 gap-3'>
+    <div className='lg:grid-cols-3-featured-schemas grid grid-cols-1 gap-5 sm:grid-cols-2'>
       {featuresSchemas.map((featuredSchema) => {
         return (
           <Card
             key={featuredSchema.id}
-            className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+            className='w-full max-w-sm border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
             <CardHeader className='relative space-y-0 p-4'>
               <CardTitle className='font-heading text-xl'>
                 {featuredSchema.name}
