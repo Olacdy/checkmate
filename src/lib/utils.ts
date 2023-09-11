@@ -1,4 +1,3 @@
-import { Icons } from '@/components/icons';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -34,10 +33,6 @@ export function calculateDocumentScale(
   const outputMax = 100;
 
   return (input / inputMax) * outputMax;
-}
-
-export function getIconByName(iconName: keyof typeof Icons) {
-  return Icons[iconName];
 }
 
 export function formatDate(date: Date): string {
