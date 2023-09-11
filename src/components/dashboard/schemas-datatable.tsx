@@ -188,7 +188,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
           onChange={(event) =>
             table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className='input max-w-xs'
+          className='input max-w-xs bg-oxford-blue/90'
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -221,11 +221,13 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='flex-1 rounded-md border'>
+      <div className='flex-1 rounded-md border border-oxford-blue/30 dark:border-slate-300/40'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                className='border-oxford-blue/30 dark:border-slate-300/40'
+                key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
@@ -247,6 +249,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className='border-oxford-blue/30 dark:border-slate-300/40'
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
