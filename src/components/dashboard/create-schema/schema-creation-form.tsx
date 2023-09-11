@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, createElement, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -64,113 +64,111 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className='flex flex-1 flex-col space-y-8'>
-        <div className='flex w-full items-end justify-between gap-10'>
-          <FormField
-            control={form.control}
-            name='schemaName'
-            render={({ field }) => (
-              <FormItem className='w-full max-w-xs'>
-                <FormLabel>Schema name</FormLabel>
-                <FormControl>
-                  <Input
-                    className='input bg-oxford-blue/90 text-lg'
-                    placeholder='Your schema name...'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className='flex items-center justify-between gap-5'>
-            <Button
-              onClick={() => router.back()}
-              className='bg-oxford-blue/90 text-lg'
-              type='reset'>
-              Cancel
-            </Button>
+    <div className='flex flex-1 flex-col gap-10'>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='flex flex-col space-y-8'>
+          <div className='flex w-full items-end justify-between gap-10'>
+            <FormField
+              control={form.control}
+              name='schemaName'
+              render={({ field }) => (
+                <FormItem className='w-full max-w-xs'>
+                  <FormLabel>Schema name</FormLabel>
+                  <FormControl>
+                    <Input
+                      className='input bg-oxford-blue/90 text-lg'
+                      placeholder='Your schema name...'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className='flex items-center justify-between gap-5'>
+              <Button
+                onClick={() => router.back()}
+                className='bg-oxford-blue/90 text-lg'
+                type='reset'>
+                Cancel
+              </Button>
 
-            <Button
-              className='bg-crayola-blue px-5 text-lg text-off-white hover:bg-crayola-blue/80 dark:bg-crayola-blue dark:text-off-white dark:hover:bg-crayola-blue/80'
-              type='submit'>
-              Save
-            </Button>
+              <Button
+                className='bg-crayola-blue px-5 text-lg text-off-white hover:bg-crayola-blue/80 dark:bg-crayola-blue dark:text-off-white dark:hover:bg-crayola-blue/80'
+                type='submit'>
+                Save
+              </Button>
+            </div>
           </div>
-        </div>
-        <Card className='flex flex-1 flex-col gap-5 border-0 bg-transparent dark:bg-transparent'>
-          <CardTitle className='pl-5'>Fields</CardTitle>
-          <Card className='flex flex-1 bg-transparent dark:bg-transparent'>
-            <CardContent
-              className={cn(
-                'flex flex-1 flex-col items-center justify-between',
-                {
-                  'justify-center p-0 pl-2': schemaFields.length === 0,
-                }
-              )}>
-              <div>
-                {schemaFields.map((schemaField) => {
-                  return <></>;
-                })}
-              </div>
-              <Dialog
-                onOpenChange={(open) => {
-                  !open && setSelectedSchemaField(null);
-                }}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      className='flex items-center gap-3 decoration-emerald-700 dark:decoration-success'
-                      variant='link'>
-                      <span
-                        className={cn(
-                          'text-base text-emerald-700 dark:text-success',
-                          {
-                            'text-lg': schemaFields.length === 0,
-                          }
-                        )}>
-                        Add a new field
-                      </span>
-                      <Icons.add
-                        className={cn(
-                          'h-4 w-4 stroke-emerald-700 dark:stroke-success',
-                          {
-                            'h-5 w-5': schemaFields.length === 0,
-                          }
-                        )}
-                      />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className='w-56'>
-                    <DropdownMenuLabel>Select field type</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    {fieldTypes.map((fieldType) => {
-                      return (
-                        <>
-                          <DialogTrigger
-                            asChild
-                            onSelect={() =>
-                              setSelectedSchemaField(fieldType.type)
-                            }>
-                            <DropdownMenuItem>
-                              {fieldType.title}
-                            </DropdownMenuItem>
-                          </DialogTrigger>
-                        </>
-                      );
-                    })}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <FieldDialogs.string />
-              </Dialog>
-            </CardContent>
-          </Card>
+        </form>
+      </Form>
+      <Card className='flex flex-1 flex-col gap-5 border-0 bg-transparent dark:bg-transparent'>
+        <CardTitle className='pl-5'>Fields</CardTitle>
+        <Card className='flex flex-1 bg-transparent dark:bg-transparent'>
+          <CardContent
+            className={cn('flex flex-1 flex-col items-center justify-between', {
+              'justify-center p-0 pl-2': schemaFields.length === 0,
+            })}>
+            <div>
+              {schemaFields.map((schemaField) => {
+                return <></>;
+              })}
+            </div>
+            <Dialog
+              onOpenChange={(open) => {
+                !open && setSelectedSchemaField(null);
+              }}>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    className='flex items-center gap-3 decoration-emerald-700 dark:decoration-success'
+                    variant='link'>
+                    <span
+                      className={cn(
+                        'text-base text-emerald-700 dark:text-success',
+                        {
+                          'text-lg': schemaFields.length === 0,
+                        }
+                      )}>
+                      Add a new field
+                    </span>
+                    <Icons.add
+                      className={cn(
+                        'h-4 w-4 stroke-emerald-700 dark:stroke-success',
+                        {
+                          'h-5 w-5': schemaFields.length === 0,
+                        }
+                      )}
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='w-56'>
+                  <DropdownMenuLabel>Select field type</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {fieldTypes.map((fieldType) => {
+                    return (
+                      <>
+                        <DialogTrigger
+                          asChild
+                          onSelect={() =>
+                            setSelectedSchemaField(fieldType.type)
+                          }>
+                          <DropdownMenuItem>{fieldType.title}</DropdownMenuItem>
+                        </DialogTrigger>
+                      </>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {selectedSchemaField &&
+                createElement(FieldDialogs[selectedSchemaField])}
+            </Dialog>
+          </CardContent>
         </Card>
-      </form>
-    </Form>
+      </Card>
+    </div>
   );
 };
 
