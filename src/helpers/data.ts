@@ -1,5 +1,8 @@
-import { Icons } from '@/components/icons';
 import { type Schema } from '@prisma/client';
+
+import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
+
+import { Icons } from '@/components/icons';
 
 export const about = [
   {
@@ -78,6 +81,16 @@ export const sideBarButtons = [
   path: string;
   text: string;
   icon: keyof typeof Icons;
+}[];
+
+export const fieldTypes = [
+  { title: 'String', type: 'string' },
+  { title: 'Number', type: 'number' },
+  { title: 'Date Time', type: 'datetime' },
+  { title: 'Schema', type: 'schema' },
+] satisfies {
+  title: string;
+  type: keyof typeof FieldDialogs;
 }[];
 
 // TODO: Delete later
