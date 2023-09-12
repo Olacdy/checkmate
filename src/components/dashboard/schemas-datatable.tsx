@@ -194,7 +194,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
           <DropdownMenuTrigger asChild>
             <Button
               variant='outline'
-              className='ml-auto dark:bg-slate-100 dark:text-oxford-blue-dark'>
+              className='ml-auto dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
               Columns <Icons.chevronDown className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>

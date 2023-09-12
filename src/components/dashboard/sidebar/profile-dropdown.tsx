@@ -49,7 +49,9 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
         <Icons.chevronUp className='hidden stroke-slate-800 dark:stroke-off-white xl:block' />
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-64'>
-        <DropdownMenuLabel>{email}</DropdownMenuLabel>
+        <DropdownMenuLabel className='text-oxford-blue-dark/60 dark:text-off-white/60'>
+          {email}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={(e) => {
