@@ -12,11 +12,13 @@ module.exports = {
       center: true,
       padding: '2rem',
       screens: {
-        xs: '480px',
         '2xl': '1400px',
       },
     },
     extend: {
+      screens: {
+        xs: '480px',
+      },
       colors: {
         'oxford-blue': {
           DEFAULT: '#041734',
