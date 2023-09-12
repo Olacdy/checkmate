@@ -49,3 +49,17 @@ export const stringFieldSchema = z.object({
     )
     .optional(),
 });
+
+export const numberFieldSchema = z.object({
+  fieldName: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  isRequired: z.boolean().optional(),
+  isInt: z.boolean().optional(),
+  min: z
+    .union([z.coerce.number().int().nonnegative(), z.literal('')])
+    .optional(),
+  max: z
+    .union([z.coerce.number().int().nonnegative(), z.literal('')])
+    .optional(),
+});

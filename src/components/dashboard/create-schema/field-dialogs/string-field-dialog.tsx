@@ -60,6 +60,8 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
       form.setError('maxLength', {
         message: 'Should be bigger than min length.',
       });
+
+      return;
     }
 
     console.log(values);
