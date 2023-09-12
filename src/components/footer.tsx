@@ -9,7 +9,7 @@ type FooterProps = {};
 
 const Footer: FC<FooterProps> = ({}) => {
   return (
-    <footer className='mx-auto flex w-full max-w-5xl items-end pt-40'>
+    <footer className='mx-auto flex w-full max-w-3xl items-end pt-40 lg:max-w-5xl'>
       <div className='flex w-full flex-col-reverse items-center justify-between gap-8 md:flex-row md:gap-0'>
         <div className='flex flex-col items-start gap-1'>
           <Image
