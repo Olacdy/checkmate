@@ -57,7 +57,16 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const [selectedSchemaField, setSelectedSchemaField] = useState<
     keyof typeof FieldDialogs | null
   >();
+
   const [schemaFields, setSchemaFields] = useState([]);
+
+  const handleFieldDialogOpenChange = (open: boolean) => {
+    !open && setSelectedSchemaField(null);
+  };
+
+  const handleCancelClick = () => {
+    router.back();
+  };
 
   const onSubmit = async (values: z.infer<typeof schemaCreationSchema>) => {
     console.log(values);
@@ -89,7 +98,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
             />
             <div className='flex items-center justify-between gap-5'>
               <Button
-                onClick={() => router.back()}
+                onClick={handleCancelClick}
                 className='bg-oxford-blue/90 text-lg'
                 type='reset'>
                 Cancel
@@ -117,9 +126,8 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               })}
             </div>
             <Dialog
-              onOpenChange={(open) => {
-                !open && setSelectedSchemaField(null);
-              }}>
+              open={!!selectedSchemaField}
+              onOpenChange={handleFieldDialogOpenChange}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -149,21 +157,20 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                   <DropdownMenuSeparator />
                   {fieldTypes.map((fieldType) => {
                     return (
-                      <>
-                        <DialogTrigger
-                          asChild
-                          onSelect={() =>
-                            setSelectedSchemaField(fieldType.type)
-                          }>
-                          <DropdownMenuItem>{fieldType.title}</DropdownMenuItem>
-                        </DialogTrigger>
-                      </>
+                      <DialogTrigger
+                        asChild
+                        key={fieldType.type}
+                        onSelect={() => setSelectedSchemaField(fieldType.type)}>
+                        <DropdownMenuItem>{fieldType.title}</DropdownMenuItem>
+                      </DialogTrigger>
                     );
                   })}
                 </DropdownMenuContent>
               </DropdownMenu>
               {selectedSchemaField &&
-                createElement(FieldDialogs[selectedSchemaField])}
+                createElement(FieldDialogs[selectedSchemaField], {
+                  handleFieldDialogOpenChange: handleFieldDialogOpenChange,
+                })}
             </Dialog>
           </CardContent>
         </Card>

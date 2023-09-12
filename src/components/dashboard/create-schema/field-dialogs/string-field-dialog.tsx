@@ -18,6 +18,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,37 +26,45 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-const formSchema = z.object({
-  fieldName: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  isRequired: z.boolean().optional(),
-  isEmail: z.boolean().optional(),
-  minLength: z.union([z.number().int().nonnegative(), z.nan()]).optional(),
-  maxLength: z.union([z.number().int().nonnegative(), z.nan()]).optional(),
-  regex: z.string().optional(),
-});
+import { Textarea } from '@/components/ui/textarea';
+import { stringFieldSchema } from '@/helpers/schemas';
 
-type StringFieldDialogProps = {};
+type StringFieldDialogProps = {
+  handleFieldDialogOpenChange: (open: boolean) => void;
+};
 
-const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+const StringFieldDialog: FC<StringFieldDialogProps> = ({
+  handleFieldDialogOpenChange,
+}) => {
+  const form = useForm<z.infer<typeof stringFieldSchema>>({
+    resolver: zodResolver(stringFieldSchema),
     defaultValues: {
       fieldName: '',
       isRequired: false,
       isEmail: false,
-      minLength: undefined,
-      maxLength: undefined,
+      minLength: '',
+      maxLength: '',
       regex: '',
     },
   });
 
-  // 2. Define a submit handler.
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit = (values: z.infer<typeof stringFieldSchema>) => {
+    if (
+      values.minLength &&
+      values.maxLength &&
+      values.minLength >= values.maxLength
+    ) {
+      form.setError('minLength', {
+        message: 'Should be less than max length.',
+      });
+      form.setError('maxLength', {
+        message: 'Should be bigger than min length.',
+      });
+    }
+
     console.log(values);
+
+    handleFieldDialogOpenChange(false);
   };
 
   return (
@@ -79,9 +88,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
             name='fieldName'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-oxford-blue dark:text-off-white'>
-                  Field name
-                </FormLabel>
+                <FormLabel>Field name</FormLabel>
                 <FormControl>
                   <Input
                     className='input bg-oxford-blue/90 text-base'
@@ -99,9 +106,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
               name='isRequired'
               render={({ field }) => (
                 <FormItem className='flex items-end gap-3'>
-                  <FormLabel className='text-oxford-blue dark:text-off-white'>
-                    Required
-                  </FormLabel>
+                  <FormLabel>Required</FormLabel>
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -117,9 +122,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
               name='isEmail'
               render={({ field }) => (
                 <FormItem className='flex items-end gap-3'>
-                  <FormLabel className='text-oxford-blue dark:text-off-white'>
-                    Email
-                  </FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -137,13 +140,10 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
               name='minLength'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='text-oxford-blue dark:text-off-white'>
-                    Min length
-                  </FormLabel>
+                  <FormLabel>Min length</FormLabel>
                   <FormControl>
                     <Input
                       type='number'
-                      min='0'
                       className='input bg-oxford-blue/90 text-base'
                       {...field}
                     />
@@ -157,13 +157,10 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
               name='maxLength'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='text-oxford-blue dark:text-off-white'>
-                    Max length
-                  </FormLabel>
+                  <FormLabel>Max length</FormLabel>
                   <FormControl>
                     <Input
                       type='number'
-                      min='0'
                       className='input bg-oxford-blue/90 text-base'
                       {...field}
                     />
@@ -178,15 +175,14 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({}) => {
             name='regex'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-oxford-blue dark:text-off-white'>
-                  Regex
-                </FormLabel>
+                <FormLabel>Regex</FormLabel>
                 <FormControl>
-                  <Input
-                    className='input bg-oxford-blue/90 text-base'
+                  <Textarea
+                    className='input resize-none bg-oxford-blue/90 text-base'
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>Example: /\d+/</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

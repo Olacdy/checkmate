@@ -19,3 +19,33 @@ export const contactSchema = z.object({
       message: 'Too long. Max length is 500 characters.',
     }),
 });
+
+export const stringFieldSchema = z.object({
+  fieldName: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  isRequired: z.boolean().optional(),
+  isEmail: z.boolean().optional(),
+  minLength: z
+    .union([z.coerce.number().int().nonnegative(), z.literal('')])
+    .optional(),
+  maxLength: z
+    .union([z.coerce.number().int().nonnegative(), z.literal('')])
+    .optional(),
+  regex: z
+    .string()
+    .refine(
+      (value) => {
+        try {
+          new RegExp(value);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      },
+      {
+        message: 'Invalid regex pattern.',
+      }
+    )
+    .optional(),
+});
