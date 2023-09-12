@@ -25,13 +25,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import { numberFieldSchema } from '@/helpers/schemas';
+import { fieldType, numberFieldSchema } from '@/schemas/fields-schemas';
 
 type NumberFieldDialogProps = {
+  schemaFields: fieldType[];
+  setSchemaFields: (schemaFields: fieldType[]) => void;
   handleFieldDialogOpenChange: (open: boolean) => void;
 };
 
 const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
+  schemaFields,
+  setSchemaFields,
   handleFieldDialogOpenChange,
 }) => {
   const form = useForm<z.infer<typeof numberFieldSchema>>({

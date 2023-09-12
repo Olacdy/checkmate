@@ -21,7 +21,7 @@ import { useToast } from '@/components/ui/use-toast';
 
 import sendEmail from '@/actions/send-email';
 
-import { contactSchema } from '@/helpers/schemas';
+import { contactSchema } from '@/schemas/forms-schemas';
 
 type ContactFormProps = {};
 

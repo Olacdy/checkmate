@@ -7,11 +7,14 @@ import * as z from 'zod';
 
 import { useForm } from 'react-hook-form';
 
+import { Reorder } from 'framer-motion';
+
 import { useRouter } from 'next/navigation';
 
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,11 +33,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
+import FieldDraggable from '@/components/dashboard/create-schema/field-draggable';
+
 import { cn } from '@/lib/utils';
 
-import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { fieldType } from '@/schemas/fields-schemas';
+
 import { fieldTypes } from '@/helpers/data';
-import { FieldDialogs } from './field-dialogs';
 
 type SchemaCreationFormProps = {};
 
@@ -58,7 +64,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     keyof typeof FieldDialogs | null
   >();
 
-  const [schemaFields, setSchemaFields] = useState([]);
+  const [schemaFields, setSchemaFields] = useState<fieldType[]>([]);
 
   const handleFieldDialogOpenChange = (open: boolean) => {
     !open && setSelectedSchemaField(null);
@@ -120,11 +126,15 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
             className={cn('flex flex-1 flex-col items-center justify-between', {
               'justify-center p-0 pl-2': schemaFields.length === 0,
             })}>
-            <div>
+            <Reorder.Group
+              className='w-full pt-3'
+              axis='y'
+              onReorder={setSchemaFields}
+              values={schemaFields}>
               {schemaFields.map((schemaField) => {
-                return <></>;
+                return <FieldDraggable value={schemaField} />;
               })}
-            </div>
+            </Reorder.Group>
             <Dialog
               open={!!selectedSchemaField}
               onOpenChange={handleFieldDialogOpenChange}>
@@ -169,6 +179,8 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               </DropdownMenu>
               {selectedSchemaField &&
                 createElement(FieldDialogs[selectedSchemaField], {
+                  schemaFields: schemaFields,
+                  setSchemaFields: setSchemaFields,
                   handleFieldDialogOpenChange: handleFieldDialogOpenChange,
                 })}
             </Dialog>

@@ -25,15 +25,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
 import { Textarea } from '@/components/ui/textarea';
-import { stringFieldSchema } from '@/helpers/schemas';
+
+import { fieldType, stringFieldSchema } from '@/schemas/fields-schemas';
 
 type SchemaFieldDialogProps = {
+  schemaFields: fieldType[];
+  setSchemaFields: (schemaFields: fieldType[]) => void;
   handleFieldDialogOpenChange: (open: boolean) => void;
 };
 
 const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
+  schemaFields,
+  setSchemaFields,
   handleFieldDialogOpenChange,
 }) => {
   const form = useForm<z.infer<typeof stringFieldSchema>>({

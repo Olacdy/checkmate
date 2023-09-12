@@ -35,13 +35,17 @@ import { Icons } from '@/components/icons';
 
 import { cn, formatDate } from '@/lib/utils';
 
-import { dateFieldSchema } from '@/helpers/schemas';
+import { dateFieldSchema, fieldType } from '@/schemas/fields-schemas';
 
 type DateFieldDialogProps = {
+  schemaFields: fieldType[];
+  setSchemaFields: (schemaFields: fieldType[]) => void;
   handleFieldDialogOpenChange: (open: boolean) => void;
 };
 
 const DateFieldDialog: FC<DateFieldDialogProps> = ({
+  schemaFields,
+  setSchemaFields,
   handleFieldDialogOpenChange,
 }) => {
   const form = useForm<z.infer<typeof dateFieldSchema>>({

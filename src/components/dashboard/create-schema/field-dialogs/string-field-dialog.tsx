@@ -25,15 +25,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
 import { Textarea } from '@/components/ui/textarea';
-import { stringFieldSchema } from '@/helpers/schemas';
+
+import { fieldType, stringFieldSchema } from '@/schemas/fields-schemas';
 
 type StringFieldDialogProps = {
+  schemaFields: fieldType[];
+  setSchemaFields: (schemaFields: fieldType[]) => void;
   handleFieldDialogOpenChange: (open: boolean) => void;
 };
 
 const StringFieldDialog: FC<StringFieldDialogProps> = ({
+  schemaFields,
+  setSchemaFields,
   handleFieldDialogOpenChange,
 }) => {
   const form = useForm<z.infer<typeof stringFieldSchema>>({
@@ -52,7 +56,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
     if (
       values.minLength &&
       values.maxLength &&
-      values.minLength >= values.maxLength
+      values.minLength > values.maxLength
     ) {
       form.setError('minLength', {
         message: 'Should be less than max length.',
@@ -60,12 +64,18 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
       form.setError('maxLength', {
         message: 'Should be bigger than min length.',
       });
-
       return;
     }
 
-    console.log(values);
+    const stringField = z.string();
 
+    if (values.isEmail) stringField.email();
+    if (!values.isRequired) stringField.optional();
+    if (values.minLength) stringField.min(values.minLength);
+    if (values.maxLength) stringField.max(values.maxLength);
+    if (values.regex) stringField.regex(new RegExp(values.regex));
+
+    setSchemaFields([{ ...values, field: stringField }, ...schemaFields]);
     handleFieldDialogOpenChange(false);
   };
 
