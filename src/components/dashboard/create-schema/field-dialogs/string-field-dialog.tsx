@@ -30,19 +30,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { fieldType, stringFieldSchema } from '@/schemas/fields-schemas';
 
 type StringFieldDialogProps = {
+  defaultValues?: z.infer<typeof stringFieldSchema>;
   schemaFields: fieldType[];
   setSchemaFields: (schemaFields: fieldType[]) => void;
-  handleFieldDialogOpenChange: (open: boolean) => void;
+  closeDialog: () => void;
 };
 
 const StringFieldDialog: FC<StringFieldDialogProps> = ({
+  defaultValues,
   schemaFields,
   setSchemaFields,
-  handleFieldDialogOpenChange,
+  closeDialog,
 }) => {
   const form = useForm<z.infer<typeof stringFieldSchema>>({
     resolver: zodResolver(stringFieldSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       fieldName: '',
       isRequired: false,
       isEmail: false,
@@ -67,6 +69,10 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
       return;
     }
 
+    const oldSchemaFields = schemaFields.filter(
+      (schemaField) => schemaField.fieldName !== defaultValues?.fieldName
+    );
+
     const stringField = z.string();
 
     if (values.isEmail) stringField.email();
@@ -75,8 +81,8 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
     if (values.maxLength) stringField.max(values.maxLength);
     if (values.regex) stringField.regex(new RegExp(values.regex));
 
-    setSchemaFields([{ ...values, field: stringField }, ...schemaFields]);
-    handleFieldDialogOpenChange(false);
+    setSchemaFields([{ ...values, field: stringField }, ...oldSchemaFields]);
+    closeDialog();
   };
 
   return (
@@ -193,7 +199,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
           <Button
             type='submit'
             className='mt-3 self-end bg-crayola-blue px-5 text-lg text-off-white hover:bg-crayola-blue/80 dark:bg-crayola-blue dark:text-off-white dark:hover:bg-crayola-blue/80'>
-            Create field
+            {defaultValues ? 'Edit field' : 'Create field'}
           </Button>
         </form>
       </Form>

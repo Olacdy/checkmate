@@ -28,19 +28,21 @@ import { Input } from '@/components/ui/input';
 import { fieldType, numberFieldSchema } from '@/schemas/fields-schemas';
 
 type NumberFieldDialogProps = {
+  defaultValues?: z.infer<typeof numberFieldSchema>;
   schemaFields: fieldType[];
   setSchemaFields: (schemaFields: fieldType[]) => void;
-  handleFieldDialogOpenChange: (open: boolean) => void;
+  closeDialog: () => void;
 };
 
 const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
+  defaultValues,
   schemaFields,
   setSchemaFields,
-  handleFieldDialogOpenChange,
+  closeDialog,
 }) => {
   const form = useForm<z.infer<typeof numberFieldSchema>>({
     resolver: zodResolver(numberFieldSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       fieldName: '',
       isRequired: false,
       isInt: false,
@@ -63,7 +65,7 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
 
     console.log(values);
 
-    handleFieldDialogOpenChange(false);
+    closeDialog();
   };
 
   return (
@@ -161,7 +163,7 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
           <Button
             type='submit'
             className='mt-3 self-end bg-crayola-blue px-5 text-lg text-off-white hover:bg-crayola-blue/80 dark:bg-crayola-blue dark:text-off-white dark:hover:bg-crayola-blue/80'>
-            Create field
+            {defaultValues ? 'Edit field' : 'Create field'}
           </Button>
         </form>
       </Form>

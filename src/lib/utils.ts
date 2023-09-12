@@ -1,4 +1,7 @@
+import { z } from 'zod';
+
 import { clsx, type ClassValue } from 'clsx';
+
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -56,4 +59,10 @@ export function formatDate(date: Date): string {
   const year = date.getFullYear() % 100;
 
   return `${day} ${month}. ${year}`;
+}
+
+export function getPrimitiveNameFromZodType(
+  type: z.ZodType<any, any, any>
+): string {
+  return type.constructor.name.toLowerCase().replace('zod', '');
 }

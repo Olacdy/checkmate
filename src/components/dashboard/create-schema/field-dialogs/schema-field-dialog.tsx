@@ -30,19 +30,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { fieldType, stringFieldSchema } from '@/schemas/fields-schemas';
 
 type SchemaFieldDialogProps = {
+  defaultValues?: z.infer<typeof stringFieldSchema>;
   schemaFields: fieldType[];
   setSchemaFields: (schemaFields: fieldType[]) => void;
-  handleFieldDialogOpenChange: (open: boolean) => void;
+  closeDialog: () => void;
 };
 
 const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
+  defaultValues,
   schemaFields,
   setSchemaFields,
-  handleFieldDialogOpenChange,
+  closeDialog,
 }) => {
   const form = useForm<z.infer<typeof stringFieldSchema>>({
     resolver: zodResolver(stringFieldSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       fieldName: '',
       isRequired: false,
       isEmail: false,
@@ -70,7 +72,7 @@ const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
 
     console.log(values);
 
-    handleFieldDialogOpenChange(false);
+    closeDialog();
   };
 
   return (
@@ -196,7 +198,7 @@ const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
           <Button
             type='submit'
             className='mt-3 self-end bg-crayola-blue px-5 text-lg text-off-white hover:bg-crayola-blue/80 dark:bg-crayola-blue dark:text-off-white dark:hover:bg-crayola-blue/80'>
-            Create field
+            {defaultValues ? 'Edit field' : 'Create field'}
           </Button>
         </form>
       </Form>

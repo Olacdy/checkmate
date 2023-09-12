@@ -11,10 +11,10 @@ export const stringFieldSchema = fieldPropertiesSchema.merge(
   z.object({
     isEmail: z.boolean().optional(),
     minLength: z
-      .union([z.coerce.number().int().nonnegative(), z.literal('')])
+      .union([z.coerce.number().int().min(1), z.literal('')])
       .optional(),
     maxLength: z
-      .union([z.coerce.number().int().nonnegative(), z.literal('')])
+      .union([z.coerce.number().int().min(1), z.literal('')])
       .optional(),
     regex: z
       .string()
@@ -38,12 +38,8 @@ export const stringFieldSchema = fieldPropertiesSchema.merge(
 export const numberFieldSchema = fieldPropertiesSchema.merge(
   z.object({
     isInt: z.boolean().optional(),
-    min: z
-      .union([z.coerce.number().int().nonnegative(), z.literal('')])
-      .optional(),
-    max: z
-      .union([z.coerce.number().int().nonnegative(), z.literal('')])
-      .optional(),
+    min: z.union([z.coerce.number(), z.literal('')]).optional(),
+    max: z.union([z.coerce.number(), z.literal('')]).optional(),
   })
 );
 

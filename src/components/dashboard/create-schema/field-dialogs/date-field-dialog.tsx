@@ -38,19 +38,21 @@ import { cn, formatDate } from '@/lib/utils';
 import { dateFieldSchema, fieldType } from '@/schemas/fields-schemas';
 
 type DateFieldDialogProps = {
+  defaultValues?: z.infer<typeof dateFieldSchema>;
   schemaFields: fieldType[];
   setSchemaFields: (schemaFields: fieldType[]) => void;
-  handleFieldDialogOpenChange: (open: boolean) => void;
+  closeDialog: () => void;
 };
 
 const DateFieldDialog: FC<DateFieldDialogProps> = ({
+  defaultValues,
   schemaFields,
   setSchemaFields,
-  handleFieldDialogOpenChange,
+  closeDialog,
 }) => {
   const form = useForm<z.infer<typeof dateFieldSchema>>({
     resolver: zodResolver(dateFieldSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       fieldName: '',
       isRequired: false,
       from: undefined,
@@ -72,7 +74,7 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
 
     console.log(values);
 
-    handleFieldDialogOpenChange(false);
+    closeDialog();
   };
 
   return (
@@ -206,7 +208,7 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
           <Button
             type='submit'
             className='mt-3 self-end bg-crayola-blue px-5 text-lg text-off-white hover:bg-crayola-blue/80 dark:bg-crayola-blue dark:text-off-white dark:hover:bg-crayola-blue/80'>
-            Create field
+            {defaultValues ? 'Edit field' : 'Create field'}
           </Button>
         </form>
       </Form>

@@ -127,12 +127,19 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               'justify-center p-0 pl-2': schemaFields.length === 0,
             })}>
             <Reorder.Group
-              className='w-full pt-3'
+              className='w-full gap-3 pt-3'
               axis='y'
               onReorder={setSchemaFields}
               values={schemaFields}>
               {schemaFields.map((schemaField) => {
-                return <FieldDraggable value={schemaField} />;
+                return (
+                  <FieldDraggable
+                    key={schemaField.fieldName}
+                    schemaFields={schemaFields}
+                    setSchemaFields={setSchemaFields}
+                    value={schemaField}
+                  />
+                );
               })}
             </Reorder.Group>
             <Dialog
@@ -181,7 +188,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                 createElement(FieldDialogs[selectedSchemaField], {
                   schemaFields: schemaFields,
                   setSchemaFields: setSchemaFields,
-                  handleFieldDialogOpenChange: handleFieldDialogOpenChange,
+                  closeDialog: () => handleFieldDialogOpenChange(false),
                 })}
             </Dialog>
           </CardContent>

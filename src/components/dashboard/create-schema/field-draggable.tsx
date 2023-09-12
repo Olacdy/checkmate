@@ -1,21 +1,37 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, createElement, useState } from 'react';
 
 import { Reorder, useDragControls, useMotionValue } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+
+import { useRaisedShadow } from '@/hooks/useRaisedShadow';
 
 import { Icons } from '@/components/icons';
 
-import { useRaisedShadow } from '@/hooks/useRaisedShadow';
-import { createdField } from '@/schemas/created-fields';
+import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
+
+import { getPrimitiveNameFromZodType } from '@/lib/utils';
+
+import { fieldTypes } from '@/helpers/data';
+
+import { fieldType } from '@/schemas/fields-schemas';
 
 type FieldDraggableProps = {
-  value: createdField;
+  schemaFields: fieldType[];
+  setSchemaFields: (schemaFields: fieldType[]) => void;
+  value: fieldType;
 };
 
-const FieldDraggable: FC<FieldDraggableProps> = ({ value }) => {
+const FieldDraggable: FC<FieldDraggableProps> = ({
+  schemaFields,
+  setSchemaFields,
+  value,
+}) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
@@ -42,12 +58,29 @@ const FieldDraggable: FC<FieldDraggableProps> = ({ value }) => {
           size='icon'>
           <Icons.delete />
         </Button>
-        <Button
-          className='hover:bg-slate-300/40 dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'
-          variant='ghost'
-          size='icon'>
-          <Icons.settings />
-        </Button>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button
+              className='hover:bg-slate-300/40 dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'
+              variant='ghost'
+              size='icon'>
+              <Icons.settings />
+            </Button>
+          </DialogTrigger>
+          {createElement(
+            FieldDialogs[
+              getPrimitiveNameFromZodType(
+                value.field
+              ) as (typeof fieldTypes)[number]['type']
+            ],
+            {
+              defaultValues: value,
+              schemaFields: schemaFields,
+              setSchemaFields: setSchemaFields,
+              closeDialog: () => setOpen(false),
+            }
+          )}
+        </Dialog>
       </div>
     </Reorder.Item>
   );
