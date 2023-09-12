@@ -87,7 +87,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                   <FormLabel>Schema name</FormLabel>
                   <FormControl>
                     <Input
-                      className='input bg-oxford-blue/90 text-lg'
+                      className='text-lg'
                       placeholder='Your schema name...'
                       {...field}
                     />
@@ -99,7 +99,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
             <div className='flex items-center justify-between gap-5'>
               <Button
                 onClick={handleCancelClick}
-                className='bg-oxford-blue/90 text-lg'
+                className='bg-oxford-blue/90 text-lg hover:bg-oxford-blue/70'
                 type='reset'>
                 Cancel
               </Button>

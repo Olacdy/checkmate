@@ -100,13 +100,13 @@ export const columns: ColumnDef<Schema>[] = [
   },
   {
     accessorKey: 'validations',
-    header: () => <div className='xs:block hidden text-right'>Validations</div>,
+    header: () => <div className='hidden text-right xs:block'>Validations</div>,
     cell: ({ row }) => {
       const { successes, errors } = row.original;
       const validations = successes + errors;
 
       return (
-        <div className='xs:block hidden text-right font-medium'>
+        <div className='hidden text-right font-medium xs:block'>
           {validations}
         </div>
       );
@@ -188,11 +188,13 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
           onChange={(event) =>
             table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className='input max-w-xs bg-oxford-blue/90'
+          className='max-w-xs'
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
+            <Button
+              variant='outline'
+              className='ml-auto dark:bg-slate-100 dark:text-oxford-blue-dark'>
               Columns <Icons.chevronDown className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
@@ -208,7 +210,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
                       'hidden lg:flex': column.id === 'createdAt',
                       'hidden sm:flex':
                         column.id === 'successes' || column.id === 'errors',
-                      'xs:flex hidden': column.id === 'validations',
+                      'hidden xs:flex': column.id === 'validations',
                     })}
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>

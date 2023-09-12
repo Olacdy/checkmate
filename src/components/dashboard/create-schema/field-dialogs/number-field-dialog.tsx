@@ -85,11 +85,7 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
               <FormItem>
                 <FormLabel>Field name</FormLabel>
                 <FormControl>
-                  <Input
-                    className='input bg-oxford-blue/90 text-base'
-                    placeholder='Type field name...'
-                    {...field}
-                  />
+                  <Input placeholder='Type field name...' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -137,11 +133,7 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
                 <FormItem>
                   <FormLabel>Min value</FormLabel>
                   <FormControl>
-                    <Input
-                      type='number'
-                      className='input bg-oxford-blue/90 text-base'
-                      {...field}
-                    />
+                    <Input type='number' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,11 +146,7 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
                 <FormItem>
                   <FormLabel>Max value</FormLabel>
                   <FormControl>
-                    <Input
-                      type='number'
-                      className='input bg-oxford-blue/90 text-base'
-                      {...field}
-                    />
+                    <Input type='number' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

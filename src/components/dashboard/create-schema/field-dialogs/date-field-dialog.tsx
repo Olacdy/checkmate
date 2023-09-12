@@ -94,11 +94,7 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
               <FormItem>
                 <FormLabel>Field name</FormLabel>
                 <FormControl>
-                  <Input
-                    className='input bg-oxford-blue/90 text-base'
-                    placeholder='Type field name...'
-                    {...field}
-                  />
+                  <Input placeholder='Type field name...' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -131,15 +127,15 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
-                          variant={'outline'}
+                          variant='outline'
                           className={cn(
-                            'w-full max-w-sm pl-3 text-left font-normal',
+                            'w-full max-w-sm pl-3 text-left font-normal text-oxford-blue-dark dark:bg-slate-100 dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark',
                             !field.value && 'text-muted-foreground'
                           )}>
                           {field.value ? (
                             formatDate(field.value)
                           ) : (
-                            <span>Pick a date</span>
+                            <span>Pick a lower range</span>
                           )}
                           <Icons.calendar className='ml-auto h-4 w-4 opacity-50' />
                         </Button>
@@ -171,15 +167,15 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
-                          variant={'outline'}
+                          variant='outline'
                           className={cn(
-                            'w-full max-w-sm pl-3 text-left font-normal',
+                            'w-full max-w-sm pl-3 text-left font-normal text-oxford-blue-dark dark:bg-slate-100 dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark',
                             !field.value && 'text-muted-foreground'
                           )}>
                           {field.value ? (
                             formatDate(field.value)
                           ) : (
-                            <span>Pick a date</span>
+                            <span>Pick a higher range</span>
                           )}
                           <Icons.calendar className='ml-auto h-4 w-4 opacity-50' />
                         </Button>

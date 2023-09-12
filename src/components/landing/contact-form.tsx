@@ -102,7 +102,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
               <FormControl>
                 <Textarea
                   placeholder='Tell us about your problem. What kind of suggestion are you willing to share?'
-                  className='input h-40 resize-none'
+                  className='h-40 resize-none'
                   {...field}
                 />
               </FormControl>
@@ -110,7 +110,9 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
             </FormItem>
           )}
         />
-        <Button className='self-end' type='submit'>
+        <Button
+          type='submit'
+          className='self-end bg-oxford-blue/90 text-base text-off-white hover:bg-oxford-blue/70'>
           Send Suggestion
         </Button>
       </form>

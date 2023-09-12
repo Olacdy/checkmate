@@ -16,7 +16,7 @@ const page: FC<pageProps> = ({}) => {
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
       <CardHeader>
-        <CardTitle className='xs:text-lg text-3xl'>Create schema</CardTitle>
+        <CardTitle className='text-lg xs:text-3xl'>Create schema</CardTitle>
         <CardDescription>Define your schema.</CardDescription>
       </CardHeader>
       <CardContent className='flex flex-1 flex-col gap-5'>

@@ -114,12 +114,6 @@ main *::-webkit-scrollbar-track {
   @apply font-code text-sm text-off-white;
 }
 
-/* Contact Section */
-
-.input {
-  @apply text-off-white;
-}
-
 /* Dashboard */
 
 .dashboard-section-container {

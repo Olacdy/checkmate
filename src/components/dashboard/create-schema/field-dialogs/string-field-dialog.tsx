@@ -92,11 +92,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
               <FormItem>
                 <FormLabel>Field name</FormLabel>
                 <FormControl>
-                  <Input
-                    className='input bg-oxford-blue/90 text-base'
-                    placeholder='Type field name...'
-                    {...field}
-                  />
+                  <Input placeholder='Type field name...' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,11 +140,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
                 <FormItem>
                   <FormLabel>Min length</FormLabel>
                   <FormControl>
-                    <Input
-                      type='number'
-                      className='input bg-oxford-blue/90 text-base'
-                      {...field}
-                    />
+                    <Input type='number' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,11 +153,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
                 <FormItem>
                   <FormLabel>Max length</FormLabel>
                   <FormControl>
-                    <Input
-                      type='number'
-                      className='input bg-oxford-blue/90 text-base'
-                      {...field}
-                    />
+                    <Input type='number' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -180,11 +168,14 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
                 <FormLabel>Regex</FormLabel>
                 <FormControl>
                   <Textarea
-                    className='input resize-none bg-oxford-blue/90 text-base'
+                    placeholder='Example: /\d+/'
+                    className='resize-none'
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>Example: /\d+/</FormDescription>
+                <FormDescription>
+                  Expression to match you string to.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
