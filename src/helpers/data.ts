@@ -86,7 +86,7 @@ export const sideBarButtons = [
 export const fieldTypes = [
   { title: 'String', type: 'string' },
   { title: 'Number', type: 'number' },
-  { title: 'Date Time', type: 'datetime' },
+  { title: 'Date', type: 'date' },
   { title: 'Schema', type: 'schema' },
 ] satisfies {
   title: string;

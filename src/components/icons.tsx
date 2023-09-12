@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import {
   ArrowUpDown,
+  Calendar,
   Check,
   CheckCircle,
   ChevronDown,
@@ -41,6 +42,7 @@ export const Icons = {
   more: MoreHorizontal,
   review: Search,
   sort: ArrowUpDown,
+  calendar: Calendar,
   menu: ({ ...props }: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'

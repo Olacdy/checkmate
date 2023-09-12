@@ -22,7 +22,7 @@ export const contactSchema = z.object({
 
 export const stringFieldSchema = z.object({
   fieldName: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+    message: 'Field name must be at least 2 characters.',
   }),
   isRequired: z.boolean().optional(),
   isEmail: z.boolean().optional(),
@@ -52,7 +52,7 @@ export const stringFieldSchema = z.object({
 
 export const numberFieldSchema = z.object({
   fieldName: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+    message: 'Field name must be at least 2 characters.',
   }),
   isRequired: z.boolean().optional(),
   isInt: z.boolean().optional(),
@@ -62,4 +62,13 @@ export const numberFieldSchema = z.object({
   max: z
     .union([z.coerce.number().int().nonnegative(), z.literal('')])
     .optional(),
+});
+
+export const dateFieldSchema = z.object({
+  fieldName: z.string().min(2, {
+    message: 'Field name must be at least 2 characters.',
+  }),
+  isRequired: z.boolean().optional(),
+  from: z.date().optional(),
+  to: z.date().optional(),
 });
