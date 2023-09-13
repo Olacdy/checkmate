@@ -35,25 +35,23 @@ import { Icons } from '@/components/icons';
 
 import { cn, formatDate } from '@/lib/utils';
 
-import { dateFieldSchema, fieldType } from '@/schemas/fields-schemas';
+import { FieldType, dateFieldSchema } from '@/schemas/fields-schemas';
 
 type DateFieldDialogProps = {
   defaultValues?: z.infer<typeof dateFieldSchema>;
-  schemaFields: fieldType[];
-  setSchemaFields: (schemaFields: fieldType[]) => void;
+  updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
 
 const DateFieldDialog: FC<DateFieldDialogProps> = ({
   defaultValues,
-  schemaFields,
-  setSchemaFields,
+  updateSchemaFields,
   closeDialog,
 }) => {
   const form = useForm<z.infer<typeof dateFieldSchema>>({
     resolver: zodResolver(dateFieldSchema),
     defaultValues: defaultValues || {
-      fieldName: '',
+      name: '',
       isRequired: false,
       from: undefined,
       to: undefined,
@@ -95,7 +93,7 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
           className='flex flex-col gap-4'>
           <FormField
             control={form.control}
-            name='fieldName'
+            name='name'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Field name</FormLabel>

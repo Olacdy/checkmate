@@ -27,25 +27,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-import { fieldType, stringFieldSchema } from '@/schemas/fields-schemas';
+import { FieldType, stringFieldSchema } from '@/schemas/fields-schemas';
 
 type StringFieldDialogProps = {
   defaultValues?: z.infer<typeof stringFieldSchema>;
-  schemaFields: fieldType[];
-  setSchemaFields: (schemaFields: fieldType[]) => void;
+  updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
 
 const StringFieldDialog: FC<StringFieldDialogProps> = ({
   defaultValues,
-  schemaFields,
-  setSchemaFields,
+  updateSchemaFields,
   closeDialog,
 }) => {
   const form = useForm<z.infer<typeof stringFieldSchema>>({
     resolver: zodResolver(stringFieldSchema),
     defaultValues: defaultValues || {
-      fieldName: '',
+      name: '',
       isRequired: false,
       isEmail: false,
       minLength: '',
@@ -69,20 +67,17 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
       return;
     }
 
-    const oldSchemaFields = schemaFields.filter(
-      (schemaField) => schemaField.fieldName !== defaultValues?.fieldName
-    );
+    const result = updateSchemaFields({ ...values, type: 'string' });
 
-    const stringField = z.string();
+    if (result) {
+      closeDialog();
 
-    if (values.isEmail) stringField.email();
-    if (!values.isRequired) stringField.optional();
-    if (values.minLength) stringField.min(values.minLength);
-    if (values.maxLength) stringField.max(values.maxLength);
-    if (values.regex) stringField.regex(new RegExp(values.regex));
+      return;
+    }
 
-    setSchemaFields([{ ...values, field: stringField }, ...oldSchemaFields]);
-    closeDialog();
+    form.setError('name', {
+      message: 'Field name should be unique.',
+    });
   };
 
   return (
@@ -103,7 +98,7 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
           className='flex flex-col gap-4'>
           <FormField
             control={form.control}
-            name='fieldName'
+            name='name'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Field name</FormLabel>

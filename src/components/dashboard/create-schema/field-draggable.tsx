@@ -2,57 +2,41 @@
 
 import { FC, createElement, useState } from 'react';
 
-import { Reorder, useDragControls, useMotionValue } from 'framer-motion';
+import { Reorder } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 
-import { useRaisedShadow } from '@/hooks/useRaisedShadow';
-
 import { Icons } from '@/components/icons';
 
-import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
-
-import { getPrimitiveNameFromZodType } from '@/lib/utils';
-
-import { fieldTypes } from '@/helpers/data';
-
-import { fieldType } from '@/schemas/fields-schemas';
+import { FieldType } from '@/schemas/fields-schemas';
+import { FieldDialogs } from './field-dialogs';
 
 type FieldDraggableProps = {
-  schemaFields: fieldType[];
-  setSchemaFields: (schemaFields: fieldType[]) => void;
-  value: fieldType;
+  value: FieldType;
+  editSchemaField: (schemaField: FieldType) => boolean;
+  removeSchemaFeild: (schemaField: FieldType) => boolean;
 };
 
 const FieldDraggable: FC<FieldDraggableProps> = ({
-  schemaFields,
-  setSchemaFields,
   value,
+  editSchemaField,
+  removeSchemaFeild,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const y = useMotionValue(0);
-  const boxShadow = useRaisedShadow(y);
-  const dragControls = useDragControls();
+  const handleDeleteClick = () => {
+    removeSchemaFeild(value);
+  };
 
   return (
     <Reorder.Item
       className='flex w-full items-center justify-between rounded-sm border border-oxford-blue/20 bg-slate-50 px-4 py-2 text-oxford-blue-dark dark:bg-off-white'
-      value={value.fieldName}
-      id={value.fieldName}
-      style={{ boxShadow, y }}
-      dragListener={false}
-      dragControls={dragControls}>
-      <div className='flex items-center gap-4'>
-        <Icons.drag
-          className='cursor-grab'
-          onPointerDown={(event) => dragControls.start(event)}
-        />
-        <span>{value.fieldName}</span>
-      </div>
+      value={value}>
+      <span>{value.name}</span>
       <div className='flex gap-4'>
         <Button
+          onClick={handleDeleteClick}
           className='text-error hover:bg-slate-300/40 hover:text-error dark:hover:bg-slate-200 dark:hover:text-error'
           variant='ghost'
           size='icon'>
@@ -67,19 +51,11 @@ const FieldDraggable: FC<FieldDraggableProps> = ({
               <Icons.settings />
             </Button>
           </DialogTrigger>
-          {createElement(
-            FieldDialogs[
-              getPrimitiveNameFromZodType(
-                value.field
-              ) as (typeof fieldTypes)[number]['type']
-            ],
-            {
-              defaultValues: value,
-              schemaFields: schemaFields,
-              setSchemaFields: setSchemaFields,
-              closeDialog: () => setOpen(false),
-            }
-          )}
+          {createElement(FieldDialogs[value.type], {
+            defaultValues: value,
+            updateSchemaFields: editSchemaField,
+            closeDialog: () => setOpen(false),
+          })}
         </Dialog>
       </div>
     </Reorder.Item>

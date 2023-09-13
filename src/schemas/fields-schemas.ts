@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const fieldPropertiesSchema = z.object({
-  fieldName: z.string().min(2, {
+  name: z.string().min(2, {
     message: 'Field name must be at least 2 characters.',
   }),
   isRequired: z.boolean().optional(),
@@ -50,7 +50,7 @@ export const dateFieldSchema = fieldPropertiesSchema.merge(
   })
 );
 
-export type fieldType =
-  | (z.infer<typeof stringFieldSchema> & { field: z.ZodString })
-  | (z.infer<typeof numberFieldSchema> & { field: z.ZodNumber })
-  | (z.infer<typeof dateFieldSchema> & { field: z.ZodDate });
+export type FieldType =
+  | (z.infer<typeof stringFieldSchema> & { type: 'string' })
+  | (z.infer<typeof numberFieldSchema> & { type: 'number' })
+  | (z.infer<typeof dateFieldSchema> & { type: 'date' });

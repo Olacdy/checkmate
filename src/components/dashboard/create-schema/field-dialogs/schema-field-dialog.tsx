@@ -27,25 +27,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-import { fieldType, stringFieldSchema } from '@/schemas/fields-schemas';
+import { FieldType, stringFieldSchema } from '@/schemas/fields-schemas';
 
 type SchemaFieldDialogProps = {
   defaultValues?: z.infer<typeof stringFieldSchema>;
-  schemaFields: fieldType[];
-  setSchemaFields: (schemaFields: fieldType[]) => void;
+  updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
 
 const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
   defaultValues,
-  schemaFields,
-  setSchemaFields,
+  updateSchemaFields,
   closeDialog,
 }) => {
   const form = useForm<z.infer<typeof stringFieldSchema>>({
     resolver: zodResolver(stringFieldSchema),
     defaultValues: defaultValues || {
-      fieldName: '',
+      name: '',
       isRequired: false,
       isEmail: false,
       minLength: '',
@@ -93,7 +91,7 @@ const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
           className='flex flex-col gap-4'>
           <FormField
             control={form.control}
-            name='fieldName'
+            name='name'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Field name</FormLabel>

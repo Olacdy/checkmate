@@ -34,13 +34,11 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
-import FieldDraggable from '@/components/dashboard/create-schema/field-draggable';
 
 import { cn } from '@/lib/utils';
 
-import { fieldType } from '@/schemas/fields-schemas';
-
-import { fieldTypes } from '@/helpers/data';
+import { FieldType } from '@/schemas/fields-schemas';
+import FieldDraggable from './field-draggable';
 
 type SchemaCreationFormProps = {};
 
@@ -64,7 +62,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     keyof typeof FieldDialogs | null
   >();
 
-  const [schemaFields, setSchemaFields] = useState<fieldType[]>([]);
+  const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
 
   const handleFieldDialogOpenChange = (open: boolean) => {
     !open && setSelectedSchemaField(null);
@@ -72,6 +70,38 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   const handleCancelClick = () => {
     router.back();
+  };
+
+  const addSchemaField = (schemaField: FieldType): boolean => {
+    const isUnique = schemaFields.some(
+      (field) => field.name === schemaField.name
+    );
+
+    if (!isUnique) return false;
+
+    setSchemaFields([schemaField, ...schemaFields]);
+
+    return true;
+  };
+
+  const editSchemaField = (schemaField: FieldType): boolean => {
+    const newSchemaFields = schemaFields.map((field) =>
+      field.name === schemaField.name ? { ...schemaField } : field
+    );
+
+    setSchemaFields(newSchemaFields);
+
+    return true;
+  };
+
+  const removeSchemaField = (schemaField: FieldType): boolean => {
+    const newSchemaFields = schemaFields.filter(
+      (field) => field.name !== schemaField.name
+    );
+
+    setSchemaFields(newSchemaFields);
+
+    return true;
   };
 
   const onSubmit = async (values: z.infer<typeof schemaCreationSchema>) => {
@@ -127,17 +157,17 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               'justify-center p-0 pl-2': schemaFields.length === 0,
             })}>
             <Reorder.Group
-              className='w-full gap-3 pt-3'
+              className='flex w-full flex-col gap-4 pt-3'
               axis='y'
               onReorder={setSchemaFields}
               values={schemaFields}>
               {schemaFields.map((schemaField) => {
                 return (
                   <FieldDraggable
-                    key={schemaField.fieldName}
-                    schemaFields={schemaFields}
-                    setSchemaFields={setSchemaFields}
+                    key={schemaField.name}
                     value={schemaField}
+                    editSchemaField={editSchemaField}
+                    removeSchemaFeild={removeSchemaField}
                   />
                 );
               })}
@@ -172,13 +202,19 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                 <DropdownMenuContent className='w-56'>
                   <DropdownMenuLabel>Select field type</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {fieldTypes.map((fieldType) => {
+                  {Object.keys(FieldDialogs).map((fieldType) => {
                     return (
                       <DialogTrigger
                         asChild
-                        key={fieldType.type}
-                        onSelect={() => setSelectedSchemaField(fieldType.type)}>
-                        <DropdownMenuItem>{fieldType.title}</DropdownMenuItem>
+                        key={fieldType}
+                        onSelect={() =>
+                          setSelectedSchemaField(
+                            fieldType as keyof typeof FieldDialogs
+                          )
+                        }>
+                        <DropdownMenuItem className='capitalize'>
+                          {fieldType}
+                        </DropdownMenuItem>
                       </DialogTrigger>
                     );
                   })}
@@ -186,8 +222,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               </DropdownMenu>
               {selectedSchemaField &&
                 createElement(FieldDialogs[selectedSchemaField], {
-                  schemaFields: schemaFields,
-                  setSchemaFields: setSchemaFields,
+                  updateSchemaFields: addSchemaField,
                   closeDialog: () => handleFieldDialogOpenChange(false),
                 })}
             </Dialog>

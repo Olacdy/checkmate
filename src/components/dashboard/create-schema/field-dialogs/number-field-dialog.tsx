@@ -25,25 +25,23 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import { fieldType, numberFieldSchema } from '@/schemas/fields-schemas';
+import { FieldType, numberFieldSchema } from '@/schemas/fields-schemas';
 
 type NumberFieldDialogProps = {
   defaultValues?: z.infer<typeof numberFieldSchema>;
-  schemaFields: fieldType[];
-  setSchemaFields: (schemaFields: fieldType[]) => void;
+  updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
 
 const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
   defaultValues,
-  schemaFields,
-  setSchemaFields,
+  updateSchemaFields,
   closeDialog,
 }) => {
   const form = useForm<z.infer<typeof numberFieldSchema>>({
     resolver: zodResolver(numberFieldSchema),
     defaultValues: defaultValues || {
-      fieldName: '',
+      name: '',
       isRequired: false,
       isInt: false,
       min: '',
@@ -86,7 +84,7 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
           className='flex flex-col gap-4'>
           <FormField
             control={form.control}
-            name='fieldName'
+            name='name'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Field name</FormLabel>
