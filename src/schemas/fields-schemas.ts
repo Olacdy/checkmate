@@ -8,33 +8,49 @@ const fieldPropertiesSchema = z.object({
   isRequired: z.boolean().optional(),
 });
 
-export const stringFieldSchema = fieldPropertiesSchema.merge(
-  z.object({
-    isEmail: z.boolean().optional(),
-    minLength: z
-      .union([z.coerce.number().int().min(1), z.literal('')])
-      .optional(),
-    maxLength: z
-      .union([z.coerce.number().int().min(1), z.literal('')])
-      .optional(),
-    regex: z
-      .string()
-      .refine(
-        (value) => {
-          try {
-            new RegExp(value);
-            return true;
-          } catch (error) {
-            return false;
+export const stringFieldSchema = fieldPropertiesSchema
+  .merge(
+    z.object({
+      isEmail: z.boolean().optional(),
+      minLength: z
+        .union([z.coerce.number().int().min(1), z.literal('')])
+        .optional(),
+      maxLength: z
+        .union([z.coerce.number().int().min(1), z.literal('')])
+        .optional(),
+      regex: z
+        .string()
+        .refine(
+          (value) => {
+            try {
+              new RegExp(value);
+              return true;
+            } catch (error) {
+              return false;
+            }
+          },
+          {
+            message: 'Invalid regex pattern.',
           }
-        },
-        {
-          message: 'Invalid regex pattern.',
-        }
-      )
-      .optional(),
-  })
-);
+        )
+        .optional(),
+    })
+  )
+  .superRefine((val, ctx) => {
+    if (val.minLength && val.maxLength && val.minLength > val.maxLength) {
+      ctx.addIssue({
+        path: ['minLength'],
+        code: z.ZodIssueCode.custom,
+        message: 'Should be less than max length.',
+      });
+
+      ctx.addIssue({
+        path: ['maxLength'],
+        code: z.ZodIssueCode.custom,
+        message: 'Should be bigger than min length.',
+      });
+    }
+  });
 
 export const numberFieldSchema = fieldPropertiesSchema.merge(
   z.object({

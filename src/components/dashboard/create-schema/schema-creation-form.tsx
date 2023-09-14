@@ -4,6 +4,7 @@ import { ChangeEvent, FC, createElement, useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 import { useForm } from 'react-hook-form';
 
@@ -32,41 +33,46 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 import { useSchemaCreationStore } from '@/context/schema-creation-store';
 
 import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
 import FieldDraggable from '@/components/dashboard/create-schema/field-draggable';
 
+import { trpc } from '@/trpc/client';
+
+import { createSchema } from '@/lib/create-schema';
 import { cn } from '@/lib/utils';
 
 import { FieldType } from '@/schemas/fields-schemas';
+import { schemaSchema } from '@/schemas/schemas-schema';
 
 type SchemaCreationFormProps = {};
 
-const schemaCreationSchema = z.object({
-  schemaName: z.string().min(3, {
-    message: 'Schema name must be at least 3 characters.',
-  }),
-});
-
 const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
+  const { toast } = useToast();
+
+  // Getting tRPC route to add schemas
+  const addSchema = trpc.schema.addSchema.useMutation();
+
+  // Getting router
   const router = useRouter();
 
   // Schema storage related properties and actions
   const {
     name,
-    setSchemaName,
+    setName,
     fields: storedFields,
     setFields,
     resetSchema,
   } = useSchemaCreationStore();
 
   // Initializing form
-  const form = useForm<z.infer<typeof schemaCreationSchema>>({
-    resolver: zodResolver(schemaCreationSchema),
+  const form = useForm<z.infer<typeof schemaSchema>>({
+    resolver: zodResolver(schemaSchema),
     defaultValues: {
-      schemaName: '',
+      name: name,
     },
   });
 
@@ -138,12 +144,29 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   // Update global schema name
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSchemaName(e.target.value);
+    const newName = e.target.value;
+
+    setName(newName);
+    form.setValue('name', newName);
   };
 
   // Handle submittion
-  const onSubmit = async (values: z.infer<typeof schemaCreationSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof schemaSchema>) => {
+    const createdSchema = createSchema(schemaFields);
+
+    console.log(values.name);
+
+    await addSchema.mutateAsync({
+      name: values.name,
+      schema: JSON.stringify(zodToJsonSchema(createdSchema, values.name)),
+    });
+
+    resetSchema();
+    router.replace('/dashboard/schemas');
+    toast({
+      title: 'Schema successfully created',
+      variant: 'success',
+    });
   };
 
   return (
@@ -155,12 +178,13 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
           <div className='flex w-full items-end justify-between gap-10'>
             <FormField
               control={form.control}
-              name='schemaName'
+              name='name'
               render={({ field }) => (
-                <FormItem className='w-full max-w-xs'>
+                <FormItem className='relative w-full max-w-xs'>
                   <FormLabel>Schema name</FormLabel>
                   <FormControl>
                     <Input
+                      autoComplete='off'
                       className='text-lg text-oxford-blue-dark dark:text-oxford-blue-dark'
                       placeholder='Your schema name...'
                       {...field}
@@ -168,7 +192,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                       onChange={handleNameChange}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className='absolute -bottom-7 left-0' />
                 </FormItem>
               )}
             />

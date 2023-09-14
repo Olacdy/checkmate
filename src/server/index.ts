@@ -1,8 +1,8 @@
-import { todoRouter } from './routes/todo';
+import { schemaRouter } from './routes/schema';
 import { router } from './trpc';
 
 export const appRouter = router({
-  todo: todoRouter,
+  schema: schemaRouter,
 });
 
 export type AppRouter = typeof appRouter;

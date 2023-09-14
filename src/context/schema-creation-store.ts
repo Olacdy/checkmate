@@ -6,7 +6,7 @@ import { FieldType } from '@/schemas/fields-schemas';
 type SchemaCreationStoreType = {
   name: string;
   fields: FieldType[];
-  setSchemaName: (name: string) => void;
+  setName: (name: string) => void;
   setFields: (fields: FieldType[]) => void;
   resetSchema: () => void;
 };
@@ -17,7 +17,7 @@ export const useSchemaCreationStore = create<SchemaCreationStoreType>()(
       (set) => ({
         name: '',
         fields: [],
-        setSchemaName: (name: string) =>
+        setName: (name: string) =>
           set((state) => ({
             name: name,
           })),

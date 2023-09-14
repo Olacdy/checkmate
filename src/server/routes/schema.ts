@@ -6,9 +6,9 @@ import {
   addSchemaSchema,
   deleteSchemaSchema,
   editSchemaSchema,
-} from '@/schemas/schema-schema';
+} from '@/schemas/schemas-schema';
 
-export const todoRouter = router({
+export const schemaRouter = router({
   getSchemas: publicProcedure.query(async () => {
     return await prisma.schema.findMany();
   }),
@@ -18,7 +18,7 @@ export const todoRouter = router({
       await prisma.schema.create({
         data: {
           name: opts.input.name,
-          schema: opts.input.schema,
+          schema: JSON.parse(opts.input.schema),
           userId: opts.ctx.session.user.id,
         },
       });
@@ -32,7 +32,7 @@ export const todoRouter = router({
         where: { id: opts.input.id },
         data: {
           name: opts.input.name,
-          schema: opts.input.schema,
+          schema: opts.input.schema && JSON.parse(opts.input.schema),
           userId: opts.ctx.session.user.id,
         },
       });
