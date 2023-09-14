@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, createElement, useState } from 'react';
+import { FC, createElement, useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -37,6 +37,7 @@ import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs
 
 import { cn } from '@/lib/utils';
 
+import { useFieldsStore } from '@/context/fields-store';
 import { FieldType } from '@/schemas/fields-schemas';
 import FieldDraggable from './field-draggable';
 
@@ -51,6 +52,8 @@ const schemaCreationSchema = z.object({
 const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const router = useRouter();
 
+  const { fields: storedFields, setFields } = useFieldsStore();
+
   const form = useForm<z.infer<typeof schemaCreationSchema>>({
     resolver: zodResolver(schemaCreationSchema),
     defaultValues: {
@@ -61,8 +64,11 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const [selectedSchemaField, setSelectedSchemaField] = useState<
     keyof typeof FieldDialogs | null
   >();
-
   const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
+
+  useEffect(() => {
+    setSchemaFields(storedFields);
+  }, []);
 
   const handleFieldDialogOpenChange = (open: boolean) => {
     !open && setSelectedSchemaField(null);
@@ -73,35 +79,46 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   };
 
   const addSchemaField = (schemaField: FieldType): boolean => {
-    const isUnique = schemaFields.some(
-      (field) => field.name === schemaField.name
+    const isUnique = !schemaFields.some(
+      (field) => field.name === schemaField.name && field.id !== schemaField.id
     );
 
-    if (!isUnique) return false;
+    if (!isUnique) {
+      return false;
+    }
 
-    setSchemaFields([schemaField, ...schemaFields]);
+    updateSchemaFields([schemaField, ...schemaFields]);
 
     return true;
   };
 
   const editSchemaField = (schemaField: FieldType): boolean => {
     const newSchemaFields = schemaFields.map((field) =>
-      field.name === schemaField.name ? { ...schemaField } : field
+      field.id === schemaField.id ? { ...schemaField } : field
     );
 
-    setSchemaFields(newSchemaFields);
+    updateSchemaFields(newSchemaFields);
 
     return true;
   };
 
   const removeSchemaField = (schemaField: FieldType): boolean => {
     const newSchemaFields = schemaFields.filter(
-      (field) => field.name !== schemaField.name
+      (field) => field.id !== schemaField.id
     );
 
-    setSchemaFields(newSchemaFields);
+    updateSchemaFields(newSchemaFields);
 
     return true;
+  };
+
+  const updateSchemaFields = (fields?: FieldType[]) => {
+    if (fields) {
+      setSchemaFields(fields);
+      setFields(fields);
+    } else {
+      setFields(schemaFields);
+    }
   };
 
   const onSubmit = async (values: z.infer<typeof schemaCreationSchema>) => {
@@ -168,6 +185,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                     value={schemaField}
                     editSchemaField={editSchemaField}
                     removeSchemaFeild={removeSchemaField}
+                    updateSchemaFields={updateSchemaFields}
                   />
                 );
               })}

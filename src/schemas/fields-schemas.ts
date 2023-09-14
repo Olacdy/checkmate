@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const fieldPropertiesSchema = z.object({
+  id: z.string().uuid().optional(),
   name: z.string().min(2, {
     message: 'Field name must be at least 2 characters.',
   }),

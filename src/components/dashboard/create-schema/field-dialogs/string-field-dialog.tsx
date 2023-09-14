@@ -5,6 +5,8 @@ import { FC } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -67,7 +69,11 @@ const StringFieldDialog: FC<StringFieldDialogProps> = ({
       return;
     }
 
-    const result = updateSchemaFields({ ...values, type: 'string' });
+    const result = updateSchemaFields({
+      ...values,
+      id: defaultValues ? defaultValues.id : uuidv4(),
+      type: 'string',
+    });
 
     if (result) {
       closeDialog();

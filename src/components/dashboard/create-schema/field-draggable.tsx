@@ -16,12 +16,14 @@ type FieldDraggableProps = {
   value: FieldType;
   editSchemaField: (schemaField: FieldType) => boolean;
   removeSchemaFeild: (schemaField: FieldType) => boolean;
+  updateSchemaFields: () => void;
 };
 
 const FieldDraggable: FC<FieldDraggableProps> = ({
   value,
   editSchemaField,
   removeSchemaFeild,
+  updateSchemaFields,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -32,7 +34,10 @@ const FieldDraggable: FC<FieldDraggableProps> = ({
   return (
     <Reorder.Item
       className='flex w-full items-center justify-between rounded-sm border border-oxford-blue/20 bg-slate-50 px-4 py-2 text-oxford-blue-dark dark:bg-off-white'
-      value={value}>
+      value={value}
+      onDragEnd={() => {
+        updateSchemaFields();
+      }}>
       <span>{value.name}</span>
       <div className='flex gap-4'>
         <Button

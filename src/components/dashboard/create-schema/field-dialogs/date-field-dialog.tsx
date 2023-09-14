@@ -5,6 +5,8 @@ import { FC } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -70,9 +72,21 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
       return;
     }
 
-    console.log(values);
+    const result = updateSchemaFields({
+      ...values,
+      id: defaultValues ? defaultValues.id : uuidv4(),
+      type: 'date',
+    });
 
-    closeDialog();
+    if (result) {
+      closeDialog();
+
+      return;
+    }
+
+    form.setError('name', {
+      message: 'Field name should be unique.',
+    });
   };
 
   return (
