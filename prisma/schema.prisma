@@ -45,12 +45,6 @@ model User {
   Schema        Schema[]
 }
 
-model Todo {
-  id      String  @id @default(cuid())
-  content String
-  done    Boolean @default(false)
-}
-
 model Schema {
   id        String   @id @default(cuid())
   name      String

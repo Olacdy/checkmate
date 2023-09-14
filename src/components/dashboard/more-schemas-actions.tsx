@@ -61,9 +61,9 @@ const MoreSchemasActions: FC<MoreSchemasActionsProps> = ({
           <Icons.copy className='h-4 w-4 stroke-slate-500/70 dark:stroke-off-white' />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='group flex items-center justify-between focus:bg-error/40 dark:focus:bg-error/40'>
-          <span className='text-error'>Delete</span>
-          <Icons.delete className='h-4 w-4 stroke-error' />
+        <DropdownMenuItem className='group flex items-center justify-between text-error focus:bg-error/40 dark:focus:bg-error/40'>
+          <span>Delete</span>
+          <Icons.delete className='h-4 w-4' />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -21,6 +21,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components//ui/dropdown-menu';
 import { Input } from '@/components//ui/input';
@@ -147,6 +148,22 @@ export const columns: ColumnDef<Schema>[] = [
   },
 ];
 
+const selectedActions = [
+  {
+    name: 'delete',
+    icon: 'delete',
+    style: 'text-error focus:bg-error/40 dark:focus:bg-error/40',
+    onSelect: (selectedSchemaIds: string[]) => {
+      console.log(selectedSchemaIds);
+    },
+  },
+] satisfies {
+  name: string;
+  icon: keyof typeof Icons;
+  style: string;
+  onSelect: (selectedSchemaIds: string[]) => void;
+}[];
+
 type SchemasDataTableProps = {
   data: Schema[];
 };
@@ -184,19 +201,54 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
   return (
     <div className='flex flex-1 flex-col gap-3'>
       <div className='flex items-center justify-between gap-5'>
-        <Input
-          placeholder='Filter schemas by name...'
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
-          className='max-w-xs'
-        />
+        <div className='flex flex-1 items-center gap-4'>
+          <Input
+            placeholder='Filter schemas by name...'
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+            onChange={(event) =>
+              table.getColumn('name')?.setFilterValue(event.target.value)
+            }
+            className='max-w-xs'
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='outline'
+                className='dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
+                Actions <Icons.chevronDown className='ml-2 h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='start' className='w-32'>
+              {selectedActions.map((action) => {
+                const Icon = Icons[action.icon];
+
+                return (
+                  <DropdownMenuItem
+                    key={action.name}
+                    className={cn(
+                      'flex items-center justify-between capitalize',
+                      action.style
+                    )}
+                    onSelect={() =>
+                      action.onSelect(
+                        table
+                          .getFilteredSelectedRowModel()
+                          .rows.map((row) => row.id)
+                      )
+                    }>
+                    <span>{action.name}</span>
+                    <Icon className='h-4 w-4' />
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant='outline'
-              className='ml-auto dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
+              className='dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
               Columns <Icons.chevronDown className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>

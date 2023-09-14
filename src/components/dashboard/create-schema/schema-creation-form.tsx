@@ -53,6 +53,7 @@ const schemaCreationSchema = z.object({
 const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const router = useRouter();
 
+  // Schema storage related properties and actions
   const {
     name,
     setSchemaName,
@@ -61,6 +62,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     resetSchema,
   } = useSchemaCreationStore();
 
+  // Initializing form
   const form = useForm<z.infer<typeof schemaCreationSchema>>({
     resolver: zodResolver(schemaCreationSchema),
     defaultValues: {
@@ -68,15 +70,18 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     },
   });
 
+  // Client state
   const [selectedSchemaField, setSelectedSchemaField] = useState<
     keyof typeof FieldDialogs | null
   >();
   const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
 
+  // Setting schema fields according to a state stored in localStorage
   useEffect(() => {
     setSchemaFields(storedFields);
   }, []);
 
+  // Handle active dialog state
   const handleFieldDialogOpenChange = (open: boolean) => {
     !open && setSelectedSchemaField(null);
   };
@@ -86,6 +91,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     resetSchema();
   };
 
+  // CRUD schema fields methods
   const addSchemaField = (schemaField: FieldType): boolean => {
     const isUnique = !schemaFields.some(
       (field) => field.name === schemaField.name && field.id !== schemaField.id
@@ -120,6 +126,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     return true;
   };
 
+  // Update schemas with passed value or update only global store after reorder
   const updateSchemaFields = (fields?: FieldType[]) => {
     if (fields) {
       setSchemaFields(fields);
@@ -129,10 +136,12 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     }
   };
 
+  // Update global schema name
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSchemaName(e.target.value);
   };
 
+  // Handle submittion
   const onSubmit = async (values: z.infer<typeof schemaCreationSchema>) => {
     console.log(values);
   };
