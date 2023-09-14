@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, createElement, useEffect, useState } from 'react';
+import { ChangeEvent, FC, createElement, useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -37,7 +37,7 @@ import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs
 
 import { cn } from '@/lib/utils';
 
-import { useFieldsStore } from '@/context/fields-store';
+import { useSchemaCreationStore } from '@/context/schema-creation-store';
 import { FieldType } from '@/schemas/fields-schemas';
 import FieldDraggable from './field-draggable';
 
@@ -52,7 +52,13 @@ const schemaCreationSchema = z.object({
 const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const router = useRouter();
 
-  const { fields: storedFields, setFields } = useFieldsStore();
+  const {
+    name,
+    setSchemaName,
+    fields: storedFields,
+    setFields,
+    resetSchema,
+  } = useSchemaCreationStore();
 
   const form = useForm<z.infer<typeof schemaCreationSchema>>({
     resolver: zodResolver(schemaCreationSchema),
@@ -76,6 +82,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   const handleCancelClick = () => {
     router.back();
+    resetSchema();
   };
 
   const addSchemaField = (schemaField: FieldType): boolean => {
@@ -121,6 +128,10 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     }
   };
 
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSchemaName(e.target.value);
+  };
+
   const onSubmit = async (values: z.infer<typeof schemaCreationSchema>) => {
     console.log(values);
   };
@@ -140,9 +151,11 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                   <FormLabel>Schema name</FormLabel>
                   <FormControl>
                     <Input
-                      className='text-lg'
+                      className='text-lg text-oxford-blue-dark dark:text-oxford-blue-dark'
                       placeholder='Your schema name...'
                       {...field}
+                      value={name}
+                      onChange={handleNameChange}
                     />
                   </FormControl>
                   <FormMessage />

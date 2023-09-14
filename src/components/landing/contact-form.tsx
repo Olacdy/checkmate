@@ -60,7 +60,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Input className='input' placeholder='John' {...field} />
+                <Input placeholder='John' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -72,7 +72,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Input className='input' placeholder='Doe' {...field} />
+                <Input placeholder='Doe' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -84,11 +84,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Input
-                  className='input'
-                  placeholder='john.doe@example.com'
-                  {...field}
-                />
+                <Input placeholder='john.doe@example.com' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
