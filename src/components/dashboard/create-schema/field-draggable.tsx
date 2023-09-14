@@ -7,10 +7,11 @@ import { Reorder } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 
+import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
+
 import { Icons } from '@/components/icons';
 
 import { FieldType } from '@/schemas/fields-schemas';
-import { FieldDialogs } from './field-dialogs';
 
 type FieldDraggableProps = {
   value: FieldType;

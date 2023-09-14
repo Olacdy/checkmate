@@ -33,13 +33,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { useSchemaCreationStore } from '@/context/schema-creation-store';
+
 import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
+import FieldDraggable from '@/components/dashboard/create-schema/field-draggable';
 
 import { cn } from '@/lib/utils';
 
-import { useSchemaCreationStore } from '@/context/schema-creation-store';
 import { FieldType } from '@/schemas/fields-schemas';
-import FieldDraggable from './field-draggable';
 
 type SchemaCreationFormProps = {};
 

@@ -35,9 +35,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
+
 import { Icons } from '@/components/icons';
+
 import { cn, formatDate } from '@/lib/utils';
-import MoreSchemasActions from './more-schemas-actions';
 
 export const columns: ColumnDef<Schema>[] = [
   {
