@@ -24,12 +24,10 @@ export const addSchemaSchema = z
   })
   .merge(schemaSchema);
 
-export const editSchemaSchema = z
-  .object({
-    id: z.string().uuid(),
-  })
-  .merge(addSchemaSchema.partial());
-
 export const deleteSchemaSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().cuid(),
 });
+
+export const editSchemaSchema = deleteSchemaSchema.merge(
+  addSchemaSchema.partial()
+);

@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from '@/server/trpc';
+import { createTRPCRouter, protectedProcedure } from '@/server/trpc';
 
 import { prisma } from '@/lib/db';
 
@@ -8,8 +8,8 @@ import {
   editSchemaSchema,
 } from '@/schemas/schemas-schema';
 
-export const schemaRouter = router({
-  getSchemas: publicProcedure.query(async () => {
+export const schemaRouter = createTRPCRouter({
+  getSchemas: protectedProcedure.query(async () => {
     return await prisma.schema.findMany();
   }),
   addSchema: protectedProcedure

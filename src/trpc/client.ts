@@ -1,14 +1,42 @@
-import { createTRPCReact, httpBatchLink } from '@trpc/react-query';
+'use client';
 
-import { type AppRouter } from '@/server';
-import { getUrl } from './shared';
+import { httpBatchLink, loggerLink } from '@trpc/client';
+import {
+  experimental_createActionHook,
+  experimental_createTRPCNextAppDirClient,
+  experimental_serverActionLink,
+} from '@trpc/next/app-dir/client';
 
-export const trpc = createTRPCReact<AppRouter>({});
+import { type AppRouter } from '@/server/index';
+import { getUrl, transformer } from './shared';
 
-export const client = trpc.createClient({
-  links: [
-    httpBatchLink({
-      url: getUrl(),
-    }),
-  ],
+export const api = experimental_createTRPCNextAppDirClient<AppRouter>({
+  config() {
+    return {
+      transformer,
+      links: [
+        loggerLink({
+          enabled: (op) =>
+            process.env.NODE_ENV === 'development' ||
+            (op.direction === 'down' && op.result instanceof Error),
+        }),
+        httpBatchLink({
+          url: getUrl(),
+          headers() {
+            return {
+              'x-trpc-source': 'client',
+            };
+          },
+        }),
+      ],
+    };
+  },
 });
+
+export const useAction = experimental_createActionHook({
+  links: [loggerLink(), experimental_serverActionLink()],
+  transformer,
+});
+
+/** Export type helpers */
+export type * from './shared';

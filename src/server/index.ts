@@ -1,8 +1,14 @@
-import { schemaRouter } from './routes/schema';
-import { router } from './trpc';
+import { schemaRouter } from '@/server/routers/schema';
+import { createTRPCRouter } from '@/server/trpc';
 
-export const appRouter = router({
+/**
+ * This is the primary router for your server.
+ *
+ * All routers added in /api/routers should be manually added here.
+ */
+export const appRouter = createTRPCRouter({
   schema: schemaRouter,
 });
 
+// export type definition of API
 export type AppRouter = typeof appRouter;

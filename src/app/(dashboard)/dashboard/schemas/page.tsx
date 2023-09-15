@@ -11,12 +11,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+import { api } from '@/trpc/server';
+
 import SchemasDataTable from '@/components/dashboard/schemas-datatable';
-import { featuredSchemas } from '@/helpers/data';
 
 type pageProps = {};
 
-const page: FC<pageProps> = ({}) => {
+const page: FC<pageProps> = async ({}) => {
+  const schemas = await api.schema.getSchemas.query();
+
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
       <CardHeader className='flex w-full flex-row items-center justify-between space-y-0'>
@@ -31,7 +34,7 @@ const page: FC<pageProps> = ({}) => {
         </Link>
       </CardHeader>
       <CardContent className='flex flex-1'>
-        <SchemasDataTable data={featuredSchemas} />
+        <SchemasDataTable initialSchemas={schemas} />
       </CardContent>
     </Card>
   );

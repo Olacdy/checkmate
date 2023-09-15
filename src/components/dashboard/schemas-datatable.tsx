@@ -35,10 +35,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useToast } from '@/components/ui/use-toast';
 
 import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
 
 import { Icons } from '@/components/icons';
+
+import { trpc } from '@/trpc/client';
 
 import { cn, formatDate } from '@/lib/utils';
 
@@ -148,27 +151,26 @@ export const columns: ColumnDef<Schema>[] = [
   },
 ];
 
-const selectedActions = [
-  {
-    name: 'delete',
-    icon: 'delete',
-    style: 'text-error focus:bg-error/40 dark:focus:bg-error/40',
-    onSelect: (selectedSchemaIds: string[]) => {
-      console.log(selectedSchemaIds);
-    },
-  },
-] satisfies {
-  name: string;
-  icon: keyof typeof Icons;
-  style: string;
-  onSelect: (selectedSchemaIds: string[]) => void;
-}[];
-
 type SchemasDataTableProps = {
-  data: Schema[];
+  initialSchemas: Schema[];
 };
 
-const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
+const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
+  const { toast } = useToast();
+
+  const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
+    // @ts-ignore
+    initialData: initialSchemas,
+  });
+
+  const data = getSchemas.data;
+
+  const deleteSchema = trpc.schema.deleteSchema.useMutation({
+    onSettled: () => {
+      getSchemas.refetch();
+    },
+  });
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -197,6 +199,30 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
       },
     },
   });
+
+  const selectedActions = [
+    {
+      name: 'delete',
+      icon: 'delete',
+      style: 'text-error focus:bg-error/40 dark:focus:bg-error/40',
+      onSelect: (selectedSchemaIds: string[]) => {
+        selectedSchemaIds.forEach((selectedSchemaId) => {
+          deleteSchema.mutate({ id: selectedSchemaId });
+        });
+
+        if (selectedSchemaIds.length > 0)
+          toast({
+            title: `${selectedSchemaIds.length} schemas deleted`,
+            variant: 'success',
+          });
+      },
+    },
+  ] satisfies {
+    name: string;
+    icon: keyof typeof Icons;
+    style: string;
+    onSelect: (selectedSchemaIds: string[]) => void;
+  }[];
 
   return (
     <div className='flex flex-1 flex-col gap-3'>
@@ -325,7 +351,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ data }) => {
                 <TableCell
                   colSpan={columns.length}
                   className='h-24 text-center'>
-                  No results.
+                  No schemas for now, try to create one.
                 </TableCell>
               </TableRow>
             )}

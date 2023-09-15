@@ -1,5 +1,3 @@
-import { type Schema } from '@prisma/client';
-
 import { Icons } from '@/components/icons';
 
 export const about = [
@@ -80,28 +78,3 @@ export const sideBarButtons = [
   text: string;
   icon: keyof typeof Icons;
 }[];
-
-// TODO: Delete later
-export const featuredSchemas = [
-  {
-    id: '978a594f-592b-4403-95ce-95a630dc8ee1',
-    name: 'Schema 1',
-    createdAt: new Date(2023, 8, 20),
-    successes: 100,
-    errors: 10,
-  },
-  {
-    id: '0562cd58-53dd-4190-82df-dba2bf8d8bb9',
-    name: 'Schema 2',
-    createdAt: new Date(2023, 8, 23),
-    successes: 30,
-    errors: 3,
-  },
-  {
-    id: '8d10b7b9-5300-4a0e-8133-0fa024d20bb4',
-    name: 'Schema 3',
-    createdAt: new Date(2023, 8, 27),
-    successes: 20,
-    errors: 1,
-  },
-] as Schema[];

@@ -1,16 +1,17 @@
 import { clsx, type ClassValue } from 'clsx';
-
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { type Schema } from '@prisma/client';
 
-export function calculateDocumentScale(
+export const cn = (...inputs: ClassValue[]) => {
+  return twMerge(clsx(inputs));
+};
+
+export const calculateDocumentScale = (
   percentOfScreenHeightScrolled: number,
   maxPercent: number,
   minPercent: number
-) {
+) => {
   const gap = 12;
   const multiplier = 10;
 
@@ -34,9 +35,9 @@ export function calculateDocumentScale(
   const outputMax = 100;
 
   return (input / inputMax) * outputMax;
-}
+};
 
-export function formatDate(date: Date): string {
+export const formatDate = (date: Date | string): string => {
   const months = [
     'Jan',
     'Feb',
@@ -52,9 +53,29 @@ export function formatDate(date: Date): string {
     'Dec',
   ];
 
-  const day = date.getDate();
-  const month = months[date.getMonth() - 1];
-  const year = date.getFullYear() % 100;
+  const newDate = new Date(date);
+
+  const day = newDate.getDate();
+  const month = months[newDate.getMonth() - 1];
+  const year = newDate.getFullYear() % 100;
 
   return `${day} ${month}. ${year}`;
-}
+};
+
+export const getSchemasStats = (schemas: Schema[]) => {
+  const totalValidations = schemas.reduce((accumulator, schema) => {
+    return accumulator + schema.successes + schema.errors;
+  }, 0);
+
+  const totalSuccesses = schemas.reduce((accumulator, schema) => {
+    return accumulator + schema.successes;
+  }, 0);
+
+  const totalErros = totalValidations - totalSuccesses;
+
+  return {
+    validations: totalValidations,
+    successes: totalSuccesses,
+    errors: totalErros,
+  };
+};

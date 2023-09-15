@@ -154,8 +154,6 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const onSubmit = async (values: z.infer<typeof schemaSchema>) => {
     const createdSchema = createSchema(schemaFields);
 
-    console.log(values.name);
-
     await addSchema.mutateAsync({
       name: values.name,
       schema: JSON.stringify(zodToJsonSchema(createdSchema, values.name)),
