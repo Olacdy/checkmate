@@ -21,7 +21,7 @@ import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
 
 import { Icons } from '@/components/icons';
 
-import { api } from '@/trpc/client';
+import { trpc } from '@/trpc/client';
 
 import { formatDate } from '@/lib/utils';
 
@@ -29,14 +29,18 @@ type FeaturedSchemasProps = {
   initialSchemas: Schema[];
 };
 
-const FeaturedSchemas: FC<FeaturedSchemasProps> = async ({
-  initialSchemas,
-}) => {
+const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
   const { toast } = useToast();
 
-  const schemas = await api.schema.getSchemas.query();
+  const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
+    initialData: initialSchemas,
+  });
 
-  const deleteSchema = api.schema.deleteSchema;
+  const deleteSchema = trpc.schema.deleteSchema.useMutation({
+    onSettled: () => {
+      getSchemas.refetch();
+    },
+  });
 
   const handleCopy = (schemaId: string) => {
     toast({
@@ -54,11 +58,11 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = async ({
 
   return (
     <div className='flex flex-1'>
-      {schemas.length !== 0 ? (
+      {getSchemas?.data?.length !== 0 ? (
         <div className='flex w-full flex-1 flex-col justify-end gap-5'>
           <span className='text-2xl'>Featured schemas</span>
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3-featured-schemas'>
-            {schemas.slice(0, 3).map((featuredSchema) => {
+            {getSchemas?.data?.slice(0, 3).map((featuredSchema) => {
               const { id, name, createdAt, successes, errors } = featuredSchema;
 
               return (

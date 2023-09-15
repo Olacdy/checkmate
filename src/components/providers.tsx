@@ -6,9 +6,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { SessionProvider } from 'next-auth/react';
 
-import { LazyMotion, domMax } from 'framer-motion';
+import { client, trpc } from '@/trpc/client';
 
-import { Toaster } from '@/components/ui/toaster';
+import { LazyMotion, domMax } from 'framer-motion';
 
 import ActiveSectionContextProvider from '@/context/active-section-context';
 import ThemeContextProvider from '@/context/theme-context';
@@ -19,9 +19,10 @@ type ProvidersProps = {
 
 const Providers: FC<ProvidersProps> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient({}));
+  const [trpcClient] = useState(client);
 
   return (
-    <>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
           <ThemeContextProvider>
@@ -31,8 +32,7 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
           </ThemeContextProvider>
         </SessionProvider>
       </QueryClientProvider>
-      <Toaster />
-    </>
+    </trpc.Provider>
   );
 };
 

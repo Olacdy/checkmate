@@ -11,14 +11,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import { api } from '@/trpc/server';
+import { serverClient } from '@/trpc/server';
 
 import SchemasDataTable from '@/components/dashboard/schemas-datatable';
 
 type pageProps = {};
 
 const page: FC<pageProps> = async ({}) => {
-  const schemas = await api.schema.getSchemas.query();
+  const schemas = await serverClient.schema.getSchemas();
 
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>

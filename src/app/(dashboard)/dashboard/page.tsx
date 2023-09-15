@@ -10,15 +10,16 @@ import {
 
 import { Icons } from '@/components/icons';
 
-import { api } from '@/trpc/server';
+import FeaturedSchemas from '@/components/dashboard/featured-schemas';
 
 import { getSchemasStats } from '@/lib/utils';
+import { serverClient } from '@/trpc/server';
 
 type pageProps = {};
 
 const page: FC<pageProps> = async ({}) => {
-  const schemas = await api.schema.getSchemas.query();
-  
+  const schemas = await serverClient.schema.getSchemas();
+
   const { validations, successes, errors } = getSchemasStats(schemas);
 
   return (
@@ -60,7 +61,7 @@ const page: FC<pageProps> = async ({}) => {
           </Card>
         </div>
 
-        {/* <FeaturedSchemas initialSchemas={schemas} /> */}
+        <FeaturedSchemas initialSchemas={schemas} />
       </CardContent>
     </Card>
   );

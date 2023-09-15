@@ -37,7 +37,7 @@ export const calculateDocumentScale = (
   return (input / inputMax) * outputMax;
 };
 
-export const formatDate = (date: Date | string): string => {
+export const formatDate = (date: Date): string => {
   const months = [
     'Jan',
     'Feb',
@@ -53,11 +53,9 @@ export const formatDate = (date: Date | string): string => {
     'Dec',
   ];
 
-  const newDate = new Date(date);
-
-  const day = newDate.getDate();
-  const month = months[newDate.getMonth() - 1];
-  const year = newDate.getFullYear() % 100;
+  const day = date.getDate();
+  const month = months[date.getMonth() - 1];
+  const year = date.getFullYear() % 100;
 
   return `${day} ${month}. ${year}`;
 };

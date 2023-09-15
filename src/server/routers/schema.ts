@@ -1,25 +1,24 @@
-import { createTRPCRouter, protectedProcedure } from '@/server/trpc';
-
-import { prisma } from '@/lib/db';
+import { protectedProcedure, router } from '@/server/trpc';
 
 import {
   addSchemaSchema,
   deleteSchemaSchema,
   editSchemaSchema,
 } from '@/schemas/schemas-schema';
+import { prisma } from '@/lib/db';
 
-export const schemaRouter = createTRPCRouter({
+export const schemaRouter = router({
   getSchemas: protectedProcedure.query(async () => {
     return await prisma.schema.findMany();
   }),
   addSchema: protectedProcedure
     .input(addSchemaSchema)
-    .mutation(async (opts) => {
+    .mutation(async ({ctx, input }) => {
       await prisma.schema.create({
         data: {
-          name: opts.input.name,
-          schema: JSON.parse(opts.input.schema),
-          userId: opts.ctx.session.user.id,
+          name: input.name,
+          schema: JSON.parse(input.schema),
+          userId: ctx.session.user.id,
         },
       });
 
@@ -27,13 +26,13 @@ export const schemaRouter = createTRPCRouter({
     }),
   editSchema: protectedProcedure
     .input(editSchemaSchema)
-    .mutation(async (opts) => {
+    .mutation(async ({ ctx, input }) => {
       await prisma.schema.update({
-        where: { id: opts.input.id },
+        where: { id: input.id },
         data: {
-          name: opts.input.name,
-          schema: opts.input.schema && JSON.parse(opts.input.schema),
-          userId: opts.ctx.session.user.id,
+          name: input.name,
+          schema: input.schema && JSON.parse(input.schema),
+          userId: ctx.session.user.id,
         },
       });
 
@@ -41,9 +40,9 @@ export const schemaRouter = createTRPCRouter({
     }),
   deleteSchema: protectedProcedure
     .input(deleteSchemaSchema)
-    .mutation(async (opts) => {
+    .mutation(async ({ input }) => {
       await prisma.schema.delete({
-        where: { id: opts.input.id },
+        where: { id: input.id },
       });
 
       return true;

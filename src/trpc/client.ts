@@ -1,42 +1,23 @@
-'use client';
+import { createTRPCReact, httpBatchLink, loggerLink } from '@trpc/react-query';
 
-import { httpBatchLink, loggerLink } from '@trpc/client';
-import {
-  experimental_createActionHook,
-  experimental_createTRPCNextAppDirClient,
-  experimental_serverActionLink,
-} from '@trpc/next/app-dir/client';
+import superjson from 'superjson';
 
-import { type AppRouter } from '@/server/index';
-import { getUrl, transformer } from './shared';
+import { type AppRouter } from '@/server';
 
-export const api = experimental_createTRPCNextAppDirClient<AppRouter>({
-  config() {
-    return {
-      transformer,
-      links: [
-        loggerLink({
-          enabled: (op) =>
-            process.env.NODE_ENV === 'development' ||
-            (op.direction === 'down' && op.result instanceof Error),
-        }),
-        httpBatchLink({
-          url: getUrl(),
-          headers() {
-            return {
-              'x-trpc-source': 'client',
-            };
-          },
-        }),
-      ],
-    };
-  },
+import { getUrl } from './shared';
+
+export const trpc = createTRPCReact<AppRouter>({});
+
+export const client = trpc.createClient({
+  transformer: superjson,
+  links: [
+    loggerLink({
+      enabled: (op) =>
+        process.env.NODE_ENV === 'development' ||
+        (op.direction === 'down' && op.result instanceof Error),
+    }),
+    httpBatchLink({
+      url: getUrl(),
+    }),
+  ],
 });
-
-export const useAction = experimental_createActionHook({
-  links: [loggerLink(), experimental_serverActionLink()],
-  transformer,
-});
-
-/** Export type helpers */
-export type * from './shared';
