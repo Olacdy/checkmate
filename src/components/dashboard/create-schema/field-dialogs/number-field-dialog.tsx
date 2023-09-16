@@ -52,17 +52,6 @@ const NumberFieldDialog: FC<NumberFieldDialogProps> = ({
   });
 
   const onSubmit = (values: z.infer<typeof numberFieldSchema>) => {
-    if (values.min && values.max && values.min >= values.max) {
-      form.setError('min', {
-        message: 'Should be less than max.',
-      });
-      form.setError('max', {
-        message: 'Should be bigger than min.',
-      });
-
-      return;
-    }
-
     const result = updateSchemaFields({
       ...values,
       id: defaultValues ? defaultValues.id : uuidv4(),

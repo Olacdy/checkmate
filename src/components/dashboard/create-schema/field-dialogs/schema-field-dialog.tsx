@@ -53,21 +53,6 @@ const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
   });
 
   const onSubmit = (values: z.infer<typeof stringFieldSchema>) => {
-    if (
-      values.minLength &&
-      values.maxLength &&
-      values.minLength >= values.maxLength
-    ) {
-      form.setError('minLength', {
-        message: 'Should be less than max length.',
-      });
-      form.setError('maxLength', {
-        message: 'Should be bigger than min length.',
-      });
-
-      return;
-    }
-
     console.log(values);
 
     closeDialog();

@@ -61,17 +61,6 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
   });
 
   const onSubmit = (values: z.infer<typeof dateFieldSchema>) => {
-    if (values.from && values.to && values.from >= values.to) {
-      form.setError('from', {
-        message: 'Should be before "To".',
-      });
-      form.setError('to', {
-        message: 'Should be after "From".',
-      });
-
-      return;
-    }
-
     const result = updateSchemaFields({
       ...values,
       id: defaultValues ? defaultValues.id : uuidv4(),
@@ -164,9 +153,7 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
                         mode='single'
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date('1900-01-01')
-                        }
+                        disabled={(date) => date < new Date('1900-01-01')}
                         initialFocus
                       />
                     </PopoverContent>
@@ -204,9 +191,7 @@ const DateFieldDialog: FC<DateFieldDialogProps> = ({
                         mode='single'
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date('1900-01-01')
-                        }
+                        disabled={(date) => date < new Date('1900-01-01')}
                         initialFocus
                       />
                     </PopoverContent>

@@ -8,7 +8,9 @@ import {
   ChevronUp,
   CloudCog,
   CopyPlus,
+  FileCode,
   GripVertical,
+  Hash,
   LogOut,
   Moon,
   MoreHorizontal,
@@ -16,6 +18,7 @@ import {
   Sliders,
   Sun,
   Trash2,
+  Type,
   X,
   XCircle,
   type LucideIcon,
@@ -43,6 +46,9 @@ export const Icons = {
   review: Search,
   sort: ArrowUpDown,
   calendar: Calendar,
+  string: Type,
+  number: Hash,
+  schema: FileCode,
   menu: ({ ...props }: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'

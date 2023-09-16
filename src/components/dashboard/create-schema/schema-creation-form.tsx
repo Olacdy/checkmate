@@ -37,7 +37,6 @@ import { useToast } from '@/components/ui/use-toast';
 
 import { useSchemaCreationStore } from '@/context/schema-creation-store';
 
-import { FieldDialogs } from '@/components/dashboard/create-schema/field-dialogs';
 import FieldDraggable from '@/components/dashboard/create-schema/field-draggable';
 
 import { trpc } from '@/trpc/client';
@@ -45,6 +44,7 @@ import { trpc } from '@/trpc/client';
 import { createSchema } from '@/lib/create-schema';
 import { cn } from '@/lib/utils';
 
+import { fields } from '@/helpers/data';
 import { FieldType } from '@/schemas/fields-schemas';
 import { schemaSchema } from '@/schemas/schemas-schema';
 
@@ -77,10 +77,13 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   });
 
   // Client state
-  const [selectedSchemaField, setSelectedSchemaField] = useState<
-    keyof typeof FieldDialogs | null
+  const [openedDialog, setOpenedDialog] = useState<
+    (typeof fields)[number]['name'] | undefined
   >();
   const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
+
+  const dialogToOpen = fields.find((field) => field.name === openedDialog)
+    ?.dialog;
 
   // Setting schema fields according to a state stored in localStorage
   useEffect(() => {
@@ -88,8 +91,8 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   }, []);
 
   // Handle active dialog state
-  const handleFieldDialogOpenChange = (open: boolean) => {
-    !open && setSelectedSchemaField(null);
+  const handleOpenedDialogChange = (open: boolean) => {
+    !open && setOpenedDialog(undefined);
   };
 
   const handleCancelClick = () => {
@@ -152,6 +155,14 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof schemaSchema>) => {
+    if (schemaFields.length < 1) {
+      toast({
+        variant: 'destructive',
+        title: 'Please, add at least one field.',
+      });
+      return;
+    }
+
     const createdSchema = createSchema(schemaFields);
 
     await addSchema.mutateAsync({
@@ -215,7 +226,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
       </Form>
       <Card className='flex flex-1 flex-col gap-5 border-0 bg-transparent dark:bg-transparent'>
         <CardTitle className='pl-5'>Fields</CardTitle>
-        <Card className='flex flex-1 bg-transparent dark:bg-transparent'>
+        <Card className='flex flex-1 border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
           <CardContent
             className={cn('flex flex-1 flex-col items-center justify-between', {
               'justify-center p-0 pl-2': schemaFields.length === 0,
@@ -238,8 +249,8 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               })}
             </Reorder.Group>
             <Dialog
-              open={!!selectedSchemaField}
-              onOpenChange={handleFieldDialogOpenChange}>
+              open={!!openedDialog}
+              onOpenChange={handleOpenedDialogChange}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -267,28 +278,26 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                 <DropdownMenuContent className='w-56'>
                   <DropdownMenuLabel>Select field type</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {Object.keys(FieldDialogs).map((fieldType) => {
+                  {fields.map((field) => {
+                    const Icon = Icons[field.icon];
+
                     return (
-                      <DialogTrigger
-                        asChild
-                        key={fieldType}
-                        onSelect={() =>
-                          setSelectedSchemaField(
-                            fieldType as keyof typeof FieldDialogs
-                          )
-                        }>
-                        <DropdownMenuItem className='capitalize'>
-                          {fieldType}
+                      <DialogTrigger asChild key={field.type}>
+                        <DropdownMenuItem
+                          className='flex items-center gap-2 capitalize'
+                          onSelect={() => setOpenedDialog(field.name)}>
+                          <Icon className='h-5 w-5' />
+                          <span>{field.name}</span>
                         </DropdownMenuItem>
                       </DialogTrigger>
                     );
                   })}
                 </DropdownMenuContent>
               </DropdownMenu>
-              {selectedSchemaField &&
-                createElement(FieldDialogs[selectedSchemaField], {
+              {dialogToOpen &&
+                createElement(dialogToOpen, {
                   updateSchemaFields: addSchemaField,
-                  closeDialog: () => handleFieldDialogOpenChange(false),
+                  closeDialog: () => handleOpenedDialogChange(false),
                 })}
             </Dialog>
           </CardContent>

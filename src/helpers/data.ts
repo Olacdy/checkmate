@@ -1,3 +1,9 @@
+import FieldDialogType from '@/components/dashboard/create-schema/field-dialogs';
+import DateFieldDialog from '@/components/dashboard/create-schema/field-dialogs/date-field-dialog';
+import NumberFieldDialog from '@/components/dashboard/create-schema/field-dialogs/number-field-dialog';
+import SchemaFieldDialog from '@/components/dashboard/create-schema/field-dialogs/schema-field-dialog';
+import StringFieldDialog from '@/components/dashboard/create-schema/field-dialogs/string-field-dialog';
+
 import { Icons } from '@/components/icons';
 
 export const about = [
@@ -77,4 +83,36 @@ export const sideBarButtons = [
   path: string;
   text: string;
   icon: keyof typeof Icons;
+}[];
+
+export const fields = [
+  {
+    name: 'string',
+    icon: 'string',
+    type: 'string',
+    dialog: StringFieldDialog,
+  },
+  {
+    name: 'number',
+    icon: 'number',
+    type: 'number',
+    dialog: NumberFieldDialog,
+  },
+  {
+    name: 'date',
+    icon: 'calendar',
+    type: 'date',
+    dialog: DateFieldDialog,
+  },
+  {
+    name: 'schema',
+    icon: 'schema',
+    type: 'schema',
+    dialog: SchemaFieldDialog,
+  },
+] satisfies {
+  name: string;
+  icon: keyof typeof Icons;
+  type: string;
+  dialog: FieldDialogType;
 }[];

@@ -52,20 +52,52 @@ export const stringFieldSchema = fieldPropertiesSchema
     }
   });
 
-export const numberFieldSchema = fieldPropertiesSchema.merge(
-  z.object({
-    isInt: z.boolean().optional(),
-    min: z.union([z.coerce.number(), z.literal('')]).optional(),
-    max: z.union([z.coerce.number(), z.literal('')]).optional(),
-  })
-);
+export const numberFieldSchema = fieldPropertiesSchema
+  .merge(
+    z.object({
+      isInt: z.boolean().optional(),
+      min: z.union([z.coerce.number(), z.literal('')]).optional(),
+      max: z.union([z.coerce.number(), z.literal('')]).optional(),
+    })
+  )
+  .superRefine((val, ctx) => {
+    if (val.min && val.max && val.min > val.max) {
+      ctx.addIssue({
+        path: ['min'],
+        code: z.ZodIssueCode.custom,
+        message: 'Should be less than max.',
+      });
 
-export const dateFieldSchema = fieldPropertiesSchema.merge(
-  z.object({
-    from: z.date().optional(),
-    to: z.date().optional(),
-  })
-);
+      ctx.addIssue({
+        path: ['max'],
+        code: z.ZodIssueCode.custom,
+        message: 'Should be bigger than min.',
+      });
+    }
+  });
+
+export const dateFieldSchema = fieldPropertiesSchema
+  .merge(
+    z.object({
+      from: z.date().optional(),
+      to: z.date().optional(),
+    })
+  )
+  .superRefine((val, ctx) => {
+    if (val.from && val.to && val.from > val.to) {
+      ctx.addIssue({
+        path: ['from'],
+        code: z.ZodIssueCode.custom,
+        message: 'Should be before "To".',
+      });
+
+      ctx.addIssue({
+        path: ['to'],
+        code: z.ZodIssueCode.custom,
+        message: 'Should be after "From".',
+      });
+    }
+  });
 
 export type FieldType =
   | (z.infer<typeof stringFieldSchema> & { type: 'string' })

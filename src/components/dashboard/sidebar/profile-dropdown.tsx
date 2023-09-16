@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ThemeSwitchDropdown } from '@/components/ui/theme-switch-dropdown';
 
+import { Button } from '@/components/ui/button';
 import { useTheme } from '@/context/theme-context';
 
 type ProfileDropdownProps = {
@@ -34,19 +35,23 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({ name, email, image }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className='flex items-center justify-between rounded-full p-px hover:bg-slate-500/30 focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:bg-slate-100/20 xl:w-full xl:rounded-md xl:p-2 xl:pl-3'>
-        <div className='flex items-center gap-4'>
-          <Avatar>
-            <AvatarImage src={image} alt={`${name} profile picture`} />
-            <AvatarFallback className='border-[1px] border-oxford-blue bg-off-white shadow-md dark:bg-off-white'>
-              {name.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-          <span className='hidden text-lg font-semibold text-slate-800 dark:font-normal dark:text-off-white xl:block'>
-            {name}
-          </span>
-        </div>
-        <Icons.chevronUp className='hidden stroke-slate-800 dark:stroke-off-white xl:block' />
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant='ghost'
+          className='flex items-center justify-between rounded-full p-0 hover:bg-slate-50 focus-visible:ring-0 focus-visible:ring-offset-0 dark:hover:bg-slate-200/30 dark:focus-visible:ring-0 dark:focus-visible:ring-offset-0 xl:w-full xl:rounded-md xl:px-3 xl:py-7'>
+          <div className='flex items-center gap-4'>
+            <Avatar>
+              <AvatarImage src={image} alt={`${name} profile picture`} />
+              <AvatarFallback className='border-[1px] border-oxford-blue bg-off-white shadow-md dark:bg-off-white'>
+                {name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <span className='hidden text-lg font-semibold text-slate-800 dark:font-normal dark:text-off-white xl:block'>
+              {name}
+            </span>
+          </div>
+          <Icons.chevronUp className='hidden stroke-slate-800 dark:stroke-off-white xl:block' />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-64'>
         <DropdownMenuLabel className='text-oxford-blue-dark/60 dark:text-off-white/60'>
