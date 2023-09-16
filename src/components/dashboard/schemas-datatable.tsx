@@ -37,12 +37,13 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 
+import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
+
 import { Icons } from '@/components/icons';
 
 import { trpc } from '@/trpc/client';
 
 import { cn, formatDate } from '@/lib/utils';
-import MoreSchemasActions from './more-schemas-actions';
 
 export const columns: ColumnDef<Schema>[] = [
   {
@@ -312,12 +313,12 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='flex-1 rounded-md border border-oxford-blue/30 dark:border-slate-300/40'>
+      <div className='flex-1 rounded-md border border-oxford-blue/30 dark:border-slate-600/30'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
-                className='border-oxford-blue/30 dark:border-slate-300/40'
+                className='border-oxford-blue/30 dark:border-slate-600/30'
                 key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
@@ -340,7 +341,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className='border-oxford-blue/30 dark:border-slate-300/40'
+                  className='border-oxford-blue/30 dark:border-slate-600/30'
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => {

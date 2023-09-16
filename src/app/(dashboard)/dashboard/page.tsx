@@ -30,7 +30,7 @@ const page: FC<pageProps> = async ({}) => {
       </CardHeader>
       <CardContent className='flex flex-1 flex-col gap-5'>
         <div className='flex w-full flex-col gap-3'>
-          <Card className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+          <Card className='w-full border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
             <CardContent className='flex items-center justify-between p-3'>
               <span>Total validations:</span>
               <span className='flex items-center gap-2'>
@@ -39,7 +39,7 @@ const page: FC<pageProps> = async ({}) => {
               </span>
             </CardContent>
           </Card>
-          <Card className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+          <Card className='w-full border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
             <CardContent className='flex items-center justify-between p-3'>
               <span>Total successes:</span>
               <span className='flex items-center gap-3'>
@@ -50,7 +50,7 @@ const page: FC<pageProps> = async ({}) => {
               </span>
             </CardContent>
           </Card>
-          <Card className='w-full border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+          <Card className='w-full border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
             <CardContent className='flex items-center justify-between p-3'>
               <span>Total errors:</span>
               <span className='flex items-center gap-3'>

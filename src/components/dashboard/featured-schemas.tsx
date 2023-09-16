@@ -71,7 +71,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
               return (
                 <Card
                   key={id}
-                  className='w-full max-w-sm border-oxford-blue/30 bg-transparent dark:border-slate-300/40 dark:bg-transparent'>
+                  className='w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-100/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30'>
                   <CardHeader className='relative space-y-0 p-4'>
                     <CardTitle className='font-heading text-xl'>
                       {name}
@@ -83,14 +83,14 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
                       handleDelete={() => handleDelete(id)}
                     />
                   </CardHeader>
-                  <Separator className='bg-oxford-blue/30 dark:bg-slate-300/40' />
+                  <Separator className='bg-oxford-blue/10 dark:bg-slate-600/30' />
                   <CardFooter className='flex h-16 w-full justify-around p-2'>
                     <span className='flex flex-1 items-center justify-center gap-2'>
                       <Icons.validation className='h-6 w-6' />
                       <span className='text-lg'>{successes + errors}</span>
                     </span>
                     <Separator
-                      className='bg-oxford-blue/30 dark:bg-slate-300/40'
+                      className='bg-oxford-blue/10 dark:bg-slate-600/30'
                       orientation='vertical'
                     />
                     <span className='flex flex-1 items-center justify-center gap-2'>
@@ -100,7 +100,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
                       </span>
                     </span>
                     <Separator
-                      className='bg-oxford-blue/30 dark:bg-slate-300/40'
+                      className='bg-oxford-blue/10 dark:bg-slate-600/30'
                       orientation='vertical'
                     />
                     <span className='flex flex-1 items-center justify-center gap-2'>
