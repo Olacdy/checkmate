@@ -160,10 +160,12 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
     });
 
     resetSchema();
+
     router.replace('/dashboard/schemas');
+
     toast({
-      title: 'Schema successfully created',
       variant: 'success',
+      title: 'Schema successfully created',
     });
   };
 

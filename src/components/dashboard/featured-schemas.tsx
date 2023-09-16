@@ -45,15 +45,18 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
   const handleCopy = (schemaId: string) => {
     toast({
       variant: 'success',
-      description: (
-        <span className='font-body text-base'>Link copied to clipboard.</span>
-      ),
+      title: 'Link copied to clipboard.',
     });
     navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
   };
 
   const handleDelete = (schemaId: string) => {
     deleteSchema.mutate({ id: schemaId });
+
+    toast({
+      variant: 'success',
+      title: 'Schema successfully deleted.',
+    });
   };
 
   return (

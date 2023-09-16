@@ -37,13 +37,12 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 
-import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
-
 import { Icons } from '@/components/icons';
 
 import { trpc } from '@/trpc/client';
 
 import { cn, formatDate } from '@/lib/utils';
+import MoreSchemasActions from './more-schemas-actions';
 
 export const columns: ColumnDef<Schema>[] = [
   {
@@ -139,15 +138,6 @@ export const columns: ColumnDef<Schema>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    cell: ({ row }) => {
-      const schemaId = row.original.id;
-
-      return (
-        <div className='flex w-full items-center justify-center'>
-          <MoreSchemasActions schemaId={schemaId} />
-        </div>
-      );
-    },
   },
 ];
 
@@ -159,7 +149,6 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   const { toast } = useToast();
 
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
-    // @ts-ignore
     initialData: initialSchemas,
   });
 
@@ -170,6 +159,24 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
       getSchemas.refetch();
     },
   });
+
+  const handleCopy = (schemaId: string) => {
+    toast({
+      variant: 'success',
+      title: 'Link copied to clipboard.',
+    });
+
+    navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
+  };
+
+  const handleDelete = (schemaId: string) => {
+    deleteSchema.mutate({ id: schemaId });
+
+    toast({
+      variant: 'success',
+      title: 'Schema successfully deleted.',
+    });
+  };
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -212,7 +219,9 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
 
         if (selectedSchemaIds.length > 0)
           toast({
-            title: `${selectedSchemaIds.length} schemas deleted`,
+            title: `${selectedSchemaIds.length} ${
+              selectedSchemaIds.length > 1 ? 'schemas' : 'schema'
+            } deleted`,
             variant: 'success',
           });
       },
@@ -234,7 +243,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
             onChange={(event) =>
               table.getColumn('name')?.setFilterValue(event.target.value)
             }
-            className='max-w-xs'
+            className='max-w-xs text-oxford-blue-dark dark:text-oxford-blue-dark'
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -259,7 +268,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
                       action.onSelect(
                         table
                           .getFilteredSelectedRowModel()
-                          .rows.map((row) => row.id)
+                          .rows.map((row) => row.original.id)
                       )
                     }>
                     <span>{action.name}</span>
@@ -274,7 +283,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
           <DropdownMenuTrigger asChild>
             <Button
               variant='outline'
-              className='dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
+              className='hidden dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark xs:flex'>
               Columns <Icons.chevronDown className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
@@ -334,16 +343,32 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
                   className='border-oxford-blue/30 dark:border-slate-300/40'
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className='[&:has([role=checkbox])]:pl-3'>
-                      {flexRender(
-                        cell.column.columnDef.cell,
+                  {row.getVisibleCells().map((cell) => {
+                    let content = flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    );
+
+                    if (cell.id.includes('actions')) {
+                      content = flexRender(
+                        <div className='flex w-full items-center justify-center'>
+                          <MoreSchemasActions
+                            handleCopy={() => handleCopy(row.original.id)}
+                            handleDelete={() => handleDelete(row.original.id)}
+                          />
+                        </div>,
                         cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                      );
+                    }
+
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className='[&:has([role=checkbox])]:pl-3'>
+                        {content}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (
@@ -351,7 +376,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
                 <TableCell
                   colSpan={columns.length}
                   className='h-24 text-center'>
-                  No schemas for now, try to create one.
+                  No schemas.
                 </TableCell>
               </TableRow>
             )}
