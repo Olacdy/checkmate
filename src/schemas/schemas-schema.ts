@@ -1,32 +1,40 @@
-import { serverClient } from '@/trpc/server';
 import { z } from 'zod';
 
-export const schemaSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Schema name must be at least 2 characters.',
-  }),
+import { serverClient } from '@/trpc/server';
+
+export const schemaId = z.string().cuid();
+
+export const schemaName = z.string().min(2, {
+  message: 'Schema name must be at least 2 characters.',
 });
 
-export const addSchemaSchema = z
-  .object({
-    schema: z.string().refine(
-      (jsonString) => {
-        try {
-          JSON.parse(jsonString);
-          return true;
-        } catch (error) {
-          return false;
-        }
-      },
-      {
-        message: 'Invalid JSON schema.',
+export const createSchemaSchema = z.object({
+  id: schemaId.optional(),
+  name: schemaName,
+});
+
+export const getSchemaByIdSchema = z.object({
+  id: schemaId,
+});
+
+export const addSchemaSchema = createSchemaSchema.extend({
+  schema: z.string().refine(
+    (jsonString) => {
+      try {
+        JSON.parse(jsonString);
+        return true;
+      } catch (error) {
+        return false;
       }
-    ),
-  })
-  .merge(schemaSchema);
+    },
+    {
+      message: 'Invalid JSON schema.',
+    }
+  ),
+});
 
 export const deleteSchemaSchema = z.object({
-  id: z.string().cuid(),
+  id: schemaId,
 });
 
 export const editSchemaSchema = deleteSchemaSchema.merge(
@@ -34,5 +42,5 @@ export const editSchemaSchema = deleteSchemaSchema.merge(
 );
 
 export type SchemaType = Awaited<
-  ReturnType<typeof serverClient.schema.getSchemas>
->[number];
+  ReturnType<typeof serverClient.schema.getSchemaById>
+>;

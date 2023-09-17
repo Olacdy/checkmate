@@ -117,5 +117,5 @@ main *::-webkit-scrollbar-track {
 /* Dashboard */
 
 .dashboard-section-container {
-  @apply flex flex-1 flex-col justify-between;
+  @apply flex flex-1 flex-col justify-between rounded-b-none xl:rounded-b-lg;
 }

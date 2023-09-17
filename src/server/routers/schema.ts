@@ -5,9 +5,23 @@ import {
   addSchemaSchema,
   deleteSchemaSchema,
   editSchemaSchema,
+  getSchemaByIdSchema,
 } from '@/schemas/schemas-schema';
 
 export const schemaRouter = router({
+  getSchemaById: protectedProcedure
+    .input(getSchemaByIdSchema)
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+      const { id: userId } = ctx.session.user;
+
+      return await prisma.schema.findFirst({
+        where: { id: id, userId: userId },
+        include: {
+          validations: true,
+        },
+      });
+    }),
   getSchemas: protectedProcedure.query(async ({ ctx }) => {
     const { id: userId } = ctx.session.user;
 

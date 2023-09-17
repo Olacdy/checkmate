@@ -4,7 +4,6 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
 
 import { useForm } from 'react-hook-form';
 
@@ -37,17 +36,17 @@ import { useToast } from '@/components/ui/use-toast';
 
 import { useSchemaCreationStore } from '@/context/schema-creation-store';
 
+import FieldDialog from '@/components/dashboard/create-schema/field-dialogs';
 import FieldDraggable from '@/components/dashboard/create-schema/field-draggable';
 
 import { trpc } from '@/trpc/client';
 
-import { createSchema } from '@/lib/create-schema';
 import { cn } from '@/lib/utils';
 
-import { fields } from '@/helpers/data';
 import { FieldType } from '@/schemas/fields-schemas';
-import { schemaSchema } from '@/schemas/schemas-schema';
-import FieldDialog from './field-dialogs';
+import { createSchemaSchema } from '@/schemas/schemas-schema';
+
+import { fields } from '@/helpers/data';
 
 type SchemaCreationFormProps = {};
 
@@ -72,8 +71,8 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   } = useSchemaCreationStore();
 
   // Initializing form
-  const form = useForm<z.infer<typeof schemaSchema>>({
-    resolver: zodResolver(schemaSchema),
+  const form = useForm<z.infer<typeof createSchemaSchema>>({
+    resolver: zodResolver(createSchemaSchema),
     defaultValues: {
       name: name,
     },
@@ -155,7 +154,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   };
 
   // Handle submittion
-  const onSubmit = async (values: z.infer<typeof schemaSchema>) => {
+  const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
     if (schemaFields.length < 1) {
       toast({
         variant: 'destructive',
@@ -164,11 +163,9 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
       return;
     }
 
-    const createdSchema = createSchema(schemaFields);
-
     await addSchema.mutateAsync({
       name: values.name,
-      schema: JSON.stringify(zodToJsonSchema(createdSchema, values.name)),
+      schema: JSON.stringify(storedFields),
     });
 
     resetSchema();

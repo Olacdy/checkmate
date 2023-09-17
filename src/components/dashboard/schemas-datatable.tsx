@@ -44,6 +44,7 @@ import { trpc } from '@/trpc/client';
 import { SchemaType } from '@/schemas/schemas-schema';
 
 import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 export const columns: ColumnDef<SchemaType>[] = [
   {
@@ -152,6 +153,8 @@ type SchemasDataTableProps = {
 };
 
 const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
+  const router = useRouter();
+
   const { toast } = useToast();
 
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
@@ -165,6 +168,10 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
       getSchemas.refetch();
     },
   });
+
+  const handleReview = (schemaId: string) => {
+    router.push(`/dashboard/schema/${schemaId}`);
+  };
 
   const handleCopy = (schemaId: string) => {
     toast({
@@ -359,6 +366,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
                       content = flexRender(
                         <div className='flex w-full items-center justify-center'>
                           <MoreSchemasActions
+                            handleReview={() => handleReview(row.original.id)}
                             handleCopy={() => handleCopy(row.original.id)}
                             handleDelete={() => handleDelete(row.original.id)}
                           />
@@ -381,7 +389,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center'>
+                  className='h-[34rem] text-center'>
                   No schemas.
                 </TableCell>
               </TableRow>

@@ -3,6 +3,7 @@
 import { FC } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -30,6 +31,8 @@ type FeaturedSchemasProps = {
 };
 
 const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
+  const router = useRouter();
+
   const { toast } = useToast();
 
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
@@ -41,6 +44,10 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
       getSchemas.refetch();
     },
   });
+
+  const handleReview = (schemaId: string) => {
+    router.push(`/dashboard/schema/${schemaId}`);
+  };
 
   const handleCopy = (schemaId: string) => {
     toast({
@@ -81,6 +88,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
                     <CardDescription>{formatDate(createdAt)}</CardDescription>
                     <MoreSchemasActions
                       className='absolute right-2 top-2'
+                      handleReview={() => handleReview(id)}
                       handleCopy={() => handleCopy(id)}
                       handleDelete={() => handleDelete(id)}
                     />

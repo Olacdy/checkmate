@@ -17,13 +17,15 @@ import {
 import { Icons } from '@/components/icons';
 
 type MoreSchemasActionsProps = {
-  handleDelete: () => void;
   handleCopy: () => void;
+  handleReview: () => void;
+  handleDelete: () => void;
 } & DropdownMenuTriggerProps;
 
 const MoreSchemasActions: FC<MoreSchemasActionsProps> = ({
-  handleDelete,
+  handleReview,
   handleCopy,
+  handleDelete,
   ...props
 }) => {
   return (
@@ -40,7 +42,9 @@ const MoreSchemasActions: FC<MoreSchemasActionsProps> = ({
       <DropdownMenuContent className='w-40'>
         <DropdownMenuLabel>Schema actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='flex items-center justify-between'>
+        <DropdownMenuItem
+          onSelect={handleReview}
+          className='flex items-center justify-between'>
           <span>Review</span>
           <Icons.review className='h-4 w-4 stroke-slate-600 dark:stroke-off-white' />
         </DropdownMenuItem>
