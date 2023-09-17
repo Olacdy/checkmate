@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FC, createElement, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -47,7 +47,7 @@ import { cn } from '@/lib/utils';
 import { fields } from '@/helpers/data';
 import { FieldType } from '@/schemas/fields-schemas';
 import { schemaSchema } from '@/schemas/schemas-schema';
-import FieldDialogType from './field-dialogs';
+import FieldDialog from './field-dialogs';
 
 type SchemaCreationFormProps = {};
 
@@ -80,12 +80,9 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   });
 
   // Client state
-  const [openedDialogName, setOpenedDialogName] = useState<
-    (typeof fields)[number]['type'] | undefined
+  const [openedDialog, setOpenedDialog] = useState<
+    (typeof fields)[number] | undefined
   >();
-  const openedDialog: FieldDialogType = fields.find(
-    (field) => field.name === openedDialogName
-  )?.dialog!;
 
   const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
 
@@ -96,7 +93,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   // Handle active dialog state
   const handleOpenedDialogChange = (open: boolean) => {
-    !open && setOpenedDialogName(undefined);
+    !open && setOpenedDialog(undefined);
   };
 
   const handleCancelClick = () => {
@@ -253,7 +250,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               })}
             </Reorder.Group>
             <Dialog
-              open={!!openedDialogName}
+              open={!!openedDialog}
               onOpenChange={handleOpenedDialogChange}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -286,10 +283,10 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                     const Icon = Icons[field.icon];
 
                     return (
-                      <DialogTrigger asChild key={field.type}>
+                      <DialogTrigger asChild key={field.name}>
                         <DropdownMenuItem
                           className='flex items-center gap-2 capitalize'
-                          onSelect={() => setOpenedDialogName(field.name)}>
+                          onSelect={() => setOpenedDialog(field)}>
                           <Icon className='h-5 w-5' />
                           <span>{field.name}</span>
                         </DropdownMenuItem>
@@ -298,12 +295,14 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                   })}
                 </DropdownMenuContent>
               </DropdownMenu>
-              {openedDialog &&
-                createElement(openedDialog, {
-                  schemas: schemas,
-                  updateSchemaFields: addSchemaField,
-                  closeDialog: () => handleOpenedDialogChange(false),
-                })}
+              {openedDialog && (
+                <FieldDialog
+                  type={openedDialog.type}
+                  schemas={schemas}
+                  updateSchemaFields={addSchemaField}
+                  closeDialog={() => handleOpenedDialogChange(false)}
+                />
+              )}
             </Dialog>
           </CardContent>
         </Card>

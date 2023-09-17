@@ -9,7 +9,7 @@ const fieldPropertiesSchema = z.object({
 });
 
 export const stringFieldSchema = fieldPropertiesSchema
-  .merge(
+  .and(
     z.object({
       isEmail: z.boolean().optional(),
       minLength: z
@@ -53,7 +53,7 @@ export const stringFieldSchema = fieldPropertiesSchema
   });
 
 export const numberFieldSchema = fieldPropertiesSchema
-  .merge(
+  .and(
     z.object({
       isInt: z.boolean().optional(),
       min: z.union([z.coerce.number(), z.literal('')]).optional(),
@@ -77,7 +77,7 @@ export const numberFieldSchema = fieldPropertiesSchema
   });
 
 export const dateFieldSchema = fieldPropertiesSchema
-  .merge(
+  .and(
     z.object({
       from: z.date().optional(),
       to: z.date().optional(),
@@ -99,7 +99,7 @@ export const dateFieldSchema = fieldPropertiesSchema
     }
   });
 
-export const schemaFieldSchema = fieldPropertiesSchema.merge(
+export const schemaFieldSchema = fieldPropertiesSchema.and(
   z.object({
     schema: z.string().cuid(),
   })

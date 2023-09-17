@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, createElement, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Reorder } from 'framer-motion';
 
@@ -11,6 +11,8 @@ import { Icons } from '@/components/icons';
 
 import { fields } from '@/helpers/data';
 import { FieldType } from '@/schemas/fields-schemas';
+import { trpc } from '@/trpc/client';
+import FieldDialog from './field-dialogs';
 
 type FieldDraggableProps = {
   value: FieldType;
@@ -25,12 +27,13 @@ const FieldDraggable: FC<FieldDraggableProps> = ({
   removeSchemaFeild,
   updateSchemaFields,
 }) => {
+  const schemas = trpc.schema.getSchemas.useQuery().data;
+
   const [open, setOpen] = useState<boolean>(false);
 
-  const fieldType = fields.find((field) => field.type === value.type)!;
-  const dialogToOpen = fieldType.dialog;
+  const openedDialog = fields.find((field) => field.type === value.type);
 
-  const Icon = Icons[fieldType.icon];
+  const Icon = Icons[openedDialog?.icon!];
 
   const handleDeleteClick = () => {
     removeSchemaFeild(value);
@@ -66,12 +69,16 @@ const FieldDraggable: FC<FieldDraggableProps> = ({
               <Icons.settings />
             </Button>
           </DialogTrigger>
-          {dialogToOpen &&
-            createElement(dialogToOpen, {
-              defaultValues: value,
-              updateSchemaFields: editSchemaField,
-              closeDialog: () => setOpen(false),
-            })}
+          {openedDialog && (
+            // @ts-ignore
+            <FieldDialog
+              type={openedDialog.type}
+              schemas={schemas}
+              defaultValues={value}
+              updateSchemaFields={editSchemaField}
+              closeDialog={() => setOpen(false)}
+            />
+          )}
         </Dialog>
       </div>
     </Reorder.Item>
