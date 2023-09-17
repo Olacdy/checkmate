@@ -1,4 +1,3 @@
-import FieldDialogType from '@/components/dashboard/create-schema/field-dialogs';
 import DateFieldDialog from '@/components/dashboard/create-schema/field-dialogs/date-field-dialog';
 import NumberFieldDialog from '@/components/dashboard/create-schema/field-dialogs/number-field-dialog';
 import SchemaFieldDialog from '@/components/dashboard/create-schema/field-dialogs/schema-field-dialog';
@@ -110,9 +109,4 @@ export const fields = [
     type: 'schema',
     dialog: SchemaFieldDialog,
   },
-] satisfies {
-  name: string;
-  icon: keyof typeof Icons;
-  type: string;
-  dialog: FieldDialogType;
-}[];
+] as const;

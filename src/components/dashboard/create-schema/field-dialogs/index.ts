@@ -4,10 +4,10 @@ import SchemaFieldDialog from '@/components/dashboard/create-schema/field-dialog
 import StringFieldDialog from '@/components/dashboard/create-schema/field-dialogs/string-field-dialog';
 
 const FieldDialogs = [
+  SchemaFieldDialog,
   StringFieldDialog,
   NumberFieldDialog,
   DateFieldDialog,
-  SchemaFieldDialog,
 ];
 
 type FieldDialogType = (typeof FieldDialogs)[number];

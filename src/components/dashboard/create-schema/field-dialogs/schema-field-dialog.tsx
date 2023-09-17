@@ -8,7 +8,6 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   DialogContent,
   DialogDescription,
@@ -25,34 +24,39 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-import { FieldType, stringFieldSchema } from '@/schemas/fields-schemas';
+import { FieldType, schemaFieldSchema } from '@/schemas/fields-schemas';
+import { SchemaType } from '@/schemas/schemas-schema';
 
 type SchemaFieldDialogProps = {
-  defaultValues?: z.infer<typeof stringFieldSchema>;
+  schemas?: SchemaType[];
+  defaultValues?: z.infer<typeof schemaFieldSchema>;
   updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
 
 const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
+  schemas,
   defaultValues,
   updateSchemaFields,
   closeDialog,
 }) => {
-  const form = useForm<z.infer<typeof stringFieldSchema>>({
-    resolver: zodResolver(stringFieldSchema),
+  const form = useForm<z.infer<typeof schemaFieldSchema>>({
+    resolver: zodResolver(schemaFieldSchema),
     defaultValues: defaultValues || {
       name: '',
-      isRequired: false,
-      isEmail: false,
-      minLength: '',
-      maxLength: '',
-      regex: '',
+      schema: '',
     },
   });
 
-  const onSubmit = (values: z.infer<typeof stringFieldSchema>) => {
+  const onSubmit = (values: z.infer<typeof schemaFieldSchema>) => {
     console.log(values);
 
     closeDialog();
@@ -65,7 +69,7 @@ const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
           Create field
         </DialogTitle>
         <DialogDescription>
-          Design a field of type string. Click create field when you are done.
+          Design a field of type schema. Click create field when you are done.
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -91,89 +95,29 @@ const SchemaFieldDialog: FC<SchemaFieldDialogProps> = ({
               </FormItem>
             )}
           />
-          <div className='flex w-full gap-10'>
-            <FormField
-              control={form.control}
-              name='isRequired'
-              render={({ field }) => (
-                <FormItem className='flex items-end gap-3'>
-                  <FormLabel>Required</FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='isEmail'
-              render={({ field }) => (
-                <FormItem className='flex items-end gap-3'>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className='flex w-full items-center justify-between gap-5'>
-            <FormField
-              control={form.control}
-              name='minLength'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Min length</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='number'
-                      className='bg-oxford-blue/90 text-base'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='maxLength'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Max length</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='number'
-                      className='bg-oxford-blue/90 text-base'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <FormField
             control={form.control}
-            name='regex'
+            name='schema'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Regex</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className='resize-none bg-oxford-blue/90 text-base'
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>Example: /\d+/</FormDescription>
+                <FormLabel>Schema</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select a verified email to display' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {schemas?.map((schema) => (
+                      <SelectItem key={schema.id} value={schema.id}>
+                        {schema.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>Select one of your schemas.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

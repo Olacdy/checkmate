@@ -47,6 +47,7 @@ import { cn } from '@/lib/utils';
 import { fields } from '@/helpers/data';
 import { FieldType } from '@/schemas/fields-schemas';
 import { schemaSchema } from '@/schemas/schemas-schema';
+import FieldDialogType from './field-dialogs';
 
 type SchemaCreationFormProps = {};
 
@@ -55,6 +56,8 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   // Getting tRPC route to add schemas
   const addSchema = trpc.schema.addSchema.useMutation();
+
+  const schemas = trpc.schema.getSchemas.useQuery().data;
 
   // Getting router
   const router = useRouter();
@@ -77,13 +80,14 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   });
 
   // Client state
-  const [openedDialog, setOpenedDialog] = useState<
-    (typeof fields)[number]['name'] | undefined
+  const [openedDialogName, setOpenedDialogName] = useState<
+    (typeof fields)[number]['type'] | undefined
   >();
-  const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
+  const openedDialog: FieldDialogType = fields.find(
+    (field) => field.name === openedDialogName
+  )?.dialog!;
 
-  const dialogToOpen = fields.find((field) => field.name === openedDialog)
-    ?.dialog;
+  const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
 
   // Setting schema fields according to a state stored in localStorage
   useEffect(() => {
@@ -92,7 +96,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
   // Handle active dialog state
   const handleOpenedDialogChange = (open: boolean) => {
-    !open && setOpenedDialog(undefined);
+    !open && setOpenedDialogName(undefined);
   };
 
   const handleCancelClick = () => {
@@ -249,7 +253,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
               })}
             </Reorder.Group>
             <Dialog
-              open={!!openedDialog}
+              open={!!openedDialogName}
               onOpenChange={handleOpenedDialogChange}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -285,7 +289,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                       <DialogTrigger asChild key={field.type}>
                         <DropdownMenuItem
                           className='flex items-center gap-2 capitalize'
-                          onSelect={() => setOpenedDialog(field.name)}>
+                          onSelect={() => setOpenedDialogName(field.name)}>
                           <Icon className='h-5 w-5' />
                           <span>{field.name}</span>
                         </DropdownMenuItem>
@@ -294,8 +298,9 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
                   })}
                 </DropdownMenuContent>
               </DropdownMenu>
-              {dialogToOpen &&
-                createElement(dialogToOpen, {
+              {openedDialog &&
+                createElement(openedDialog, {
+                  schemas: schemas,
                   updateSchemaFields: addSchemaField,
                   closeDialog: () => handleOpenedDialogChange(false),
                 })}

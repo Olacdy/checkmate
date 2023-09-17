@@ -99,7 +99,14 @@ export const dateFieldSchema = fieldPropertiesSchema
     }
   });
 
+export const schemaFieldSchema = fieldPropertiesSchema.merge(
+  z.object({
+    schema: z.string().cuid(),
+  })
+);
+
 export type FieldType =
   | (z.infer<typeof stringFieldSchema> & { type: 'string' })
   | (z.infer<typeof numberFieldSchema> & { type: 'number' })
-  | (z.infer<typeof dateFieldSchema> & { type: 'date' });
+  | (z.infer<typeof dateFieldSchema> & { type: 'date' })
+  | (z.infer<typeof schemaFieldSchema> & { type: 'schema' });
