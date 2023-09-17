@@ -35,13 +35,13 @@ export const schemaRouter = router({
   addSchema: protectedProcedure
     .input(addSchemaSchema)
     .mutation(async ({ ctx, input }) => {
-      const { name, schema: rawSchema } = input;
+      const { name, fields: rawFields } = input;
       const { id: userId } = ctx.session.user;
 
       return await prisma.schema.create({
         data: {
           name: name,
-          schema: JSON.parse(rawSchema),
+          fields: JSON.parse(rawFields),
           userId: userId,
         },
       });
@@ -49,14 +49,14 @@ export const schemaRouter = router({
   editSchema: protectedProcedure
     .input(editSchemaSchema)
     .mutation(async ({ ctx, input }) => {
-      const { id, name, schema: rawSchema } = input;
+      const { id, name, fields: rawFields } = input;
       const { id: userId } = ctx.session.user;
 
       return await prisma.schema.update({
         where: { id: id, userId: userId },
         data: {
           name: name,
-          schema: rawSchema && JSON.parse(rawSchema),
+          fields: rawFields && JSON.parse(rawFields),
         },
       });
     }),

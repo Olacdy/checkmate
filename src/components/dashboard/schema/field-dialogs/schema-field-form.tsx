@@ -27,20 +27,20 @@ import {
 } from '@/components/ui/select';
 
 import { schemaFieldSchema } from '@/schemas/fields-schemas';
-import { SchemaType } from '@/schemas/schemas-schema';
+import { trpc } from '@/trpc/client';
 import { BaseFieldDialogProps } from '.';
 
 type SchemaFieldFormProps = {
-  schemas?: SchemaType[];
   defaultValues?: z.infer<typeof schemaFieldSchema>;
 } & BaseFieldDialogProps;
 
 const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
-  schemas,
   defaultValues,
   updateSchemaFields,
   closeDialog,
 }) => {
+  const schemas = trpc.schema.getSchemas.useQuery().data;
+
   const form = useForm<z.infer<typeof schemaFieldSchema>>({
     resolver: zodResolver(schemaFieldSchema),
     defaultValues: defaultValues || {

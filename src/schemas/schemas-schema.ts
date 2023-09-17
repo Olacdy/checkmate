@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { serverClient } from '@/trpc/server';
+import { Prisma } from '@prisma/client';
 
 export const schemaId = z.string().cuid();
 
@@ -18,7 +18,7 @@ export const getSchemaByIdSchema = z.object({
 });
 
 export const addSchemaSchema = createSchemaSchema.extend({
-  schema: z.string().refine(
+  fields: z.string().refine(
     (jsonString) => {
       try {
         JSON.parse(jsonString);
@@ -41,6 +41,6 @@ export const editSchemaSchema = deleteSchemaSchema.merge(
   addSchemaSchema.partial()
 );
 
-export type SchemaType = Awaited<
-  ReturnType<typeof serverClient.schema.getSchemaById>
->;
+export type SchemaType = Prisma.SchemaGetPayload<{
+  include: { validations: true };
+}>;

@@ -7,12 +7,13 @@ import { Reorder } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 
+import FieldDialog from '@/components/dashboard/schema/field-dialogs';
+
 import { Icons } from '@/components/icons';
 
 import { fields } from '@/helpers/data';
+
 import { FieldType } from '@/schemas/fields-schemas';
-import { trpc } from '@/trpc/client';
-import FieldDialog from './field-dialogs';
 
 type BaseFieldProps = {
   value: FieldType;
@@ -55,8 +56,6 @@ const Field: FC<FieldProps> = (props) => {
     const { value, editSchemaField, removeSchemaFeild, updateSchemaFields } =
       props;
 
-    const schemas = trpc.schema.getSchemas.useQuery().data;
-
     const [open, setOpen] = useState<boolean>(false);
 
     const handleDeleteClick = () => {
@@ -97,7 +96,6 @@ const Field: FC<FieldProps> = (props) => {
               // @ts-ignore
               <FieldDialog
                 type={openedDialog.type}
-                schemas={schemas}
                 defaultValues={value}
                 updateSchemaFields={editSchemaField}
                 closeDialog={() => setOpen(false)}

@@ -51,7 +51,7 @@ model Schema {
   createdAt   DateTime          @default(now())
   userId      String
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  schema      Json
+  fields      Json
   referred    SchemaReferring[] @relation("referrer")
   referring   SchemaReferring[] @relation("referring")
   validations Validation[]

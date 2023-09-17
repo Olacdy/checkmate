@@ -1,6 +1,9 @@
 'use client';
 
-import { Icons } from '@/components/icons';
+import { FC, HTMLAttributes, useState } from 'react';
+
+import { Reorder } from 'framer-motion';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -12,21 +15,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { fields } from '@/helpers/data';
+
+import Field from '@/components/dashboard/schema/field';
+import FieldDialog from '@/components/dashboard/schema/field-dialogs';
+
+import { Icons } from '@/components/icons';
+
 import { cn } from '@/lib/utils';
+
+import { fields } from '@/helpers/data';
+
 import { FieldType } from '@/schemas/fields-schemas';
-import { trpc } from '@/trpc/client';
-import { Reorder } from 'framer-motion';
-import { FC, useState } from 'react';
-import Field from './field';
-import FieldDialog from './field-dialogs';
 
 type BaseFieldsCardProps = {
   schemaFields: FieldType[];
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 type ReadonlyFieldsCardProps = {
   type: 'readonly';
+  name: string;
 };
 
 type EditFieldsCardProps = {
@@ -41,8 +48,8 @@ type EditFieldsCardProps = {
 type FieldsCardProps = BaseFieldsCardProps &
   (ReadonlyFieldsCardProps | EditFieldsCardProps);
 
-const FieldsCard: FC<FieldsCardProps> = (props) => {
-  const schemas = trpc.schema.getSchemas.useQuery().data;
+const FieldsCard: FC<FieldsCardProps> = ({ className, ...props }) => {
+  const { schemaFields } = props;
 
   // Client state
   const [openedDialog, setOpenedDialog] = useState<
@@ -55,17 +62,26 @@ const FieldsCard: FC<FieldsCardProps> = (props) => {
   };
 
   return (
-    <Card className='flex flex-1 flex-col gap-5 border-0 bg-transparent dark:bg-transparent'>
-      {props.type === 'edit' && <CardTitle className='pl-5'>Fields</CardTitle>}
+    <Card
+      className={cn(
+        'flex flex-1 flex-col gap-5 border-0 bg-transparent dark:bg-transparent',
+        className
+      )}>
+      <CardTitle
+        className={cn('pl-5', {
+          'text-2xl': props.type === 'readonly',
+        })}>
+        {props.type === 'edit' ? 'Fields' : `${props.name}`}
+      </CardTitle>
       <Card className='flex flex-1 border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
         <CardContent
           className={cn('flex flex-1 flex-col items-center justify-between', {
-            'justify-center p-0 pl-2': props.schemaFields.length === 0,
+            'justify-center p-0 pl-2': schemaFields.length === 0,
             'pt-3': props.type === 'readonly',
           })}>
           {props.type === 'readonly' && (
             <div className='flex w-full flex-col gap-4 pt-3'>
-              {props.schemaFields.map((schemaField) => {
+              {schemaFields.map((schemaField) => {
                 return (
                   <Field
                     key={schemaField.id}
@@ -82,8 +98,8 @@ const FieldsCard: FC<FieldsCardProps> = (props) => {
                 className='flex w-full flex-col gap-4 pt-3'
                 axis='y'
                 onReorder={props.setSchemaFields}
-                values={props.schemaFields}>
-                {props.schemaFields.map((schemaField) => {
+                values={schemaFields}>
+                {schemaFields.map((schemaField) => {
                   return (
                     <Field
                       key={schemaField.id}
@@ -108,7 +124,7 @@ const FieldsCard: FC<FieldsCardProps> = (props) => {
                         className={cn(
                           'text-base text-emerald-700 dark:text-success',
                           {
-                            'text-lg': props.schemaFields.length === 0,
+                            'text-lg': schemaFields.length === 0,
                           }
                         )}>
                         Add a new field
@@ -117,7 +133,7 @@ const FieldsCard: FC<FieldsCardProps> = (props) => {
                         className={cn(
                           'h-4 w-4 stroke-emerald-700 dark:stroke-success',
                           {
-                            'h-5 w-5': props.schemaFields.length === 0,
+                            'h-5 w-5': schemaFields.length === 0,
                           }
                         )}
                       />
@@ -145,7 +161,6 @@ const FieldsCard: FC<FieldsCardProps> = (props) => {
                 {openedDialog && (
                   <FieldDialog
                     type={openedDialog.type}
-                    schemas={schemas}
                     updateSchemaFields={props.addSchemaField}
                     closeDialog={() => handleOpenedDialogChange(false)}
                   />

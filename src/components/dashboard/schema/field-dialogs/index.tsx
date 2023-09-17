@@ -11,7 +11,6 @@ import {
   schemaFieldSchema,
   stringFieldSchema,
 } from '@/schemas/fields-schemas';
-import { SchemaType } from '@/schemas/schemas-schema';
 import { FC } from 'react';
 import { z } from 'zod';
 import DateFieldForm from './date-field-form';
@@ -41,7 +40,6 @@ type DateFieldDialogProps = {
 
 type SchemaFieldDialogProps = {
   type?: 'schema';
-  schemas?: SchemaType[];
   defaultValues?: z.infer<typeof schemaFieldSchema>;
 };
 
@@ -92,11 +90,10 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
     }
 
     if (props.type === 'schema') {
-      const { schemas, defaultValues, updateSchemaFields, closeDialog } = props;
+      const { defaultValues, updateSchemaFields, closeDialog } = props;
 
       return (
         <SchemaFieldForm
-          schemas={schemas}
           defaultValues={defaultValues}
           updateSchemaFields={updateSchemaFields}
           closeDialog={closeDialog}

@@ -137,7 +137,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
 
     await addSchema.mutateAsync({
       name: values.name,
-      schema: JSON.stringify(storedFields),
+      fields: JSON.stringify(storedFields),
     });
 
     resetSchema();
