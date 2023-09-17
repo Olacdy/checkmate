@@ -2,8 +2,6 @@
 
 import { FC, useState } from 'react';
 
-import { type Schema } from '@prisma/client';
-
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -43,9 +41,11 @@ import { Icons } from '@/components/icons';
 
 import { trpc } from '@/trpc/client';
 
-import { cn, formatDate } from '@/lib/utils';
+import { SchemaType } from '@/schemas/schemas-schema';
 
-export const columns: ColumnDef<Schema>[] = [
+import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
+
+export const columns: ColumnDef<SchemaType>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -108,8 +108,7 @@ export const columns: ColumnDef<Schema>[] = [
     accessorKey: 'validations',
     header: () => <div className='hidden text-right xs:block'>Validations</div>,
     cell: ({ row }) => {
-      const { successes, errors } = row.original;
-      const validations = successes + errors;
+      const { validations } = getOneSchemaStat(row.original);
 
       return (
         <div className='hidden text-right font-medium xs:block'>
@@ -121,20 +120,26 @@ export const columns: ColumnDef<Schema>[] = [
   {
     accessorKey: 'successes',
     header: () => <div className='hidden text-right sm:block'>Successes</div>,
-    cell: ({ row }) => (
-      <div className='hidden text-right font-medium sm:block'>
-        {row.original.successes}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const { successes } = getOneSchemaStat(row.original);
+
+      return (
+        <div className='hidden text-right font-medium sm:block'>
+          {successes}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'errors',
     header: () => <div className='hidden text-right sm:block'>Errors</div>,
-    cell: ({ row }) => (
-      <div className='hidden text-right font-medium sm:block'>
-        {row.original.errors}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const { errors } = getOneSchemaStat(row.original);
+
+      return (
+        <div className='hidden text-right font-medium sm:block'>{errors}</div>
+      );
+    },
   },
   {
     id: 'actions',
@@ -143,7 +148,7 @@ export const columns: ColumnDef<Schema>[] = [
 ];
 
 type SchemasDataTableProps = {
-  initialSchemas: Schema[];
+  initialSchemas: SchemaType[];
 };
 
 const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {

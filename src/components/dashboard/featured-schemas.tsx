@@ -4,8 +4,6 @@ import { FC } from 'react';
 
 import Link from 'next/link';
 
-import { type Schema } from '@prisma/client';
-
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -23,10 +21,12 @@ import { Icons } from '@/components/icons';
 
 import { trpc } from '@/trpc/client';
 
-import { formatDate } from '@/lib/utils';
+import { SchemaType } from '@/schemas/schemas-schema';
+
+import { formatDate, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
-  initialSchemas: Schema[];
+  initialSchemas: SchemaType[];
 };
 
 const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
@@ -66,12 +66,14 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
           <span className='text-2xl'>Featured schemas</span>
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3-featured-schemas'>
             {getSchemas?.data?.slice(0, 3).map((featuredSchema) => {
-              const { id, name, createdAt, successes, errors } = featuredSchema;
+              const { id, name, createdAt } = featuredSchema;
+              const { validations, successes, errors } =
+                getOneSchemaStat(featuredSchema);
 
               return (
                 <Card
                   key={id}
-                  className='w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-100/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30'>
+                  className='w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-200/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30'>
                   <CardHeader className='relative space-y-0 p-4'>
                     <CardTitle className='font-heading text-xl'>
                       {name}
@@ -87,7 +89,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
                   <CardFooter className='flex h-16 w-full justify-around p-2'>
                     <span className='flex flex-1 items-center justify-center gap-2'>
                       <Icons.validation className='h-6 w-6' />
-                      <span className='text-lg'>{successes + errors}</span>
+                      <span className='text-lg'>{validations}</span>
                     </span>
                     <Separator
                       className='bg-oxford-blue/10 dark:bg-slate-600/30'

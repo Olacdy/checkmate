@@ -110,7 +110,7 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
       return false;
     }
 
-    updateSchemaFields([schemaField, ...schemaFields]);
+    updateSchemaFields([...schemaFields, schemaField]);
 
     return true;
   };

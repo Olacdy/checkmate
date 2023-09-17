@@ -1,50 +1,59 @@
 import { protectedProcedure, router } from '@/server/trpc';
 
+import { prisma } from '@/lib/db';
 import {
   addSchemaSchema,
   deleteSchemaSchema,
   editSchemaSchema,
 } from '@/schemas/schemas-schema';
-import { prisma } from '@/lib/db';
 
 export const schemaRouter = router({
-  getSchemas: protectedProcedure.query(async () => {
-    return await prisma.schema.findMany();
+  getSchemas: protectedProcedure.query(async ({ ctx }) => {
+    const { id: userId } = ctx.session.user;
+
+    return await prisma.schema.findMany({
+      where: { userId: userId },
+      include: {
+        validations: true,
+      },
+    });
   }),
   addSchema: protectedProcedure
     .input(addSchemaSchema)
-    .mutation(async ({ctx, input }) => {
-      await prisma.schema.create({
+    .mutation(async ({ ctx, input }) => {
+      const { name, schema: rawSchema } = input;
+      const { id: userId } = ctx.session.user;
+
+      return await prisma.schema.create({
         data: {
-          name: input.name,
-          schema: JSON.parse(input.schema),
-          userId: ctx.session.user.id,
+          name: name,
+          schema: JSON.parse(rawSchema),
+          userId: userId,
         },
       });
-
-      return true;
     }),
   editSchema: protectedProcedure
     .input(editSchemaSchema)
     .mutation(async ({ ctx, input }) => {
-      await prisma.schema.update({
-        where: { id: input.id },
+      const { id, name, schema: rawSchema } = input;
+      const { id: userId } = ctx.session.user;
+
+      return await prisma.schema.update({
+        where: { id: id, userId: userId },
         data: {
-          name: input.name,
-          schema: input.schema && JSON.parse(input.schema),
-          userId: ctx.session.user.id,
+          name: name,
+          schema: rawSchema && JSON.parse(rawSchema),
         },
       });
-
-      return true;
     }),
   deleteSchema: protectedProcedure
     .input(deleteSchemaSchema)
-    .mutation(async ({ input }) => {
-      await prisma.schema.delete({
-        where: { id: input.id },
-      });
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+      const { id: userId } = ctx.session.user;
 
-      return true;
+      return await prisma.schema.delete({
+        where: { id: id, userId: userId },
+      });
     }),
 });

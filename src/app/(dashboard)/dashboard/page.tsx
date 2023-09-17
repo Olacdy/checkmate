@@ -12,15 +12,16 @@ import { Icons } from '@/components/icons';
 
 import FeaturedSchemas from '@/components/dashboard/featured-schemas';
 
-import { getSchemasStats } from '@/lib/utils';
 import { serverClient } from '@/trpc/server';
+
+import { getManySchemaStat } from '@/lib/utils';
 
 type pageProps = {};
 
 const page: FC<pageProps> = async ({}) => {
   const schemas = await serverClient.schema.getSchemas();
 
-  const { validations, successes, errors } = getSchemasStats(schemas);
+  const { validations, successes, errors } = getManySchemaStat(schemas);
 
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>

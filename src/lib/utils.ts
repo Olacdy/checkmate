@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { type Schema } from '@prisma/client';
+import { SchemaType } from '@/schemas/schemas-schema';
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -60,13 +60,13 @@ export const formatDate = (date: Date): string => {
   return `${day} ${month}. ${year}`;
 };
 
-export const getSchemasStats = (schemas: Schema[]) => {
+export const getManySchemaStat = (schemas: SchemaType[]) => {
   const totalValidations = schemas.reduce((accumulator, schema) => {
-    return accumulator + schema.successes + schema.errors;
+    return accumulator + getOneSchemaStat(schema).validations;
   }, 0);
 
   const totalSuccesses = schemas.reduce((accumulator, schema) => {
-    return accumulator + schema.successes;
+    return accumulator + getOneSchemaStat(schema).successes;
   }, 0);
 
   const totalErros = totalValidations - totalSuccesses;
@@ -76,4 +76,18 @@ export const getSchemasStats = (schemas: Schema[]) => {
     successes: totalSuccesses,
     errors: totalErros,
   };
+};
+
+export const getOneSchemaStat = (schema: SchemaType) => {
+  const validations = schema.validations.length;
+
+  const successes = schema.validations.reduce((accumulator, validation) => {
+    return accumulator + (validation.success ? 1 : 0);
+  }, 0);
+
+  const errors = schema.validations.reduce((accumulator, validation) => {
+    return accumulator + (validation.success ? 0 : 1);
+  }, 0);
+
+  return { validations, successes, errors };
 };

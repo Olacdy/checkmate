@@ -1,3 +1,4 @@
+import { serverClient } from '@/trpc/server';
 import { z } from 'zod';
 
 export const schemaSchema = z.object({
@@ -31,3 +32,7 @@ export const deleteSchemaSchema = z.object({
 export const editSchemaSchema = deleteSchemaSchema.merge(
   addSchemaSchema.partial()
 );
+
+export type SchemaType = Awaited<
+  ReturnType<typeof serverClient.schema.getSchemas>
+>[number];
