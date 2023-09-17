@@ -19,41 +19,41 @@ import NumberFieldForm from './number-field-form';
 import SchemaFieldForm from './schema-field-form';
 import StringFieldForm from './string-field-form';
 
-export type BaseFieldDialogPropsType = {
+export type BaseFieldDialogProps = {
   updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
 
-type StringFieldDialogPropsType = {
+type StringFieldDialogProps = {
   type?: 'string';
   defaultValues?: z.infer<typeof stringFieldSchema>;
 };
 
-type NumberFieldDialogPropsType = {
+type NumberFieldDialogProps = {
   type?: 'number';
   defaultValues?: z.infer<typeof numberFieldSchema>;
 };
 
-type DateFieldDialogPropsType = {
+type DateFieldDialogProps = {
   type?: 'date';
   defaultValues?: z.infer<typeof dateFieldSchema>;
 };
 
-type SchemaFieldDialogPropsType = {
+type SchemaFieldDialogProps = {
   type?: 'schema';
   schemas?: SchemaType[];
   defaultValues?: z.infer<typeof schemaFieldSchema>;
 };
 
-export type FieldDialogPropsType = BaseFieldDialogPropsType &
+export type FieldDialogProps = BaseFieldDialogProps &
   (
-    | StringFieldDialogPropsType
-    | NumberFieldDialogPropsType
-    | DateFieldDialogPropsType
-    | SchemaFieldDialogPropsType
+    | StringFieldDialogProps
+    | NumberFieldDialogProps
+    | DateFieldDialogProps
+    | SchemaFieldDialogProps
   );
 
-const FieldDialog: FC<FieldDialogPropsType> = (props) => {
+const FieldDialog: FC<FieldDialogProps> = (props) => {
   const correspondingFieldForm = () => {
     if (props.type === 'string') {
       const { defaultValues, updateSchemaFields, closeDialog } = props;

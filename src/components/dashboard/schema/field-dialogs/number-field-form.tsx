@@ -22,11 +22,11 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { numberFieldSchema } from '@/schemas/fields-schemas';
-import { BaseFieldDialogPropsType } from '.';
+import { BaseFieldDialogProps } from '.';
 
 type NumberFieldFormProps = {
   defaultValues?: z.infer<typeof numberFieldSchema>;
-} & BaseFieldDialogPropsType;
+} & BaseFieldDialogProps;
 
 const NumberFieldForm: FC<NumberFieldFormProps> = ({
   defaultValues,

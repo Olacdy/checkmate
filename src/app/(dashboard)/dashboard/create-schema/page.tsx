@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import SchemaCreationForm from '@/components/dashboard/create-schema/schema-creation-form';
+import SchemaCreationForm from '@/components/dashboard/schema/schema-creation-form';
 
 type pageProps = {};
 

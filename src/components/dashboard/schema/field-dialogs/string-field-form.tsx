@@ -24,11 +24,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 import { stringFieldSchema } from '@/schemas/fields-schemas';
-import { BaseFieldDialogPropsType } from '.';
+import { BaseFieldDialogProps } from '.';
 
 type StringFieldFormProps = {
   defaultValues?: z.infer<typeof stringFieldSchema>;
-} & BaseFieldDialogPropsType;
+} & BaseFieldDialogProps;
 
 const StringFieldForm: FC<StringFieldFormProps> = ({
   defaultValues,

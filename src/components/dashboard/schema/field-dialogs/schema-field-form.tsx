@@ -28,12 +28,12 @@ import {
 
 import { schemaFieldSchema } from '@/schemas/fields-schemas';
 import { SchemaType } from '@/schemas/schemas-schema';
-import { BaseFieldDialogPropsType } from '.';
+import { BaseFieldDialogProps } from '.';
 
 type SchemaFieldFormProps = {
   schemas?: SchemaType[];
   defaultValues?: z.infer<typeof schemaFieldSchema>;
-} & BaseFieldDialogPropsType;
+} & BaseFieldDialogProps;
 
 const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
   schemas,

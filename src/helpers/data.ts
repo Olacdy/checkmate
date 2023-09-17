@@ -1,4 +1,4 @@
-import { FieldDialogPropsType } from '@/components/dashboard/create-schema/field-dialogs';
+import { FieldDialogProps } from '@/components/dashboard/schema/field-dialogs';
 import { Icons } from '@/components/icons';
 
 export const about = [
@@ -103,6 +103,6 @@ export const fields = [
   },
 ] satisfies {
   name: string;
-  type: FieldDialogPropsType['type'];
+  type: FieldDialogProps['type'];
   icon: keyof typeof Icons;
 }[];
