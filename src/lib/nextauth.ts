@@ -1,9 +1,10 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from 'next-auth';
+
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
@@ -13,15 +14,15 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      quota: number;
       // ...other properties
       // role: UserRole;
     } & DefaultSession['user'];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    quota?: number;
+  }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -32,6 +33,7 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        quota: user.quota,
       },
     }),
   },

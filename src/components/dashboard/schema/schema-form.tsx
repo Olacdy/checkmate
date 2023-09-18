@@ -43,6 +43,8 @@ type EditSchemaFormProps = {
 type AnySchemaFromProps = {
   toast: typeof Toast;
   router: AppRouterInstance;
+  getSchemas: ReturnType<typeof trpc.schema.getSchemas.useQuery>;
+  getSchemasCount: ReturnType<typeof trpc.schema.getSchemasCount.useQuery>;
   schemaFields: FieldType[];
   setSchemaFields: (schemaFields: FieldType[]) => void;
   createSchemaFieldsActions: (
@@ -65,6 +67,10 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
 
   // Getting router
   const router = useRouter();
+
+  // Get schemas queries to refetch after the action
+  const getSchemas = trpc.schema.getSchemas.useQuery();
+  const getSchemasCount = trpc.schema.getSchemasCount.useQuery();
 
   const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
 
@@ -109,6 +115,8 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
       <AddSchema
         toast={toast}
         router={router}
+        getSchemas={getSchemas}
+        getSchemasCount={getSchemasCount}
         schemaFields={schemaFields}
         setSchemaFields={setSchemaFields}
         createSchemaFieldsActions={createSchemaFieldsActions}
@@ -120,6 +128,8 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
         schema={props.schema}
         toast={toast}
         router={router}
+        getSchemas={getSchemas}
+        getSchemasCount={getSchemasCount}
         schemaFields={schemaFields}
         setSchemaFields={setSchemaFields}
         createSchemaFieldsActions={createSchemaFieldsActions}
@@ -132,13 +142,12 @@ export default SchemaForm;
 const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
   toast,
   router,
+  getSchemas,
+  getSchemasCount,
   schemaFields,
   setSchemaFields,
   createSchemaFieldsActions,
 }) => {
-  // Getting tRPC route to add schemas
-  const addSchema = trpc.schema.addSchema.useMutation();
-
   // Schema storage related properties and actions
   const {
     name,
@@ -147,6 +156,14 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
     setFields,
     resetSchema,
   } = useSchemaCreationStore();
+
+  // Getting tRPC route to add schemas
+  const addSchema = trpc.schema.addSchema.useMutation({
+    onSettled: () => {
+      getSchemas.refetch();
+      getSchemasCount.refetch();
+    },
+  });
 
   // Initializing form
   const form = useForm<z.infer<typeof createSchemaSchema>>({
@@ -274,12 +291,19 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
   schema,
   toast,
   router,
+  getSchemas,
+  getSchemasCount,
   schemaFields,
   setSchemaFields,
   createSchemaFieldsActions,
 }) => {
   // Getting tRPC route to edit schemas
-  const editSchema = trpc.schema.editSchema.useMutation();
+  const editSchema = trpc.schema.editSchema.useMutation({
+    onSettled: () => {
+      getSchemas.refetch();
+      getSchemasCount.refetch();
+    },
+  });
 
   // Initializing form
   const form = useForm<z.infer<typeof createSchemaSchema>>({

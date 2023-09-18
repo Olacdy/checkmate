@@ -15,6 +15,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import { useRouter } from 'next/navigation';
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -25,6 +27,7 @@ import {
 import { Input } from '@/components//ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -35,18 +38,16 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 
-import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
-
 import { Icons } from '@/components/icons';
+
+import DeleteSchemaDialog from '@/components/dashboard/delete-schema-dialog';
+import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
 
 import { trpc } from '@/trpc/client';
 
-import { SchemaType } from '@/schemas/schemas-schema';
-
 import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
-import { useRouter } from 'next/navigation';
-import { Dialog, DialogTrigger } from '../ui/dialog';
-import DeleteSchemaDialog from './delete-schema-dialog';
+
+import { SchemaType } from '@/schemas/schemas-schema';
 
 export const columns: ColumnDef<SchemaType>[] = [
   {
@@ -162,12 +163,14 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
     initialData: initialSchemas,
   });
+  const getSchemasCount = trpc.schema.getSchemasCount.useQuery();
 
   const data = getSchemas.data;
 
   const deleteSchema = trpc.schema.deleteSchema.useMutation({
     onSettled: () => {
       getSchemas.refetch();
+      getSchemasCount.refetch();
     },
   });
 

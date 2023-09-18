@@ -9,6 +9,15 @@ import {
 } from '@/schemas/schemas-schema';
 
 export const schemaRouter = router({
+  getSchemasCount: protectedProcedure.query(async ({ ctx }) => {
+    const { id: userId } = ctx.session.user;
+
+    return {
+      count: await prisma.schema.count({
+        where: { userId: userId },
+      }),
+    };
+  }),
   getSchemaById: protectedProcedure
     .input(getSchemaByIdSchema)
     .query(async ({ ctx, input }) => {

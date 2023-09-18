@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import {
+  ArrowBigUp,
   ArrowUpDown,
   Calendar,
   Check,
@@ -31,6 +32,7 @@ export type Icon = LucideIcon;
 export const Icons = {
   sun: Sun,
   moon: Moon,
+  increase: ArrowBigUp,
   settings: Sliders,
   drag: GripVertical,
   add: CopyPlus,

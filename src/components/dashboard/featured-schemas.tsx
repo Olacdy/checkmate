@@ -38,10 +38,12 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
     initialData: initialSchemas,
   });
+  const getSchemasCount = trpc.schema.getSchemasCount.useQuery();
 
   const deleteSchema = trpc.schema.deleteSchema.useMutation({
     onSettled: () => {
       getSchemas.refetch();
+      getSchemasCount.refetch();
     },
   });
 
