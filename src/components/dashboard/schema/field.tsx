@@ -35,6 +35,8 @@ type FieldProps = BaseFieldProps & (ReadonlyFieldProps | DraggableFieldProps);
 const Field: FC<FieldProps> = (props) => {
   const { value } = props;
 
+  console.log(value);
+
   const openedDialog = fields.find((field) => field.type === value.type);
 
   const Icon = Icons[openedDialog?.icon!];

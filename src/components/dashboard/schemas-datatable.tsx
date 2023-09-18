@@ -45,6 +45,8 @@ import { SchemaType } from '@/schemas/schemas-schema';
 
 import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogTrigger } from '../ui/dialog';
+import DeleteSchemaDialog from './delete-schema-dialog';
 
 export const columns: ColumnDef<SchemaType>[] = [
   {
@@ -191,6 +193,22 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
     });
   };
 
+  const handleDeleteMultiple = () => {
+    selectedSchemaIds.forEach((selectedSchemaId) => {
+      deleteSchema.mutate({ id: selectedSchemaId });
+    });
+
+    if (selectedSchemaIds.length > 0)
+      toast({
+        title: `${selectedSchemaIds.length} ${
+          selectedSchemaIds.length > 1 ? 'schemas' : 'schema'
+        } deleted`,
+        variant: 'success',
+      });
+  };
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+  const [selectedSchemaIds, setSelectedSchemaIds] = useState<string[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -225,25 +243,17 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
       name: 'delete',
       icon: 'delete',
       style: 'text-error focus:bg-error/40 dark:focus:bg-error/40',
-      onSelect: (selectedSchemaIds: string[]) => {
-        selectedSchemaIds.forEach((selectedSchemaId) => {
-          deleteSchema.mutate({ id: selectedSchemaId });
-        });
-
-        if (selectedSchemaIds.length > 0)
-          toast({
-            title: `${selectedSchemaIds.length} ${
-              selectedSchemaIds.length > 1 ? 'schemas' : 'schema'
-            } deleted`,
-            variant: 'success',
-          });
+      onSelect: (selectedSchemas: SchemaType[]) => {
+        setSelectedSchemaIds(
+          selectedSchemas.map((selectedSchema) => selectedSchema.id)
+        );
       },
     },
   ] satisfies {
     name: string;
     icon: keyof typeof Icons;
     style: string;
-    onSelect: (selectedSchemaIds: string[]) => void;
+    onSelect: (selectedSchemas: SchemaType[]) => void;
   }[];
 
   return (
@@ -258,39 +268,69 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
             }
             className='max-w-xs text-oxford-blue-dark dark:text-oxford-blue-dark'
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant='outline'
-                className='dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
-                Actions <Icons.chevronDown className='ml-2 h-4 w-4' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='start' className='w-32'>
-              {selectedActions.map((action) => {
-                const Icon = Icons[action.icon];
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant='outline'
+                  className='dark:bg-slate-100 dark:text-oxford-blue-dark dark:hover:bg-slate-200 dark:hover:text-oxford-blue-dark'>
+                  Actions <Icons.chevronDown className='ml-2 h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='start' className='w-32'>
+                {selectedActions.map((action) => {
+                  const Icon = Icons[action.icon];
 
-                return (
-                  <DropdownMenuItem
-                    key={action.name}
-                    className={cn(
-                      'flex items-center justify-between capitalize',
-                      action.style
-                    )}
-                    onSelect={() =>
-                      action.onSelect(
-                        table
-                          .getFilteredSelectedRowModel()
-                          .rows.map((row) => row.original.id)
-                      )
-                    }>
-                    <span>{action.name}</span>
-                    <Icon className='h-4 w-4' />
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  if (action.name === 'delete') {
+                    return (
+                      <DialogTrigger asChild>
+                        <DropdownMenuItem
+                          key={action.name}
+                          className={cn(
+                            'flex items-center justify-between capitalize',
+                            action.style
+                          )}
+                          onSelect={() =>
+                            action.onSelect(
+                              table
+                                .getFilteredSelectedRowModel()
+                                .rows.map((row) => row.original)
+                            )
+                          }>
+                          <span>{action.name}</span>
+                          <Icon className='h-4 w-4' />
+                        </DropdownMenuItem>
+                      </DialogTrigger>
+                    );
+                  }
+
+                  return (
+                    <DropdownMenuItem
+                      key={action.name}
+                      className={cn(
+                        'flex items-center justify-between capitalize',
+                        action.style
+                      )}
+                      onSelect={() =>
+                        action.onSelect(
+                          table
+                            .getFilteredSelectedRowModel()
+                            .rows.map((row) => row.original)
+                        )
+                      }>
+                      <span>{action.name}</span>
+                      <Icon className='h-4 w-4' />
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DeleteSchemaDialog
+              type='multiple'
+              handleDelete={handleDeleteMultiple}
+              closeDialog={() => setDeleteDialogOpen(false)}
+            />
+          </Dialog>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -26,19 +26,19 @@ import { useSchemaCreationStore } from '@/context/schema-creation-store';
 import { trpc } from '@/trpc/client';
 
 import { FieldType } from '@/schemas/fields-schemas';
-import { createSchemaSchema } from '@/schemas/schemas-schema';
+import { SchemaType, createSchemaSchema } from '@/schemas/schemas-schema';
 
 import FieldsCard from './fields-card';
 
-type SchemaCreationFormProps = {};
+type SchemaCreationFormProps = {
+  defaultValues?: SchemaType;
+};
 
-const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
+const SchemaCreationForm: FC<SchemaCreationFormProps> = ({ defaultValues }) => {
   const { toast } = useToast();
 
   // Getting tRPC route to add schemas
   const addSchema = trpc.schema.addSchema.useMutation();
-
-  const schemas = trpc.schema.getSchemas.useQuery().data;
 
   // Getting router
   const router = useRouter();
@@ -56,11 +56,13 @@ const SchemaCreationForm: FC<SchemaCreationFormProps> = ({}) => {
   const form = useForm<z.infer<typeof createSchemaSchema>>({
     resolver: zodResolver(createSchemaSchema),
     defaultValues: {
-      name: name,
+      name: defaultValues?.name || name,
     },
   });
 
-  const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
+  const [schemaFields, setSchemaFields] = useState<FieldType[]>(
+    (defaultValues?.fields as FieldType[]) || []
+  );
 
   // CRUD schema fields methods
   const addSchemaField = (schemaField: FieldType): boolean => {

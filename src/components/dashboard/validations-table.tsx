@@ -25,6 +25,12 @@ type ValidationsTableProps = {
   validations: ValidationType[];
 };
 
+const captions = {
+  all: 'Most recent validations.',
+  success: 'Most recent successful validations',
+  error: 'Most recent failed validations',
+};
+
 const ValidationsTable: FC<ValidationsTableProps> = ({
   type,
   display = 'all',
@@ -32,7 +38,7 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
 }) => {
   return (
     <Table>
-      <TableCaption>Most recent validations.</TableCaption>
+      <TableCaption>{captions[display]}</TableCaption>
       <TableHeader>
         <TableRow>
           {type === 'multiple' && <TableHead>Schema</TableHead>}

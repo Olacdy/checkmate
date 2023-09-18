@@ -106,7 +106,7 @@ export const schemaFieldSchema = fieldPropertiesSchema.and(
 );
 
 export type FieldType =
-  | z.infer<typeof stringFieldSchema>
-  | z.infer<typeof numberFieldSchema>
-  | z.infer<typeof dateFieldSchema>
-  | z.infer<typeof schemaFieldSchema>;
+  | (z.infer<typeof stringFieldSchema> & { type: 'string' })
+  | (z.infer<typeof numberFieldSchema> & { type: 'number' })
+  | (z.infer<typeof dateFieldSchema> & { type: 'date' })
+  | (z.infer<typeof schemaFieldSchema> & { type: 'schema' });

@@ -32,7 +32,8 @@ const tabsTriggerVariants = cva(
       variant: {
         default:
           'data-[state=active]:text-off-white dark:data-[state=active]:text-oxford-blue-dark',
-        success: 'data-[state=active]:text-emerald-700',
+        success:
+          'data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-700',
         error: 'data-[state=active]:text-error',
       },
     },

@@ -32,11 +32,11 @@ import { Icons } from '@/components/icons';
 import { cn, formatDate } from '@/lib/utils';
 
 import { dateFieldSchema } from '@/schemas/fields-schemas';
-import { BaseFieldDialogProps } from '.';
+import { AnyFieldDialogProps } from '.';
 
 type DateFieldFormProps = {
   defaultValues?: z.infer<typeof dateFieldSchema>;
-} & BaseFieldDialogProps;
+} & AnyFieldDialogProps;
 
 const DateFieldForm: FC<DateFieldFormProps> = ({
   defaultValues,
@@ -57,7 +57,6 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
     const result = updateSchemaFields({
       ...values,
       id: defaultValues ? defaultValues.id : uuidv4(),
-      type: 'date',
     });
 
     if (result) {

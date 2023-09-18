@@ -28,11 +28,11 @@ import {
 
 import { schemaFieldSchema } from '@/schemas/fields-schemas';
 import { trpc } from '@/trpc/client';
-import { BaseFieldDialogProps } from '.';
+import { AnyFieldDialogProps } from '.';
 
 type SchemaFieldFormProps = {
   defaultValues?: z.infer<typeof schemaFieldSchema>;
-} & BaseFieldDialogProps;
+} & AnyFieldDialogProps;
 
 const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
   defaultValues,

@@ -24,11 +24,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 import { stringFieldSchema } from '@/schemas/fields-schemas';
-import { BaseFieldDialogProps } from '.';
+import { AnyFieldDialogProps } from '.';
 
 type StringFieldFormProps = {
   defaultValues?: z.infer<typeof stringFieldSchema>;
-} & BaseFieldDialogProps;
+} & AnyFieldDialogProps;
 
 const StringFieldForm: FC<StringFieldFormProps> = ({
   defaultValues,
@@ -51,7 +51,6 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
     const result = updateSchemaFields({
       ...values,
       id: defaultValues ? defaultValues.id : uuidv4(),
-      type: 'string',
     });
 
     if (result) {

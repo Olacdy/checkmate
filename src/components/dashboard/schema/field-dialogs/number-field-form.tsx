@@ -22,11 +22,11 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { numberFieldSchema } from '@/schemas/fields-schemas';
-import { BaseFieldDialogProps } from '.';
+import { AnyFieldDialogProps } from '.';
 
 type NumberFieldFormProps = {
   defaultValues?: z.infer<typeof numberFieldSchema>;
-} & BaseFieldDialogProps;
+} & AnyFieldDialogProps;
 
 const NumberFieldForm: FC<NumberFieldFormProps> = ({
   defaultValues,
@@ -48,7 +48,6 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
     const result = updateSchemaFields({
       ...values,
       id: defaultValues ? defaultValues.id : uuidv4(),
-      type: 'number',
     });
 
     if (result) {

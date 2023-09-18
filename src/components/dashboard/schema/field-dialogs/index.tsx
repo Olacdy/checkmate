@@ -18,7 +18,12 @@ import NumberFieldForm from './number-field-form';
 import SchemaFieldForm from './schema-field-form';
 import StringFieldForm from './string-field-form';
 
-export type BaseFieldDialogProps = {
+export type AnyFieldDialogProps = {
+  updateSchemaFields: (schemaField: Omit<FieldType, 'type'>) => boolean;
+  closeDialog: () => void;
+};
+
+type BaseFieldDialogProps = {
   updateSchemaFields: (schemaField: FieldType) => boolean;
   closeDialog: () => void;
 };
@@ -53,9 +58,23 @@ export type FieldDialogProps = BaseFieldDialogProps &
 
 const FieldDialog: FC<FieldDialogProps> = (props) => {
   const correspondingFieldForm = () => {
-    if (props.type === 'string') {
-      const { defaultValues, updateSchemaFields, closeDialog } = props;
+    const {
+      type,
+      defaultValues,
+      updateSchemaFields: updateSchemaFieldsUntyped,
+      closeDialog,
+    } = props;
 
+    if (!!!type) return <>No type specified</>;
+
+    const updateSchemaFields = (
+      schemaField: Omit<FieldType, 'type'>
+    ): boolean => {
+      // @ts-ignore
+      return updateSchemaFieldsUntyped({ ...schemaField, type: type });
+    };
+
+    if (type === 'string') {
       return (
         <StringFieldForm
           defaultValues={defaultValues}
@@ -65,9 +84,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
       );
     }
 
-    if (props.type === 'number') {
-      const { defaultValues, updateSchemaFields, closeDialog } = props;
-
+    if (type === 'number') {
       return (
         <NumberFieldForm
           defaultValues={defaultValues}
@@ -77,9 +94,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
       );
     }
 
-    if (props.type === 'date') {
-      const { defaultValues, updateSchemaFields, closeDialog } = props;
-
+    if (type === 'date') {
       return (
         <DateFieldForm
           defaultValues={defaultValues}
@@ -89,8 +104,8 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
       );
     }
 
-    if (props.type === 'schema') {
-      const { defaultValues, updateSchemaFields, closeDialog } = props;
+    if (type === 'schema') {
+      const { defaultValues } = props;
 
       return (
         <SchemaFieldForm
