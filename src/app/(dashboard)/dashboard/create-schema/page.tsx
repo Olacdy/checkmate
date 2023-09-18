@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import SchemaCreationForm from '@/components/dashboard/schema/schema-creation-form';
+import SchemaForm from '@/components/dashboard/schema/schema-form';
 
 type pageProps = {};
 
@@ -20,7 +20,7 @@ const page: FC<pageProps> = ({}) => {
         <CardDescription>Define your schema.</CardDescription>
       </CardHeader>
       <CardContent className='flex flex-1 flex-col gap-5'>
-        <SchemaCreationForm />
+        <SchemaForm type='add' />
       </CardContent>
     </Card>
   );

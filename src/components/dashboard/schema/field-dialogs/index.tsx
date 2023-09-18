@@ -29,22 +29,22 @@ type BaseFieldDialogProps = {
 };
 
 type StringFieldDialogProps = {
-  type?: 'string';
+  fieldType?: 'string';
   defaultValues?: z.infer<typeof stringFieldSchema>;
 };
 
 type NumberFieldDialogProps = {
-  type?: 'number';
+  fieldType?: 'number';
   defaultValues?: z.infer<typeof numberFieldSchema>;
 };
 
 type DateFieldDialogProps = {
-  type?: 'date';
+  fieldType?: 'date';
   defaultValues?: z.infer<typeof dateFieldSchema>;
 };
 
 type SchemaFieldDialogProps = {
-  type?: 'schema';
+  fieldType?: 'schema';
   defaultValues?: z.infer<typeof schemaFieldSchema>;
 };
 
@@ -57,24 +57,24 @@ export type FieldDialogProps = BaseFieldDialogProps &
   );
 
 const FieldDialog: FC<FieldDialogProps> = (props) => {
-  const correspondingFieldForm = () => {
-    const {
-      type,
-      defaultValues,
-      updateSchemaFields: updateSchemaFieldsUntyped,
-      closeDialog,
-    } = props;
+  const {
+    fieldType,
+    defaultValues,
+    updateSchemaFields: updateSchemaFieldsUntyped,
+    closeDialog,
+  } = props;
 
-    if (!!!type) return <>No type specified</>;
+  const correspondingFieldForm = () => {
+    if (!!!fieldType) return <>No type specified</>;
 
     const updateSchemaFields = (
       schemaField: Omit<FieldType, 'type'>
     ): boolean => {
       // @ts-ignore
-      return updateSchemaFieldsUntyped({ ...schemaField, type: type });
+      return updateSchemaFieldsUntyped({ ...schemaField, type: fieldType });
     };
 
-    if (type === 'string') {
+    if (fieldType === 'string') {
       return (
         <StringFieldForm
           defaultValues={defaultValues}
@@ -84,7 +84,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
       );
     }
 
-    if (type === 'number') {
+    if (fieldType === 'number') {
       return (
         <NumberFieldForm
           defaultValues={defaultValues}
@@ -94,7 +94,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
       );
     }
 
-    if (type === 'date') {
+    if (fieldType === 'date') {
       return (
         <DateFieldForm
           defaultValues={defaultValues}
@@ -104,7 +104,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
       );
     }
 
-    if (type === 'schema') {
+    if (fieldType === 'schema') {
       const { defaultValues } = props;
 
       return (
@@ -124,7 +124,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
           {props.defaultValues ? 'Edit field' : 'Create field'}
         </DialogTitle>
         <DialogDescription>
-          {`Design a field of type ${props.type}. Click ${
+          {`Design a field of type ${fieldType}. Click ${
             props.defaultValues ? 'edit' : 'create'
           } field when you are done.`}
         </DialogDescription>

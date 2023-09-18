@@ -103,6 +103,6 @@ export const fields = [
   },
 ] satisfies {
   name: string;
-  type: FieldDialogProps['type'];
+  type: FieldDialogProps['fieldType'];
   icon: keyof typeof Icons;
 }[];

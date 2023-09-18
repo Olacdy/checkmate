@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import SchemaCreationForm from '@/components/dashboard/schema/schema-creation-form';
+import SchemaForm from '@/components/dashboard/schema/schema-form';
 
 import { serverClient } from '@/trpc/server';
 
@@ -34,7 +34,7 @@ const page: FC<pageProps> = async ({ params }) => {
         <CardDescription>Make changes to schema.</CardDescription>
       </CardHeader>
       <CardContent className='flex flex-1 flex-col gap-5'>
-        <SchemaCreationForm defaultValues={schema} />
+        <SchemaForm type='edit' schema={schema} />
       </CardContent>
     </Card>
   );

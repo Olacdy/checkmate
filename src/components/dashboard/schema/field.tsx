@@ -35,8 +35,6 @@ type FieldProps = BaseFieldProps & (ReadonlyFieldProps | DraggableFieldProps);
 const Field: FC<FieldProps> = (props) => {
   const { value } = props;
 
-  console.log(value);
-
   const openedDialog = fields.find((field) => field.type === value.type);
 
   const Icon = Icons[openedDialog?.icon!];
@@ -61,7 +59,7 @@ const Field: FC<FieldProps> = (props) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const handleDeleteClick = () => {
-      props.removeSchemaFeild(value);
+      removeSchemaFeild(value);
     };
 
     return (
@@ -97,7 +95,7 @@ const Field: FC<FieldProps> = (props) => {
             {openedDialog && (
               // @ts-ignore
               <FieldDialog
-                type={openedDialog.type}
+                fieldType={openedDialog.type}
                 defaultValues={value}
                 updateSchemaFields={editSchemaField}
                 closeDialog={() => setOpen(false)}
