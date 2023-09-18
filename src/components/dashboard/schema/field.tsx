@@ -25,8 +25,8 @@ type ReadonlyFieldProps = {
 
 type DraggableFieldProps = {
   type: 'draggable';
-  editSchemaField: (schemaField: FieldType) => boolean;
-  removeSchemaFeild: (schemaField: FieldType) => boolean;
+  editSchemaField: (schemaField: FieldType) => void;
+  removeSchemaFeild: () => void;
   updateSchemaFields: () => void;
 };
 
@@ -58,17 +58,11 @@ const Field: FC<FieldProps> = (props) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const handleDeleteClick = () => {
-      removeSchemaFeild(value);
-    };
-
     return (
       <Reorder.Item
         className='flex w-full items-center justify-between rounded-md border border-oxford-blue/20 bg-slate-50 px-4 py-2 text-oxford-blue-dark shadow-md dark:bg-off-white'
         value={value}
-        onDragEnd={() => {
-          updateSchemaFields();
-        }}>
+        onDragEnd={updateSchemaFields}>
         <div className='flex items-center gap-3'>
           <Icon className='h-5 w-5' />
           <span className='font-headings font-medium text-oxford-blue'>
@@ -77,7 +71,7 @@ const Field: FC<FieldProps> = (props) => {
         </div>
         <div className='flex gap-4'>
           <Button
-            onClick={handleDeleteClick}
+            onClick={removeSchemaFeild}
             className='text-error hover:bg-slate-300/40 hover:text-error dark:hover:bg-slate-200 dark:hover:text-error'
             variant='ghost'
             size='icon'>

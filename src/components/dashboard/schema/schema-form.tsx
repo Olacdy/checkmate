@@ -7,6 +7,7 @@ import * as z from 'zod';
 
 import { useForm } from 'react-hook-form';
 
+import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast, type toast as Toast } from '@/components/ui/use-toast';
 
 import { useSchemaCreationStore } from '@/context/schema-creation-store';
 
@@ -39,25 +40,104 @@ type EditSchemaFormProps = {
   schema: SchemaType;
 };
 
+type AnySchemaFromProps = {
+  toast: typeof Toast;
+  router: AppRouterInstance;
+  schemaFields: FieldType[];
+  setSchemaFields: (schemaFields: FieldType[]) => void;
+  createSchemaFieldsActions: (
+    updateSchemaFields: (field?: FieldType[]) => void
+  ) => {
+    addSchemaField: (schemaField: FieldType) => boolean;
+    editSchemaField: (schemaField: FieldType) => void;
+    removeSchemaField: (schemaField: FieldType) => void;
+  };
+};
+
 type SchemaFormProps = CreateSchemaFormProps | EditSchemaFormProps;
 
 const SchemaForm: FC<SchemaFormProps> = (props) => {
+  // Getting schema form type
   const { type } = props;
 
-  if (type === 'add') return <AddSchema />;
-  if (type === 'edit') return <EditSchema schema={props.schema} />;
+  // Getting toast for messages
+  const { toast } = useToast();
+
+  // Getting router
+  const router = useRouter();
+
+  const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
+
+  // CRUD schema fields methods
+  const createSchemaFieldsActions = (
+    updateSchemaFields: (field?: FieldType[]) => void
+  ) => {
+    const addSchemaField = (schemaField: FieldType): boolean => {
+      const isUnique = !schemaFields.some(
+        (field) =>
+          field.name === schemaField.name && field.id !== schemaField.id
+      );
+
+      if (!isUnique) {
+        return false;
+      }
+
+      updateSchemaFields([...schemaFields, schemaField]);
+
+      return true;
+    };
+
+    const editSchemaField = (schemaField: FieldType) => {
+      updateSchemaFields(
+        schemaFields.map((field) =>
+          field.id === schemaField.id ? { ...schemaField } : field
+        )
+      );
+    };
+
+    const removeSchemaField = (schemaField: FieldType) => {
+      updateSchemaFields(
+        schemaFields.filter((field) => field.id !== schemaField.id)
+      );
+    };
+
+    return { addSchemaField, editSchemaField, removeSchemaField };
+  };
+
+  if (type === 'add')
+    return (
+      <AddSchema
+        toast={toast}
+        router={router}
+        schemaFields={schemaFields}
+        setSchemaFields={setSchemaFields}
+        createSchemaFieldsActions={createSchemaFieldsActions}
+      />
+    );
+  if (type === 'edit')
+    return (
+      <EditSchema
+        schema={props.schema}
+        toast={toast}
+        router={router}
+        schemaFields={schemaFields}
+        setSchemaFields={setSchemaFields}
+        createSchemaFieldsActions={createSchemaFieldsActions}
+      />
+    );
 };
 
 export default SchemaForm;
 
-const AddSchema: FC<CreateSchemaFormProps> = () => {
-  const { toast } = useToast();
-
+const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
+  toast,
+  router,
+  schemaFields,
+  setSchemaFields,
+  createSchemaFieldsActions,
+}) => {
   // Getting tRPC route to add schemas
   const addSchema = trpc.schema.addSchema.useMutation();
-
-  // Getting router
-  const router = useRouter();
 
   // Schema storage related properties and actions
   const {
@@ -76,43 +156,6 @@ const AddSchema: FC<CreateSchemaFormProps> = () => {
     },
   });
 
-  const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
-
-  // CRUD schema fields methods
-  const addSchemaField = (schemaField: FieldType): boolean => {
-    const isUnique = !schemaFields.some(
-      (field) => field.name === schemaField.name && field.id !== schemaField.id
-    );
-
-    if (!isUnique) {
-      return false;
-    }
-
-    updateSchemaFields([...schemaFields, schemaField]);
-
-    return true;
-  };
-
-  const editSchemaField = (schemaField: FieldType): boolean => {
-    const newSchemaFields = schemaFields.map((field) =>
-      field.id === schemaField.id ? { ...schemaField } : field
-    );
-
-    updateSchemaFields(newSchemaFields);
-
-    return true;
-  };
-
-  const removeSchemaField = (schemaField: FieldType): boolean => {
-    const newSchemaFields = schemaFields.filter(
-      (field) => field.id !== schemaField.id
-    );
-
-    updateSchemaFields(newSchemaFields);
-
-    return true;
-  };
-
   // Update schemas with passed value or update only global store after reorder
   const updateSchemaFields = (fields?: FieldType[]) => {
     if (fields) {
@@ -122,6 +165,10 @@ const AddSchema: FC<CreateSchemaFormProps> = () => {
       setFields(schemaFields);
     }
   };
+
+  // Initializing CRUD schema actions
+  const { addSchemaField, editSchemaField, removeSchemaField } =
+    createSchemaFieldsActions(updateSchemaFields);
 
   // Setting schema fields according to a state stored in localStorage
   useEffect(() => {
@@ -223,14 +270,16 @@ const AddSchema: FC<CreateSchemaFormProps> = () => {
   );
 };
 
-const EditSchema: FC<EditSchemaFormProps> = ({ schema }) => {
-  const { toast } = useToast();
-
+const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
+  schema,
+  toast,
+  router,
+  schemaFields,
+  setSchemaFields,
+  createSchemaFieldsActions,
+}) => {
   // Getting tRPC route to edit schemas
   const editSchema = trpc.schema.editSchema.useMutation();
-
-  // Getting router
-  const router = useRouter();
 
   // Initializing form
   const form = useForm<z.infer<typeof createSchemaSchema>>({
@@ -240,44 +289,10 @@ const EditSchema: FC<EditSchemaFormProps> = ({ schema }) => {
     },
   });
 
-  const [schemaFields, setSchemaFields] = useState<FieldType[]>(
-    schema.fields as FieldType[]
-  );
-
-  // CRUD schema fields methods
-  const addSchemaField = (schemaField: FieldType): boolean => {
-    const isUnique = !schemaFields.some(
-      (field) => field.name === schemaField.name && field.id !== schemaField.id
-    );
-
-    if (!isUnique) {
-      return false;
-    }
-
-    updateSchemaFields([...schemaFields, schemaField]);
-
-    return true;
-  };
-
-  const editSchemaField = (schemaField: FieldType): boolean => {
-    const newSchemaFields = schemaFields.map((field) =>
-      field.id === schemaField.id ? { ...schemaField } : field
-    );
-
-    updateSchemaFields(newSchemaFields);
-
-    return true;
-  };
-
-  const removeSchemaField = (schemaField: FieldType): boolean => {
-    const newSchemaFields = schemaFields.filter(
-      (field) => field.id !== schemaField.id
-    );
-
-    updateSchemaFields(newSchemaFields);
-
-    return true;
-  };
+  // Setting schema fields from passed schema
+  useEffect(() => {
+    setSchemaFields(schema.fields as FieldType[]);
+  }, []);
 
   // Update schemas with passed value or update only global store after reorder
   const updateSchemaFields = (fields?: FieldType[]) => {
@@ -285,6 +300,10 @@ const EditSchema: FC<EditSchemaFormProps> = ({ schema }) => {
       setSchemaFields(fields);
     }
   };
+
+  // Initializing CRUD schema actions
+  const { addSchemaField, editSchemaField, removeSchemaField } =
+    createSchemaFieldsActions(updateSchemaFields);
 
   const handleResetClick = () => {
     form.setValue('name', schema.name);
@@ -308,6 +327,7 @@ const EditSchema: FC<EditSchemaFormProps> = ({ schema }) => {
     });
 
     router.replace(`/dashboard/schema/${schema.id}`);
+    router.refresh();
 
     toast({
       variant: 'success',

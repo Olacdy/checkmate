@@ -50,8 +50,6 @@ const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
   });
 
   const onSubmit = (values: z.infer<typeof schemaFieldSchema>) => {
-    console.log(values);
-
     closeDialog();
   };
 

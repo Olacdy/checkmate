@@ -19,12 +19,12 @@ import SchemaFieldForm from './schema-field-form';
 import StringFieldForm from './string-field-form';
 
 export type AnyFieldDialogProps = {
-  updateSchemaFields: (schemaField: Omit<FieldType, 'type'>) => boolean;
+  updateSchemaFields: (schemaField: Omit<FieldType, 'type'>) => void;
   closeDialog: () => void;
 };
 
 type BaseFieldDialogProps = {
-  updateSchemaFields: (schemaField: FieldType) => boolean;
+  updateSchemaFields: (schemaField: FieldType) => void;
   closeDialog: () => void;
 };
 

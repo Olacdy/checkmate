@@ -40,16 +40,20 @@ type EditFieldsCardProps = {
   type: 'edit';
   setSchemaFields: (schemaFields: FieldType[]) => void;
   addSchemaField: (schemaField: FieldType) => boolean;
-  editSchemaField: (schemaField: FieldType) => boolean;
-  removeSchemaField: (schemaField: FieldType) => boolean;
+  editSchemaField: (schemaField: FieldType) => void;
+  removeSchemaField: (schemaField: FieldType) => void;
   updateSchemaFields: (fields?: FieldType[]) => void;
 };
 
 type FieldsCardProps = BaseFieldsCardProps &
   (ReadonlyFieldsCardProps | EditFieldsCardProps);
 
-const FieldsCard: FC<FieldsCardProps> = ({ className, ...props }) => {
-  const { type, schemaFields } = props;
+const FieldsCard: FC<FieldsCardProps> = ({
+  className,
+  schemaFields,
+  ...props
+}) => {
+  const { type } = props;
 
   // Client state
   const [openedDialog, setOpenedDialog] = useState<
@@ -97,8 +101,8 @@ const FieldsCard: FC<FieldsCardProps> = ({ className, ...props }) => {
                   type='draggable'
                   value={schemaField}
                   editSchemaField={editSchemaField}
-                  removeSchemaFeild={removeSchemaField}
-                  updateSchemaFields={updateSchemaFields}
+                  removeSchemaFeild={() => removeSchemaField(schemaField)}
+                  updateSchemaFields={() => updateSchemaFields()}
                 />
               );
             })}
