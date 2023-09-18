@@ -41,7 +41,11 @@ const page: FC<pageProps> = async ({ params }) => {
           name={schema?.name!}
           schemaFields={schema?.fields as FieldType[]}
         />
-        <ReviewSchemaTabs className='col-span-7' schemas={[schema]} />
+        <ReviewSchemaTabs
+          className='col-span-7'
+          type='single'
+          schema={schema}
+        />
       </CardContent>
     </Card>
   );

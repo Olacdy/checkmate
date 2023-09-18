@@ -18,7 +18,15 @@ export const schemaRouter = router({
       return await prisma.schema.findFirst({
         where: { id: id, userId: userId },
         include: {
-          validations: true,
+          validations: {
+            include: {
+              schema: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       });
     }),
@@ -28,7 +36,15 @@ export const schemaRouter = router({
     return await prisma.schema.findMany({
       where: { userId: userId },
       include: {
-        validations: true,
+        validations: {
+          include: {
+            schema: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
   }),

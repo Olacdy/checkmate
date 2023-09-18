@@ -42,5 +42,25 @@ export const editSchemaSchema = deleteSchemaSchema.merge(
 );
 
 export type SchemaType = Prisma.SchemaGetPayload<{
-  include: { validations: true };
+  include: {
+    validations: {
+      include: {
+        schema: {
+          select: {
+            name: true;
+          };
+        };
+      };
+    };
+  };
+}>;
+
+export type ValidationType = Prisma.ValidationGetPayload<{
+  include: {
+    schema: {
+      select: {
+        name: true;
+      };
+    };
+  };
 }>;

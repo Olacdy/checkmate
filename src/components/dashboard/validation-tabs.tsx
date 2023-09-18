@@ -7,16 +7,35 @@ import { Icons } from '@/components/icons';
 
 import { cn } from '@/lib/utils';
 
-import { SchemaType } from '@/schemas/schemas-schema';
+import { SchemaType, ValidationType } from '@/schemas/schemas-schema';
+import ValidationsTable from './validations-table';
 
-type ReviewSchemaTabsProps = {
+type BaseValidationsTabsProps = {} & HTMLAttributes<HTMLDivElement>;
+
+type SingleSchemaValidationsTabsProps = {
+  type: 'single';
+  schema: SchemaType;
+};
+
+type MultipleSchemasValidationsTabsProps = {
+  type: 'multiple';
   schemas: SchemaType[];
-} & HTMLAttributes<HTMLDivElement>;
+};
 
-const ReviewSchemaTabs: FC<ReviewSchemaTabsProps> = ({
-  className,
-  schemas,
-}) => {
+type ReviewSchemaTabsProps = BaseValidationsTabsProps &
+  (SingleSchemaValidationsTabsProps | MultipleSchemasValidationsTabsProps);
+
+const ReviewSchemaTabs: FC<ReviewSchemaTabsProps> = (props) => {
+  const { type, className } = props;
+
+  const validations =
+    type === 'multiple'
+      ? props.schemas.reduce(
+          (accumulator, schema) => accumulator.concat(schema.validations),
+          [] as ValidationType[]
+        )
+      : props.schema.validations;
+
   return (
     <Tabs defaultValue='validations' className={cn('flex flex-col', className)}>
       <TabsList>
@@ -24,20 +43,34 @@ const ReviewSchemaTabs: FC<ReviewSchemaTabsProps> = ({
           <Icons.validation />
           <span>Validations</span>
         </TabsTrigger>
-        <TabsTrigger className='flex gap-2' value='successes'>
+        <TabsTrigger variant='success' className='flex gap-2' value='successes'>
           <Icons.success />
           <span>Successes</span>
         </TabsTrigger>
-        <TabsTrigger className='flex gap-2' value='errors'>
+        <TabsTrigger variant='error' className='flex gap-2' value='errors'>
           <Icons.error />
           <span>Errors</span>
         </TabsTrigger>
       </TabsList>
-      <Card className='flex flex-1 border-0 bg-transparent dark:bg-transparent'>
+      <Card className='flex flex-1 bg-transparent dark:bg-transparent'>
         <CardContent className='flex-1'>
-          <TabsContent value='validations'>Validations</TabsContent>
-          <TabsContent value='successes'>Successes</TabsContent>
-          <TabsContent value='errors'>Errors</TabsContent>
+          <TabsContent value='validations'>
+            <ValidationsTable type={type} validations={validations} />
+          </TabsContent>
+          <TabsContent value='successes'>
+            <ValidationsTable
+              type={type}
+              validations={validations}
+              display='success'
+            />
+          </TabsContent>
+          <TabsContent value='errors'>
+            <ValidationsTable
+              type={type}
+              validations={validations}
+              display='error'
+            />
+          </TabsContent>
         </CardContent>
       </Card>
     </Tabs>
