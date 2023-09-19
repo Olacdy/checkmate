@@ -104,16 +104,16 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
           <span>Increase quota</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-w-sm gap-6 xs:max-w-md'>
         <div className='flex flex-col items-center gap-12'>
           <DialogHeader>
-            <DialogTitle className='text-center text-2xl capitalize text-oxford-blue dark:text-off-white'>
+            <DialogTitle className='text-center text-3xl capitalize text-oxford-blue dark:text-off-white'>
               Increase quota
             </DialogTitle>
           </DialogHeader>
-          <div className='flex items-end justify-center gap-1.5 text-center font-headings text-xl text-oxford-blue dark:text-off-white'>
-            <span>Current price: </span>
-            <span className='text-3xl'>
+          <div className='flex items-center justify-center gap-2 text-center font-headings text-xl text-oxford-blue dark:text-off-white'>
+            <span className='underline underline-offset-2'>Current price:</span>
+            <span className='dark:drop-shadow-md-dark text-3xl font-semibold text-crayola-blue drop-shadow-md'>
               {increaseBy === '' ? 0 : increaseBy * quotaPrice}&#36;
             </span>
           </div>

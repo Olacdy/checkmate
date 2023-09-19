@@ -30,6 +30,9 @@ module.exports = {
         success: '#4FD785',
         error: '#FF4848',
       },
+      dropShadow: {
+        'md-dark': '1px 2px 1px rgba(247, 249, 255, 0.1)',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },
