@@ -5,27 +5,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { Icons } from '@/components/icons';
 
+import ValidationsTable from '@/components/dashboard/validations-table';
+
 import { cn } from '@/lib/utils';
 
 import { SchemaType, ValidationType } from '@/schemas/schema-route-schemas';
-import ValidationsTable from './validations-table';
 
 type BaseValidationsTabsProps = {} & HTMLAttributes<HTMLDivElement>;
 
-type SingleSchemaValidationsTabsProps = {
+type SingleValidationTabsProps = {
   type: 'single';
   schema: SchemaType;
 };
 
-type MultipleSchemasValidationsTabsProps = {
+type MultipleValidationTabsProps = {
   type: 'multiple';
   schemas: SchemaType[];
 };
 
-type ReviewSchemaTabsProps = BaseValidationsTabsProps &
-  (SingleSchemaValidationsTabsProps | MultipleSchemasValidationsTabsProps);
+type ValidationTabsProps = BaseValidationsTabsProps &
+  (SingleValidationTabsProps | MultipleValidationTabsProps);
 
-const ReviewSchemaTabs: FC<ReviewSchemaTabsProps> = (props) => {
+const ValidationTabs: FC<ValidationTabsProps> = (props) => {
   const { type, className } = props;
 
   const validations =
@@ -77,4 +78,4 @@ const ReviewSchemaTabs: FC<ReviewSchemaTabsProps> = (props) => {
   );
 };
 
-export default ReviewSchemaTabs;
+export default ValidationTabs;

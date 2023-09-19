@@ -10,7 +10,7 @@ import {
 
 import FieldsCard from '@/components/dashboard/schema/fields-card';
 import ReviewSchemaButtons from '@/components/dashboard/schema/review-schema-buttons';
-import ReviewSchemaTabs from '@/components/dashboard/validation-tabs';
+import ValidationTabs from '@/components/dashboard/validation-tabs';
 
 import { serverClient } from '@/trpc/server';
 
@@ -51,11 +51,7 @@ const page: FC<pageProps> = async ({ params }) => {
           name={schema?.name!}
           schemaFields={schema?.fields as FieldType[]}
         />
-        <ReviewSchemaTabs
-          className='col-span-7'
-          type='single'
-          schema={schema}
-        />
+        <ValidationTabs className='col-span-7' type='single' schema={schema} />
       </CardContent>
     </Card>
   );
