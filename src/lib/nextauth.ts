@@ -14,15 +14,15 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      quota: number;
       // ...other properties
       // role: UserRole;
     } & DefaultSession['user'];
   }
 
-  interface User {
-    quota?: number;
-  }
+  // interface User {
+  //   // ...other properties
+  //     // role: UserRole;
+  // }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -33,7 +33,6 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
-        quota: user.quota,
       },
     }),
   },

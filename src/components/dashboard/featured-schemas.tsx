@@ -27,7 +27,7 @@ import { Icons } from '@/components/icons';
 
 import { trpc } from '@/trpc/client';
 
-import { SchemaType } from '@/schemas/schemas-schema';
+import { SchemaType } from '@/schemas/schema-route-schemas';
 
 import { formatDate, getOneSchemaStat } from '@/lib/utils';
 

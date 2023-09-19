@@ -6,7 +6,7 @@ import {
   deleteSchemaSchema,
   editSchemaSchema,
   getSchemaByIdSchema,
-} from '@/schemas/schemas-schema';
+} from '@/schemas/schema-route-schemas';
 
 export const schemaRouter = router({
   getSchemasCount: protectedProcedure.query(async ({ ctx }) => {

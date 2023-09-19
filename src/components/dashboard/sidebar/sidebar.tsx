@@ -17,6 +17,7 @@ const Sidebar: FC<SidebarProps> = async ({}) => {
   const session = await getServerAuthSession();
 
   const schemasCount = await serverClient.schema.getSchemasCount();
+  const quota = await serverClient.user.getQuota();
 
   return (
     <section className='flex w-full items-center xl:min-h-screen xl:max-w-xs xl:flex-col xl:pb-6'>
@@ -37,13 +38,13 @@ const Sidebar: FC<SidebarProps> = async ({}) => {
         />
       </div>
       <div className='flex w-full flex-1 items-center justify-between px-4 pt-3 xl:flex-col xl:px-5 xl:pt-10'>
-        <SheetSidebar initialData={schemasCount} quota={session?.user.quota!} />
+        <SheetSidebar initialSchemas={schemasCount} initialQuota={quota} />
         <SideButtons className='hidden xl:flex' />
         <div className='flex flex-col gap-4 xl:w-full'>
           <QuotaCounter
             className='hidden xl:flex'
-            initialData={schemasCount}
-            quota={session?.user.quota!}
+            initialSchemas={schemasCount}
+            initialQuota={quota}
           />
           <ProfileDropdown
             name={session?.user.name!}

@@ -1,5 +1,7 @@
-import { schemaRouter } from '@/server/routers/schema';
 import { router } from '@/server/trpc';
+
+import { schemaRouter } from '@/server/routers/schema';
+import { userRouter } from '@/server/routers/user';
 
 /**
  * This is the primary router for your server.
@@ -7,6 +9,7 @@ import { router } from '@/server/trpc';
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = router({
+  user: userRouter,
   schema: schemaRouter,
 });
 

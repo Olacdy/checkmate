@@ -51,7 +51,7 @@ import { trpc } from '@/trpc/client';
 
 import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
 
-import { SchemaType } from '@/schemas/schemas-schema';
+import { SchemaType } from '@/schemas/schema-route-schemas';
 
 export const columns: ColumnDef<SchemaType>[] = [
   {

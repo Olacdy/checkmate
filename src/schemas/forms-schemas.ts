@@ -19,3 +19,17 @@ export const contactSchema = z.object({
       message: 'Too long. Max length is 500 characters.',
     }),
 });
+
+export const quotaIncreaseSchema = z
+  .object({
+    increaseBy: z.union([z.number().int().positive(), z.literal('')]),
+  })
+  .superRefine((val, ctx) => {
+    if (val.increaseBy === '') {
+      ctx.addIssue({
+        path: ['increaseBy'],
+        code: z.ZodIssueCode.custom,
+        message: 'Please, specify the desired quota increase value',
+      });
+    }
+  });

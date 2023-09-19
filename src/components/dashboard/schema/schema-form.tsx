@@ -34,7 +34,7 @@ import { useSchemaCreationStore } from '@/context/schema-creation-store';
 import { trpc } from '@/trpc/client';
 
 import { FieldType } from '@/schemas/fields-schemas';
-import { SchemaType, createSchemaSchema } from '@/schemas/schemas-schema';
+import { SchemaType, createSchemaSchema } from '@/schemas/schema-route-schemas';
 
 import { FieldActionResultType } from '@/helpers/schema-creation-errors';
 

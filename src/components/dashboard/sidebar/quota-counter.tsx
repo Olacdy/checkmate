@@ -1,17 +1,16 @@
 'use client';
 
-import { FC, HTMLAttributes } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 
-import { Icons } from '@/components/icons';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
 } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
+
+import QuotaDialog from '@/components/dashboard/sidebar/quota-dialog';
 
 import { trpc } from '@/trpc/client';
 import { serverClient } from '@/trpc/server';
@@ -19,40 +18,42 @@ import { serverClient } from '@/trpc/server';
 import { cn } from '@/lib/utils';
 
 type QuotaCounterProps = {
-  initialData: Awaited<
+  initialSchemas: Awaited<
     ReturnType<(typeof serverClient)['schema']['getSchemasCount']>
   >;
-  quota: number;
+  initialQuota: Awaited<ReturnType<(typeof serverClient)['user']['getQuota']>>;
 } & HTMLAttributes<HTMLDivElement>;
 
 const QuotaCounter: FC<QuotaCounterProps> = ({
-  initialData,
-  quota,
+  initialSchemas,
+  initialQuota,
   className,
   ...props
 }) => {
   const getSchemasCount = trpc.schema.getSchemasCount.useQuery(undefined, {
-    initialData: initialData,
+    initialData: initialSchemas,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });
 
+  const getQuota = trpc.user.getQuota.useQuery(undefined, {
+    initialData: initialQuota,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
+
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <Card className={cn('w-full flex-col', className)}>
       <CardHeader>
-        <CardDescription className='text-center capitalize'>{`${getSchemasCount?.data} / ${quota} schemas created`}</CardDescription>
-        <Progress value={Math.floor((getSchemasCount?.data / quota) * 100)} />
+        <CardDescription className='text-center capitalize'>{`${getSchemasCount?.data} / ${getQuota?.data} schemas created`}</CardDescription>
+        <Progress
+          value={Math.floor((getSchemasCount?.data / getQuota?.data!) * 100)}
+        />
       </CardHeader>
       <CardContent>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className='flex w-full items-center gap-1.5 bg-gradient-to-r from-crayola-blue/30 to-crayola-blue/80 py-6 font-headings text-off-white dark:bg-gradient-to-r dark:from-crayola-blue/70 dark:to-crayola-blue/90 dark:text-off-white'>
-              <Icons.increase className='fill-off-white' />
-              <span>Increase quota</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent></DialogContent>
-        </Dialog>
+        <QuotaDialog open={open} onOpenChange={setOpen} />
       </CardContent>
     </Card>
   );

@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { SchemaType } from '@/schemas/schemas-schema';
+import { SchemaType } from '@/schemas/schema-route-schemas';
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));

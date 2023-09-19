@@ -19,13 +19,16 @@ import SideButtons from '@/components/dashboard/sidebar/side-buttons';
 import { serverClient } from '@/trpc/server';
 
 type SheetSidebarProps = {
-  initialData: Awaited<
+  initialSchemas: Awaited<
     ReturnType<(typeof serverClient)['schema']['getSchemasCount']>
   >;
-  quota: number;
+  initialQuota: Awaited<ReturnType<(typeof serverClient)['user']['getQuota']>>;
 };
 
-const SheetSidebar: FC<SheetSidebarProps> = ({ initialData, quota }) => {
+const SheetSidebar: FC<SheetSidebarProps> = ({
+  initialSchemas,
+  initialQuota,
+}) => {
   return (
     <Sheet>
       <SheetTrigger className='flex items-center rounded-md p-2 hover:bg-slate-500/30 dark:hover:bg-slate-100/20 xl:hidden'>
@@ -54,7 +57,10 @@ const SheetSidebar: FC<SheetSidebarProps> = ({ initialData, quota }) => {
         </SheetHeader>
         <div className='flex flex-1 flex-col items-center justify-between'>
           <SideButtons />
-          <QuotaCounter initialData={initialData} quota={quota} />
+          <QuotaCounter
+            initialSchemas={initialSchemas}
+            initialQuota={initialQuota}
+          />
         </div>
       </SheetContent>
     </Sheet>

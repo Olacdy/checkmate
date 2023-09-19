@@ -106,3 +106,5 @@ export const fields = [
   type: FieldDialogProps['fieldType'];
   icon: keyof typeof Icons;
 }[];
+
+export const quotaPrice = 0.25;

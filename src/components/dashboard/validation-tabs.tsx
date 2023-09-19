@@ -7,7 +7,7 @@ import { Icons } from '@/components/icons';
 
 import { cn } from '@/lib/utils';
 
-import { SchemaType, ValidationType } from '@/schemas/schemas-schema';
+import { SchemaType, ValidationType } from '@/schemas/schema-route-schemas';
 import ValidationsTable from './validations-table';
 
 type BaseValidationsTabsProps = {} & HTMLAttributes<HTMLDivElement>;
