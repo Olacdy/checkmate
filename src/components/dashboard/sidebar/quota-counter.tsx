@@ -14,11 +14,14 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 
 import { trpc } from '@/trpc/client';
+import { serverClient } from '@/trpc/server';
 
 import { cn } from '@/lib/utils';
 
 type QuotaCounterProps = {
-  initialData: { count: number };
+  initialData: Awaited<
+    ReturnType<(typeof serverClient)['schema']['getSchemasCount']>
+  >;
   quota: number;
 } & HTMLAttributes<HTMLDivElement>;
 
@@ -28,15 +31,17 @@ const QuotaCounter: FC<QuotaCounterProps> = ({
   className,
   ...props
 }) => {
-  const schemasCount = trpc.schema.getSchemasCount.useQuery(undefined, {
+  const getSchemasCount = trpc.schema.getSchemasCount.useQuery(undefined, {
     initialData: initialData,
-  }).data;
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 
   return (
     <Card className={cn('w-full flex-col', className)}>
       <CardHeader>
-        <CardDescription className='text-center capitalize'>{`${schemasCount.count} / ${quota} schemas created`}</CardDescription>
-        <Progress value={Math.floor((schemasCount.count / quota) * 100)} />
+        <CardDescription className='text-center capitalize'>{`${getSchemasCount?.data} / ${quota} schemas created`}</CardDescription>
+        <Progress value={Math.floor((getSchemasCount?.data / quota) * 100)} />
       </CardHeader>
       <CardContent>
         <Dialog>

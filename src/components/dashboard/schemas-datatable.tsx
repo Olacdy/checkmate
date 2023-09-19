@@ -15,6 +15,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import { useQueryClient } from '@tanstack/react-query';
+
+import { getQueryKey } from '@trpc/react-query';
+
 import { useRouter } from 'next/navigation';
 
 import {
@@ -156,6 +160,8 @@ type SchemasDataTableProps = {
 };
 
 const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const { toast } = useToast();
@@ -163,14 +169,13 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
     initialData: initialSchemas,
   });
-  const getSchemasCount = trpc.schema.getSchemasCount.useQuery();
 
   const data = getSchemas.data;
 
   const deleteSchema = trpc.schema.deleteSchema.useMutation({
     onSettled: () => {
       getSchemas.refetch();
-      getSchemasCount.refetch();
+      queryClient.invalidateQueries(getQueryKey(trpc.schema.getSchemasCount));
     },
   });
 
@@ -286,9 +291,8 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
 
                   if (action.name === 'delete') {
                     return (
-                      <DialogTrigger asChild>
+                      <DialogTrigger key={action.name} asChild>
                         <DropdownMenuItem
-                          key={action.name}
                           className={cn(
                             'flex items-center justify-between capitalize',
                             action.style

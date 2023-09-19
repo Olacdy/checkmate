@@ -26,8 +26,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { schemaFieldSchema } from '@/schemas/fields-schemas';
 import { trpc } from '@/trpc/client';
+
+import { schemaFieldSchema } from '@/schemas/fields-schemas';
+
 import { AnyFieldDialogProps } from '.';
 
 type SchemaFieldFormProps = {

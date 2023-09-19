@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import ProfileDropdown from '@/components/dashboard/sidebar/profile-dropdown';
 import QuotaCounter from '@/components/dashboard/sidebar/quota-counter';
-import SheetSideButtons from '@/components/dashboard/sidebar/sheet-side-buttons';
+import SheetSidebar from '@/components/dashboard/sidebar/sheet-sidebar';
 import SideButtons from '@/components/dashboard/sidebar/side-buttons';
 
 import { serverClient } from '@/trpc/server';
@@ -16,7 +16,7 @@ type SidebarProps = {};
 const Sidebar: FC<SidebarProps> = async ({}) => {
   const session = await getServerAuthSession();
 
-  const initialSchemasCountData = await serverClient.schema.getSchemasCount();
+  const schemasCount = await serverClient.schema.getSchemasCount();
 
   return (
     <section className='flex w-full items-center xl:min-h-screen xl:max-w-xs xl:flex-col xl:pb-6'>
@@ -37,15 +37,12 @@ const Sidebar: FC<SidebarProps> = async ({}) => {
         />
       </div>
       <div className='flex w-full flex-1 items-center justify-between px-4 pt-3 xl:flex-col xl:px-5 xl:pt-10'>
-        <SheetSideButtons
-          initialData={initialSchemasCountData}
-          quota={session?.user.quota!}
-        />
+        <SheetSidebar initialData={schemasCount} quota={session?.user.quota!} />
         <SideButtons className='hidden xl:flex' />
         <div className='flex flex-col gap-4 xl:w-full'>
           <QuotaCounter
             className='hidden xl:flex'
-            initialData={initialSchemasCountData}
+            initialData={schemasCount}
             quota={session?.user.quota!}
           />
           <ProfileDropdown

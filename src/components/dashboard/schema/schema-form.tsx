@@ -7,8 +7,13 @@ import * as z from 'zod';
 
 import { useForm } from 'react-hook-form';
 
-import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { getQueryKey } from '@trpc/react-query';
+
 import { useRouter } from 'next/navigation';
+
+import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -22,6 +27,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast, type toast as Toast } from '@/components/ui/use-toast';
 
+import FieldsCard from '@/components/dashboard/schema/fields-card';
+
 import { useSchemaCreationStore } from '@/context/schema-creation-store';
 
 import { trpc } from '@/trpc/client';
@@ -29,7 +36,7 @@ import { trpc } from '@/trpc/client';
 import { FieldType } from '@/schemas/fields-schemas';
 import { SchemaType, createSchemaSchema } from '@/schemas/schemas-schema';
 
-import FieldsCard from './fields-card';
+import { FieldActionResultType } from '@/helpers/schema-creation-errors';
 
 type CreateSchemaFormProps = {
   type?: 'add';
@@ -43,22 +50,29 @@ type EditSchemaFormProps = {
 type AnySchemaFromProps = {
   toast: typeof Toast;
   router: AppRouterInstance;
-  getSchemas: ReturnType<typeof trpc.schema.getSchemas.useQuery>;
-  getSchemasCount: ReturnType<typeof trpc.schema.getSchemasCount.useQuery>;
+  onSettled: () => void;
   schemaFields: FieldType[];
   setSchemaFields: (schemaFields: FieldType[]) => void;
   createSchemaFieldsActions: (
     updateSchemaFields: (field?: FieldType[]) => void
   ) => {
-    addSchemaField: (schemaField: FieldType) => boolean;
-    editSchemaField: (schemaField: FieldType) => void;
-    removeSchemaField: (schemaField: FieldType) => void;
+    addSchemaField: (schemaField: FieldType) => FieldActionResultType;
+    editSchemaField: (schemaField: FieldType) => FieldActionResultType;
+    removeSchemaField: (schemaField: FieldType) => FieldActionResultType;
   };
 };
 
 type SchemaFormProps = CreateSchemaFormProps | EditSchemaFormProps;
 
 const SchemaForm: FC<SchemaFormProps> = (props) => {
+  // Getting query client and defining queries to invalidate
+  const queryClient = useQueryClient();
+
+  const onSettled = () => {
+    queryClient.invalidateQueries(getQueryKey(trpc.schema.getSchemas));
+    queryClient.invalidateQueries(getQueryKey(trpc.schema.getSchemasCount));
+  };
+
   // Getting schema form type
   const { type } = props;
 
@@ -68,24 +82,20 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
   // Getting router
   const router = useRouter();
 
-  // Get schemas queries to refetch after the action
-  const getSchemas = trpc.schema.getSchemas.useQuery();
-  const getSchemasCount = trpc.schema.getSchemasCount.useQuery();
-
   const [schemaFields, setSchemaFields] = useState<FieldType[]>([]);
 
   // CRUD schema fields methods
   const createSchemaFieldsActions = (
     updateSchemaFields: (field?: FieldType[]) => void
   ) => {
-    const addSchemaField = (schemaField: FieldType): boolean => {
+    const addSchemaField = (schemaField: FieldType): FieldActionResultType => {
       const isUnique = !schemaFields.some(
         (field) =>
           field.name === schemaField.name && field.id !== schemaField.id
       );
 
       if (!isUnique) {
-        return false;
+        return 'FIELD_NAME_NOT_UNIQUE';
       }
 
       updateSchemaFields([...schemaFields, schemaField]);
@@ -93,18 +103,24 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
       return true;
     };
 
-    const editSchemaField = (schemaField: FieldType) => {
+    const editSchemaField = (schemaField: FieldType): FieldActionResultType => {
       updateSchemaFields(
         schemaFields.map((field) =>
           field.id === schemaField.id ? { ...schemaField } : field
         )
       );
+
+      return true;
     };
 
-    const removeSchemaField = (schemaField: FieldType) => {
+    const removeSchemaField = (
+      schemaField: FieldType
+    ): FieldActionResultType => {
       updateSchemaFields(
         schemaFields.filter((field) => field.id !== schemaField.id)
       );
+
+      return true;
     };
 
     return { addSchemaField, editSchemaField, removeSchemaField };
@@ -115,8 +131,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
       <AddSchema
         toast={toast}
         router={router}
-        getSchemas={getSchemas}
-        getSchemasCount={getSchemasCount}
+        onSettled={onSettled}
         schemaFields={schemaFields}
         setSchemaFields={setSchemaFields}
         createSchemaFieldsActions={createSchemaFieldsActions}
@@ -128,8 +143,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
         schema={props.schema}
         toast={toast}
         router={router}
-        getSchemas={getSchemas}
-        getSchemasCount={getSchemasCount}
+        onSettled={onSettled}
         schemaFields={schemaFields}
         setSchemaFields={setSchemaFields}
         createSchemaFieldsActions={createSchemaFieldsActions}
@@ -142,8 +156,7 @@ export default SchemaForm;
 const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
   toast,
   router,
-  getSchemas,
-  getSchemasCount,
+  onSettled,
   schemaFields,
   setSchemaFields,
   createSchemaFieldsActions,
@@ -159,10 +172,7 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
 
   // Getting tRPC route to add schemas
   const addSchema = trpc.schema.addSchema.useMutation({
-    onSettled: () => {
-      getSchemas.refetch();
-      getSchemasCount.refetch();
-    },
+    onSettled: onSettled,
   });
 
   // Initializing form
@@ -291,18 +301,14 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
   schema,
   toast,
   router,
-  getSchemas,
-  getSchemasCount,
+  onSettled,
   schemaFields,
   setSchemaFields,
   createSchemaFieldsActions,
 }) => {
   // Getting tRPC route to edit schemas
   const editSchema = trpc.schema.editSchema.useMutation({
-    onSettled: () => {
-      getSchemas.refetch();
-      getSchemasCount.refetch();
-    },
+    onSettled: onSettled,
   });
 
   // Initializing form

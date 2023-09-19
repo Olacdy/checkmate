@@ -13,6 +13,7 @@ import { Icons } from '@/components/icons';
 
 import { fields } from '@/helpers/data';
 
+import { FieldActionResultType } from '@/helpers/schema-creation-errors';
 import { FieldType } from '@/schemas/fields-schemas';
 
 type BaseFieldProps = {
@@ -25,8 +26,8 @@ type ReadonlyFieldProps = {
 
 type DraggableFieldProps = {
   type: 'draggable';
-  editSchemaField: (schemaField: FieldType) => void;
-  removeSchemaFeild: () => void;
+  editSchemaField: (schemaField: FieldType) => FieldActionResultType;
+  removeSchemaFeild: () => FieldActionResultType;
   updateSchemaFields: () => void;
 };
 

@@ -16,15 +16,16 @@ import { Icons } from '@/components/icons';
 import QuotaCounter from '@/components/dashboard/sidebar/quota-counter';
 import SideButtons from '@/components/dashboard/sidebar/side-buttons';
 
-type SheetSideButtonsProps = {
-  initialData: { count: number };
+import { serverClient } from '@/trpc/server';
+
+type SheetSidebarProps = {
+  initialData: Awaited<
+    ReturnType<(typeof serverClient)['schema']['getSchemasCount']>
+  >;
   quota: number;
 };
 
-const SheetSideButtons: FC<SheetSideButtonsProps> = ({
-  initialData,
-  quota,
-}) => {
+const SheetSidebar: FC<SheetSidebarProps> = ({ initialData, quota }) => {
   return (
     <Sheet>
       <SheetTrigger className='flex items-center rounded-md p-2 hover:bg-slate-500/30 dark:hover:bg-slate-100/20 xl:hidden'>
@@ -60,4 +61,4 @@ const SheetSideButtons: FC<SheetSideButtonsProps> = ({
   );
 };
 
-export default SheetSideButtons;
+export default SheetSidebar;

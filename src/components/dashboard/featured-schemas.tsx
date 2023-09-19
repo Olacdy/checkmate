@@ -3,7 +3,12 @@
 import { FC } from 'react';
 
 import Link from 'next/link';
+
 import { useRouter } from 'next/navigation';
+
+import { useQueryClient } from '@tanstack/react-query';
+
+import { getQueryKey } from '@trpc/react-query';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -27,23 +32,24 @@ import { SchemaType } from '@/schemas/schemas-schema';
 import { formatDate, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
-  initialSchemas: SchemaType[];
+  initialData: SchemaType[];
 };
 
-const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialSchemas }) => {
+const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const { toast } = useToast();
 
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
-    initialData: initialSchemas,
+    initialData: initialData,
   });
-  const getSchemasCount = trpc.schema.getSchemasCount.useQuery();
 
   const deleteSchema = trpc.schema.deleteSchema.useMutation({
     onSettled: () => {
       getSchemas.refetch();
-      getSchemasCount.refetch();
+      queryClient.invalidateQueries(getQueryKey(trpc.schema.getSchemasCount));
     },
   });
 

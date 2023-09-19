@@ -27,6 +27,8 @@ import { fields } from '@/helpers/data';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
+import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+
 type BaseFieldsCardProps = {
   schemaFields: FieldType[];
 } & HTMLAttributes<HTMLDivElement>;
@@ -39,9 +41,9 @@ type ReadonlyFieldsCardProps = {
 type EditFieldsCardProps = {
   type: 'edit';
   setSchemaFields: (schemaFields: FieldType[]) => void;
-  addSchemaField: (schemaField: FieldType) => boolean;
-  editSchemaField: (schemaField: FieldType) => void;
-  removeSchemaField: (schemaField: FieldType) => void;
+  addSchemaField: (schemaField: FieldType) => FieldActionResultType;
+  editSchemaField: (schemaField: FieldType) => FieldActionResultType;
+  removeSchemaField: (schemaField: FieldType) => FieldActionResultType;
   updateSchemaFields: (fields?: FieldType[]) => void;
 };
 

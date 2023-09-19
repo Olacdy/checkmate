@@ -32,6 +32,9 @@ import { Icons } from '@/components/icons';
 import { cn, formatDate } from '@/lib/utils';
 
 import { dateFieldSchema } from '@/schemas/fields-schemas';
+
+import { fieldErrors } from '@/helpers/schema-creation-errors';
+
 import { AnyFieldDialogProps } from '.';
 
 type DateFieldFormProps = {
@@ -66,7 +69,7 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
     }
 
     form.setError('name', {
-      message: 'Field name should be unique.',
+      message: fieldErrors[result].message,
     });
   };
 

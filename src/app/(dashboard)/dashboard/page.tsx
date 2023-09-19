@@ -62,7 +62,7 @@ const page: FC<pageProps> = async ({}) => {
           </Card>
         </div>
 
-        <FeaturedSchemas initialSchemas={schemas} />
+        <FeaturedSchemas initialData={schemas} />
       </CardContent>
     </Card>
   );

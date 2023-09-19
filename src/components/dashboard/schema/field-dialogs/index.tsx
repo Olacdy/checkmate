@@ -1,3 +1,7 @@
+import { FC } from 'react';
+
+import { z } from 'zod';
+
 import {
   DialogContent,
   DialogDescription,
@@ -11,20 +15,23 @@ import {
   schemaFieldSchema,
   stringFieldSchema,
 } from '@/schemas/fields-schemas';
-import { FC } from 'react';
-import { z } from 'zod';
+
 import DateFieldForm from './date-field-form';
 import NumberFieldForm from './number-field-form';
 import SchemaFieldForm from './schema-field-form';
 import StringFieldForm from './string-field-form';
 
+import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+
 export type AnyFieldDialogProps = {
-  updateSchemaFields: (schemaField: Omit<FieldType, 'type'>) => void;
+  updateSchemaFields: (
+    schemaField: Omit<FieldType, 'type'>
+  ) => FieldActionResultType;
   closeDialog: () => void;
 };
 
 type BaseFieldDialogProps = {
-  updateSchemaFields: (schemaField: FieldType) => void;
+  updateSchemaFields: (schemaField: FieldType) => FieldActionResultType;
   closeDialog: () => void;
 };
 
@@ -69,7 +76,7 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
 
     const updateSchemaFields = (
       schemaField: Omit<FieldType, 'type'>
-    ): boolean => {
+    ): FieldActionResultType => {
       // @ts-ignore
       return updateSchemaFieldsUntyped({ ...schemaField, type: fieldType });
     };

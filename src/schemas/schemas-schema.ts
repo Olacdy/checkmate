@@ -2,19 +2,17 @@ import { z } from 'zod';
 
 import { Prisma } from '@prisma/client';
 
-export const schemaId = z.string().cuid();
-
 export const schemaName = z.string().min(2, {
   message: 'Schema name must be at least 2 characters.',
 });
 
 export const createSchemaSchema = z.object({
-  id: schemaId.optional(),
+  id: z.string().cuid().optional(),
   name: schemaName,
 });
 
 export const getSchemaByIdSchema = z.object({
-  id: schemaId,
+  id: z.string().cuid(),
 });
 
 export const addSchemaSchema = createSchemaSchema.extend({
@@ -34,7 +32,7 @@ export const addSchemaSchema = createSchemaSchema.extend({
 });
 
 export const deleteSchemaSchema = z.object({
-  id: schemaId,
+  id: z.string().cuid(),
 });
 
 export const editSchemaSchema = deleteSchemaSchema.merge(

@@ -24,6 +24,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 import { stringFieldSchema } from '@/schemas/fields-schemas';
+
+import { fieldErrors } from '@/helpers/schema-creation-errors';
+
 import { AnyFieldDialogProps } from '.';
 
 type StringFieldFormProps = {
@@ -60,7 +63,7 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
     }
 
     form.setError('name', {
-      message: 'Field name should be unique.',
+      message: fieldErrors[result].message,
     });
   };
 
