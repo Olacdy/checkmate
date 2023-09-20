@@ -8,7 +8,17 @@
   @apply px-0 font-semibold text-oxford-blue-dark;
 }
 
-/* All Section */
+/* All Sections */
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 
 :root {
   --scroll: 0;
@@ -53,6 +63,7 @@ main *::-webkit-scrollbar-track {
 }
 
 .wavy-underline {
+  text-decoration-skip-ink: none;
   @apply underline decoration-error decoration-wavy decoration-[5px];
 }
 
@@ -104,8 +115,8 @@ main *::-webkit-scrollbar-track {
   @apply font-code text-sm text-off-white;
 }
 
-/* Contact Section */
+/* Dashboard */
 
-.input {
-  @apply text-off-white;
+.dashboard-section-container {
+  @apply flex flex-1 flex-col justify-between rounded-b-none xl:rounded-b-lg;
 }

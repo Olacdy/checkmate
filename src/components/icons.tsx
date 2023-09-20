@@ -1,13 +1,28 @@
 import { cn } from '@/lib/utils';
 import {
+  ArrowBigUp,
+  ArrowUpDown,
+  Calendar,
   Check,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  CloudCog,
   CopyPlus,
+  FileCode,
   GripVertical,
+  Hash,
+  LogOut,
   Moon,
+  MoreHorizontal,
+  Pencil,
+  Search,
   Sliders,
   Sun,
   Trash2,
+  Type,
   X,
+  XCircle,
   type LucideIcon,
   type LucideProps,
 } from 'lucide-react';
@@ -17,12 +32,27 @@ export type Icon = LucideIcon;
 export const Icons = {
   sun: Sun,
   moon: Moon,
+  increase: ArrowBigUp,
   settings: Sliders,
-  delete: Trash2,
   drag: GripVertical,
   add: CopyPlus,
+  edit: Pencil,
+  delete: Trash2,
   check: Check,
   close: X,
+  chevronUp: ChevronUp,
+  chevronDown: ChevronDown,
+  logout: LogOut,
+  success: CheckCircle,
+  error: XCircle,
+  validation: CloudCog,
+  more: MoreHorizontal,
+  review: Search,
+  sort: ArrowUpDown,
+  calendar: Calendar,
+  string: Type,
+  number: Hash,
+  schema: FileCode,
   menu: ({ ...props }: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -145,10 +175,55 @@ export const Icons = {
       role='img'
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 488 512'
+      fill='current'
       className={cn('', props.className)}>
       <path
         fill='current'
         d='M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z'></path>
+    </svg>
+  ),
+  dashboard: ({ ...props }: LucideProps) => (
+    <svg
+      width='14'
+      height='14'
+      viewBox='0 0 14 14'
+      fill='current'
+      xmlns='http://www.w3.org/2000/svg'
+      className={cn('', props.className)}>
+      <g
+        clipPath='url(#a)'
+        stroke='current'
+        strokeLinecap='round'
+        strokeLinejoin='round'>
+        <path d='M13 6.5H9a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V7a.5.5 0 0 0-.5-.5Zm0-6H9a.5.5 0 0 0-.5.5v2.01a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V1a.5.5 0 0 0-.5-.5Zm-8 0H1a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V1A.5.5 0 0 0 5 .5Zm0 9.99H1a.5.5 0 0 0-.5.5V13a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-2.01a.5.5 0 0 0-.5-.5Z' />
+      </g>
+      <defs>
+        <clipPath id='a'>
+          <path fill='current' d='M0 0h14v14H0z' />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+  schemas: ({ ...props }: LucideProps) => (
+    <svg
+      width='15'
+      height='14'
+      viewBox='0 0 15 14'
+      fill='current'
+      xmlns='http://www.w3.org/2000/svg'
+      className={cn('', props.className)}>
+      <path
+        d='M9.5 2.5h-6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1ZM4.5 5h4m-4 2.5h4m-4 2.5h2'
+        stroke='current'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M5 .5h6.5a1 1 0 0 1 1 1V11'
+        stroke='current'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
     </svg>
   ),
 };

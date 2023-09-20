@@ -1,9 +1,11 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from 'next-auth';
+
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
 import { prisma } from '@/lib/db';
@@ -19,7 +21,7 @@ declare module 'next-auth' {
 
   // interface User {
   //   // ...other properties
-  //   // role: UserRole;
+  //     // role: UserRole;
   // }
 }
 
@@ -40,7 +42,14 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    }),
   ],
+  pages: {
+    signIn: '/sign-in',
+  },
 };
 
 export const getServerAuthSession = () => {

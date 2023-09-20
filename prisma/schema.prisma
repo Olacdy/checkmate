@@ -42,10 +42,42 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  quota         Int       @default(10)
+  schemas       Schema[]
 }
 
-model Todo {
-  id      String  @id @default(cuid())
-  content String
-  done    Boolean @default(false)
+model Schema {
+  id          String            @id @default(cuid())
+  name        String
+  createdAt   DateTime          @default(now())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fields      Json
+  referred    SchemaReferring[] @relation("referrer")
+  referring   SchemaReferring[] @relation("referring")
+  validations Validation[]
+
+  @@index([userId, id])
+}
+
+model SchemaReferring {
+  referrer    Schema @relation("referrer", fields: [referrerId], references: [id])
+  referrerId  String
+  referring   Schema @relation("referring", fields: [referringId], references: [id], onDelete: Cascade)
+  referringId String
+
+  @@id([referrerId, referringId])
+  @@index([referrerId, referringId])
+  @@index([referringId, referrerId])
+}
+
+model Validation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  success   Boolean
+  schemaId  String
+  schema    Schema   @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  input     Json
+
+  @@index([schemaId, id])
 }

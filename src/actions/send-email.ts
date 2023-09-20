@@ -8,7 +8,7 @@ import { Resend } from 'resend';
 
 import SuggestionFormEmail from '@/components/email/suggestion-form-email';
 
-import { contactSchema } from '@/helpers/schemas';
+import { contactSchema } from '@/schemas/forms-schemas';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

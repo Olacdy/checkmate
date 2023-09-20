@@ -7,11 +7,9 @@ import { signIn } from 'next-auth/react';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 
-import { capitalize } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
-const oauthProviders = [{ name: 'google' }] satisfies {
-  name: keyof typeof Icons;
-}[];
+import { oauthProviders } from '@/helpers/data';
 
 type OAuthButtonsProps = {};
 
@@ -25,7 +23,7 @@ const OAuthButtons: FC<OAuthButtonsProps> = ({}) => {
   ) => {
     setIsLoading(provider);
     try {
-      await signIn(provider);
+      await signIn(provider, { callbackUrl: '/dashboard' });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -33,7 +31,7 @@ const OAuthButtons: FC<OAuthButtonsProps> = ({}) => {
   };
 
   return (
-    <div className='grid w-full grid-cols-1 gap-2'>
+    <div className='grid w-full grid-cols-1 gap-3'>
       {oauthProviders.map((provider) => {
         const Icon = Icons[provider.name];
 
@@ -43,10 +41,17 @@ const OAuthButtons: FC<OAuthButtonsProps> = ({}) => {
             disabled={!!isLoading}
             className='w-full'
             onClick={() => handleClick(provider.name)}>
-            <div className='relative flex  items-center justify-center gap-2'>
-              <Icon className='h-5 w-5 fill-off-white dark:fill-oxford-blue' />
-              <span className='text-lg font-semibold'>
-                {capitalize(provider.name)}
+            <div className='relative flex items-center justify-center gap-2'>
+              <Icon
+                className={cn(
+                  'mb-1 h-5 w-5 fill-off-white dark:fill-oxford-blue',
+                  {
+                    '-mr-1 h-7 w-7': provider.name === 'github',
+                  }
+                )}
+              />
+              <span className='text-lg capitalize dark:font-semibold'>
+                {provider.name}
               </span>
               {isLoading === provider.name && (
                 <span

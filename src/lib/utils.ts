@@ -1,16 +1,17 @@
-import { Icons } from '@/components/icons';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { SchemaType } from '@/schemas/schema-route-schemas';
 
-export function calculateDocumentScale(
+export const cn = (...inputs: ClassValue[]) => {
+  return twMerge(clsx(inputs));
+};
+
+export const calculateDocumentScale = (
   percentOfScreenHeightScrolled: number,
   maxPercent: number,
   minPercent: number
-) {
+) => {
   const gap = 12;
   const multiplier = 10;
 
@@ -34,12 +35,59 @@ export function calculateDocumentScale(
   const outputMax = 100;
 
   return (input / inputMax) * outputMax;
-}
+};
 
-export function getIconByName(iconName: keyof typeof Icons) {
-  return Icons[iconName];
-}
+export const formatDate = (date: Date): string => {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
-export function capitalize(string: string) {
-  return string.replace(/^(.)/, (match) => match.toUpperCase());
-}
+  const day = date.getDate();
+  const month = months[date.getMonth() - 1];
+  const year = date.getFullYear() % 100;
+
+  return `${day} ${month}. ${year}`;
+};
+
+export const getManySchemaStat = (schemas: SchemaType[]) => {
+  const totalValidations = schemas.reduce((accumulator, schema) => {
+    return accumulator + getOneSchemaStat(schema).validations;
+  }, 0);
+
+  const totalSuccesses = schemas.reduce((accumulator, schema) => {
+    return accumulator + getOneSchemaStat(schema).successes;
+  }, 0);
+
+  const totalErros = totalValidations - totalSuccesses;
+
+  return {
+    validations: totalValidations,
+    successes: totalSuccesses,
+    errors: totalErros,
+  };
+};
+
+export const getOneSchemaStat = (schema: SchemaType) => {
+  const validations = schema.validations.length;
+
+  const successes = schema.validations.reduce((accumulator, validation) => {
+    return accumulator + (validation.success ? 1 : 0);
+  }, 0);
+
+  const errors = schema.validations.reduce((accumulator, validation) => {
+    return accumulator + (validation.success ? 0 : 1);
+  }, 0);
+
+  return { validations, successes, errors };
+};

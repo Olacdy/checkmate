@@ -21,7 +21,7 @@ import { useToast } from '@/components/ui/use-toast';
 
 import sendEmail from '@/actions/send-email';
 
-import { contactSchema } from '@/helpers/schemas';
+import { contactSchema } from '@/schemas/forms-schemas';
 
 type ContactFormProps = {};
 
@@ -60,7 +60,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Input className='input' placeholder='John' {...field} />
+                <Input placeholder='John' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -72,7 +72,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Input className='input' placeholder='Doe' {...field} />
+                <Input placeholder='Doe' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -84,11 +84,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Input
-                  className='input'
-                  placeholder='john.doe@example.com'
-                  {...field}
-                />
+                <Input placeholder='john.doe@example.com' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -102,7 +98,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
               <FormControl>
                 <Textarea
                   placeholder='Tell us about your problem. What kind of suggestion are you willing to share?'
-                  className='input h-40 resize-none'
+                  className='h-40 resize-none'
                   {...field}
                 />
               </FormControl>
@@ -110,7 +106,9 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
             </FormItem>
           )}
         />
-        <Button className='self-end' type='submit'>
+        <Button
+          type='submit'
+          className='self-end bg-oxford-blue/90 text-base text-off-white hover:bg-oxford-blue/70'>
           Send Suggestion
         </Button>
       </form>

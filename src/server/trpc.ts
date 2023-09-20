@@ -1,10 +1,10 @@
+import { getServerAuthSession } from '@/lib/nextauth';
 import { initTRPC, TRPCError } from '@trpc/server';
-
+import superjson from 'superjson';
 import { ZodError } from 'zod';
 
-import { getServerAuthSession } from '@/lib/nextauth';
-
 const t = initTRPC.create({
+  transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
       ...shape,
@@ -19,9 +19,7 @@ const t = initTRPC.create({
 
 export const router = t.router;
 
-export const publicProcedure = t.procedure;
-
-const isAuth = t.middleware(async ({ next }) => {
+const enforceUserIsAuthed = t.middleware(async ({ next }) => {
   const session = await getServerAuthSession();
 
   if (!session || !session.user) {
@@ -29,10 +27,11 @@ const isAuth = t.middleware(async ({ next }) => {
   }
   return next({
     ctx: {
-      // infers the `session` as non-nullable
       session: { ...session, user: session.user },
     },
   });
 });
 
-export const protectedProcedure = t.procedure.use(isAuth);
+export const publicProcedure = t.procedure;
+
+export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);

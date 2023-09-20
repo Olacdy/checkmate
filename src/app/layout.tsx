@@ -1,8 +1,9 @@
+import { FC, ReactNode } from 'react';
+
 import type { Metadata } from 'next';
 import { Courier_Prime, Inter, Questrial } from 'next/font/google';
 
 import Providers from '@/components/providers';
-import { Toaster } from '@/components/ui/toaster';
 
 import { cn } from '@/lib/utils';
 
@@ -27,11 +28,11 @@ export const metadata: Metadata = {
   description: 'Define schemas to validate your data',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+type RootLayoutProps = {
+  children: ReactNode;
+};
+
+const RootLayout: FC<RootLayoutProps> = async ({ children }) => {
   return (
     <html lang='en'>
       <body
@@ -41,11 +42,10 @@ export default function RootLayout({
           quantico.variable,
           courier.variable
         )}>
-        <Providers>
-          {children}
-          <Toaster />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

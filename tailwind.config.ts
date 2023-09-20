@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        xs: '480px',
+      },
       colors: {
         'oxford-blue': {
           DEFAULT: '#041734',
@@ -26,6 +29,9 @@ module.exports = {
         alabaster: '#F1F1E6',
         success: '#4FD785',
         error: '#FF4848',
+      },
+      dropShadow: {
+        'md-dark': '1px 2px 1px rgba(247, 249, 255, 0.1)',
       },
       keyframes: {
         'accordion-down': {
@@ -40,6 +46,9 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      gridTemplateColumns: {
+        '3-featured-schemas': 'repeat(3, minmax(0, 24rem))',
       },
     },
     fontFamily: {
