@@ -43,7 +43,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   quota         Int       @default(10)
-  Schema        Schema[]
+  schemas       Schema[]
 }
 
 model Schema {
