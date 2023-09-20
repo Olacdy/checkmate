@@ -6,9 +6,9 @@ import { errorsCodesAndMessages } from '@/helpers/auth-errors';
 import { useSearchParams } from 'next/navigation';
 import { FC } from 'react';
 
-type pageProps = {};
+type PageProps = {};
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<PageProps> = ({}) => {
   const searchParams = useSearchParams();
 
   const error = searchParams.get('error');
@@ -30,4 +30,4 @@ const page: FC<pageProps> = ({}) => {
   );
 };
 
-export default page;
+export default Page;

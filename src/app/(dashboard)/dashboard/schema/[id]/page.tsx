@@ -16,13 +16,13 @@ import { serverClient } from '@/trpc/server';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
-type pageProps = {
+type PageProps = {
   params: {
     id: string;
   };
 };
 
-const page: FC<pageProps> = async ({ params }) => {
+const Page: FC<PageProps> = async ({ params }) => {
   const schema = await serverClient.schema.getSchemaById({
     id: params.id,
   });
@@ -57,4 +57,4 @@ const page: FC<pageProps> = async ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

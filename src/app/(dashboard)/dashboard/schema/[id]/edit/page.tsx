@@ -12,13 +12,13 @@ import SchemaForm from '@/components/dashboard/schema/schema-form';
 
 import { serverClient } from '@/trpc/server';
 
-type pageProps = {
+type PageProps = {
   params: {
     id: string;
   };
 };
 
-const page: FC<pageProps> = async ({ params }) => {
+const Page: FC<PageProps> = async ({ params }) => {
   const schema = await serverClient.schema.getSchemaById({
     id: params.id,
   });
@@ -40,4 +40,4 @@ const page: FC<pageProps> = async ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

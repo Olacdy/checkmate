@@ -15,9 +15,9 @@ import { serverClient } from '@/trpc/server';
 
 import SchemasDataTable from '@/components/dashboard/schemas-datatable';
 
-type pageProps = {};
+type PageProps = {};
 
-const page: FC<pageProps> = async ({}) => {
+const Page: FC<PageProps> = async ({}) => {
   const schemas = await serverClient.schema.getSchemas();
 
   return (
@@ -40,4 +40,4 @@ const page: FC<pageProps> = async ({}) => {
   );
 };
 
-export default page;
+export default Page;

@@ -10,9 +10,9 @@ import {
 
 import SchemaForm from '@/components/dashboard/schema/schema-form';
 
-type pageProps = {};
+type PageProps = {};
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<PageProps> = ({}) => {
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 dark:bg-oxford-blue-dark'>
       <CardHeader className='text-oxford-blue dark:text-off-white'>
@@ -26,4 +26,4 @@ const page: FC<pageProps> = ({}) => {
   );
 };
 
-export default page;
+export default Page;

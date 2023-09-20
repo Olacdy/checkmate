@@ -16,9 +16,9 @@ import { serverClient } from '@/trpc/server';
 
 import { getManySchemaStat } from '@/lib/utils';
 
-type pageProps = {};
+type PageProps = {};
 
-const page: FC<pageProps> = async ({}) => {
+const Page: FC<PageProps> = async ({}) => {
   const schemas = await serverClient.schema.getSchemas();
 
   const { validations, successes, errors } = getManySchemaStat(schemas);
@@ -68,4 +68,4 @@ const page: FC<pageProps> = async ({}) => {
   );
 };
 
-export default page;
+export default Page;
