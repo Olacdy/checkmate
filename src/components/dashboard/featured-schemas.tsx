@@ -29,7 +29,7 @@ import { trpc } from '@/trpc/client';
 
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
-import { formatDate, getOneSchemaStat } from '@/lib/utils';
+import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
   initialData: SchemaType[];
@@ -75,12 +75,12 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   return (
-    <div className='flex flex-1'>
+    <div className='flex'>
       {getSchemas?.data?.length !== 0 ? (
         <div className='flex w-full flex-1 flex-col justify-end gap-5'>
           <span className='text-2xl'>Featured schemas</span>
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3-featured-schemas'>
-            {getSchemas?.data?.slice(0, 3).map((featuredSchema) => {
+            {getSchemas?.data?.slice(0, 3).map((featuredSchema, index) => {
               const { id, name, createdAt } = featuredSchema;
               const { validations, successes, errors } =
                 getOneSchemaStat(featuredSchema);
@@ -88,7 +88,13 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
               return (
                 <Card
                   key={id}
-                  className='w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-200/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30'>
+                  className={cn(
+                    'w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-200/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30',
+                    {
+                      'hidden sm:block': index === 1,
+                      'hidden lg:block': index === 2,
+                    }
+                  )}>
                   <CardHeader className='relative space-y-0 p-4'>
                     <CardTitle className='font-heading text-xl'>
                       {name}

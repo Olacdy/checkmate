@@ -42,10 +42,12 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
       <TableHeader>
         <TableRow>
           {type === 'multiple' && <TableHead>Schema</TableHead>}
-          <TableHead className='w-[100px]'>Id</TableHead>
-          <TableHead>Created At</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead className='text-right'>Data</TableHead>
+          <TableHead className='w-[160px]'>Id</TableHead>
+          <TableHead className='hidden md:table-cell'>Created At</TableHead>
+          <TableHead className='text-right lg:text-center'>Status</TableHead>
+          <TableHead className='hidden text-right lg:table-cell'>
+            Data
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -63,9 +65,13 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
                 </TableCell>
               )}
               <TableCell className='font-medium'>{validation.id}</TableCell>
-              <TableCell>{formatDate(validation.createdAt)}</TableCell>
-              <TableCell>{validation.success}</TableCell>
-              <TableCell className='text-right'>
+              <TableCell className='hidden md:table-cell'>
+                {formatDate(validation.createdAt)}
+              </TableCell>
+              <TableCell className='text-right lg:text-center'>
+                {validation.success}
+              </TableCell>
+              <TableCell className='hidden text-right lg:table-cell'>
                 <Link href={`/validation/${validation.id}`}>
                   <Button variant='link'>Review</Button>
                 </Link>

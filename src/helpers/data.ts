@@ -97,6 +97,11 @@ export const fields = [
     icon: 'calendar',
   },
   {
+    name: 'boolean',
+    type: 'boolean',
+    icon: 'boolean',
+  },
+  {
     name: 'schema',
     type: 'schema',
     icon: 'schema',

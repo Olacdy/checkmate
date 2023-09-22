@@ -19,6 +19,7 @@ import {
   Search,
   Sliders,
   Sun,
+  ToggleLeft,
   Trash2,
   Type,
   X,
@@ -52,6 +53,7 @@ export const Icons = {
   calendar: Calendar,
   string: Type,
   number: Hash,
+  boolean: ToggleLeft,
   schema: FileCode,
   menu: ({ ...props }: LucideProps) => (
     <svg

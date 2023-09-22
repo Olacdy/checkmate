@@ -48,10 +48,23 @@ const createDateField = (
   return dateField;
 };
 
+const createBooleanField = (
+  booleanFieldConfig: Extract<FieldType, { type: 'boolean' }>
+) => {
+  const { isRequired } = booleanFieldConfig;
+
+  const booleanField = z.boolean();
+
+  if (!isRequired) booleanField.optional();
+
+  return booleanField;
+};
+
 const fieldCreators = {
   string: createStringField,
   number: createNumberField,
   date: createDateField,
+  boolean: createBooleanField,
 };
 
 export const createSchema = (fieldConfigs: FieldType[]) => {

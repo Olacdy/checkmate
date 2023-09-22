@@ -99,6 +99,8 @@ export const dateFieldSchema = fieldPropertiesSchema
     }
   });
 
+export const booleanFieldSchema = fieldPropertiesSchema;
+
 export const schemaFieldSchema = fieldPropertiesSchema.and(
   z.object({
     schema: z.string().cuid(),
