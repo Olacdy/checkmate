@@ -13,7 +13,7 @@ import { getQueryKey } from '@trpc/react-query';
 
 import { useRouter } from 'next/navigation';
 
-import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -36,7 +36,7 @@ import { trpc } from '@/trpc/client';
 import { FieldType } from '@/schemas/fields-schemas';
 import { SchemaType, createSchemaSchema } from '@/schemas/schema-route-schemas';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
 type CreateSchemaFormProps = {
   type?: 'add';
@@ -100,7 +100,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
 
       updateSchemaFields([...schemaFields, schemaField]);
 
-      return true;
+      return 'SUCCESS';
     };
 
     const editSchemaField = (schemaField: FieldType): FieldActionResultType => {
@@ -110,7 +110,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
         )
       );
 
-      return true;
+      return 'SUCCESS';
     };
 
     const removeSchemaField = (
@@ -120,7 +120,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
         schemaFields.filter((field) => field.id !== schemaField.id)
       );
 
-      return true;
+      return 'SUCCESS';
     };
 
     return { addSchemaField, editSchemaField, removeSchemaField };

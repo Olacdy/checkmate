@@ -27,7 +27,9 @@ import { fields } from '@/helpers/data';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
 type BaseFieldsCardProps = {
   schemaFields: FieldType[];
@@ -69,15 +71,24 @@ const FieldsCard: FC<FieldsCardProps> = ({
 
   const correspondingFields = () => {
     if (type === 'readonly') {
-      return (
-        <div className='flex w-full flex-col gap-4 pt-3'>
-          {schemaFields.map((schemaField) => {
-            return (
-              <Field key={schemaField.id} type='readonly' value={schemaField} />
-            );
-          })}
-        </div>
-      );
+      return {
+        fields: (
+          <ScrollArea className='max-h-[67vh] w-full'>
+            <div className='flex w-full flex-col gap-4 py-3'>
+              {schemaFields.map((schemaField) => {
+                return (
+                  <Field
+                    key={schemaField.id}
+                    type='readonly'
+                    value={schemaField}
+                  />
+                );
+              })}
+            </div>
+          </ScrollArea>
+        ),
+        addField: <></>,
+      };
     }
 
     if (type === 'edit') {
@@ -89,10 +100,10 @@ const FieldsCard: FC<FieldsCardProps> = ({
         updateSchemaFields,
       } = props;
 
-      return (
-        <>
+      return {
+        fields: (
           <Reorder.Group
-            className='flex w-full flex-col gap-4 pt-3'
+            className='flex w-full flex-1 flex-col gap-4 overflow-hidden pt-3'
             axis='y'
             onReorder={setSchemaFields}
             values={schemaFields}>
@@ -109,6 +120,8 @@ const FieldsCard: FC<FieldsCardProps> = ({
               );
             })}
           </Reorder.Group>
+        ),
+        addField: (
           <Dialog open={!!openedDialog} onOpenChange={handleOpenedDialogChange}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -161,9 +174,11 @@ const FieldsCard: FC<FieldsCardProps> = ({
               />
             )}
           </Dialog>
-        </>
-      );
+        ),
+      };
     }
+
+    return { fields: <></>, addField: <></> };
   };
 
   return (
@@ -180,11 +195,16 @@ const FieldsCard: FC<FieldsCardProps> = ({
       </CardTitle>
       <Card className='flex flex-1 border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
         <CardContent
-          className={cn('flex flex-1 flex-col items-center justify-between', {
-            'justify-center p-0 pl-2': schemaFields.length === 0,
-            'pt-3': type === 'readonly',
-          })}>
-          {correspondingFields()}
+          className={cn(
+            'flex flex-1 flex-col items-center justify-between gap-3 pb-2',
+            {
+              'justify-center p-0 pl-2': schemaFields.length === 0,
+              'pt-3': type === 'readonly',
+            }
+          )}>
+          {schemaFields.length !== 0 && correspondingFields().fields}
+          {type === 'edit' && schemaFields.length !== 0 && <Separator />}
+          {type === 'edit' && correspondingFields().addField}
         </CardContent>
       </Card>
     </Card>

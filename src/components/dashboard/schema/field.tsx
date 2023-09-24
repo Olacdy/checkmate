@@ -13,7 +13,7 @@ import { Icons } from '@/components/icons';
 
 import { fields } from '@/helpers/data';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 import { FieldType } from '@/schemas/fields-schemas';
 
 type BaseFieldProps = {

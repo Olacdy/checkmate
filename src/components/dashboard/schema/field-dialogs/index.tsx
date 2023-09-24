@@ -23,7 +23,7 @@ import NumberFieldForm from './number-field-form';
 import SchemaFieldForm from './schema-field-form';
 import StringFieldForm from './string-field-form';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
 export type AnyFieldDialogProps = {
   updateSchemaFields: (

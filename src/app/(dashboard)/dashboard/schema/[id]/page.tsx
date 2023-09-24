@@ -35,6 +35,8 @@ const Page: FC<PageProps> = async ({ params }) => {
     await serverClient.schema.deleteSchema({ id: params.id });
   };
 
+  console.log(schema.fields);
+
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 dark:bg-oxford-blue-dark'>
       <CardHeader className='flex-row items-center justify-between space-y-0 text-oxford-blue dark:text-off-white'>

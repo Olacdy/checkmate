@@ -33,7 +33,7 @@ import { cn, formatDate } from '@/lib/utils';
 
 import { dateFieldSchema } from '@/schemas/fields-schemas';
 
-import { fieldErrors } from '@/helpers/schema-creation-errors';
+import { fieldErrors } from '@/helpers/field-creation-errors';
 
 import { AnyFieldDialogProps } from '.';
 
@@ -62,14 +62,14 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
       id: defaultValues ? defaultValues.id : uuidv4(),
     });
 
-    if (result) {
+    if (result === 'SUCCESS') {
       closeDialog();
 
       return;
     }
 
     form.setError('name', {
-      message: fieldErrors[result].message,
+      message: fieldErrors.find((error) => error.code === result)?.message,
     });
   };
 
