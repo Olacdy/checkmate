@@ -69,16 +69,8 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
   });
 
   const handleIncreaseByChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // TODO: write proper validation
-
     const parsedIncreaseBy = parseInt(e.target.value);
-
-    const definedIncreaseBy = isNaN(parsedIncreaseBy) ? '' : parsedIncreaseBy;
-
-    const newIncreaseBy =
-      definedIncreaseBy !== '' && definedIncreaseBy < 0
-        ? ''
-        : definedIncreaseBy;
+    const newIncreaseBy = isNaN(parsedIncreaseBy) || parsedIncreaseBy < 0 ? '' : parsedIncreaseBy;
 
     setIncreaseBy(newIncreaseBy);
     form.setValue('increaseBy', newIncreaseBy);
