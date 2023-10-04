@@ -101,7 +101,7 @@ const FieldsCard: FC<FieldsCardProps> = ({
 
       return {
         fields: (
-          <div className='max-h-[50vh] w-full overflow-y-auto'>
+          <div className='flex max-h-[50vh] w-full flex-1 overflow-y-auto'>
             <Reorder.Group
               className='flex w-full flex-1 flex-col gap-4 overflow-hidden pr-3 pt-5'
               axis='y'
