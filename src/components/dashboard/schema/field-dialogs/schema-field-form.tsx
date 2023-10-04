@@ -136,7 +136,7 @@ const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
                 }}
                 defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className='dark:bg-off-white'>
+                  <SelectTrigger>
                     <SelectValue placeholder='Select one of the schemas' />
                   </SelectTrigger>
                 </FormControl>
