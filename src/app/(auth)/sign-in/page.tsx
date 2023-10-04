@@ -1,24 +1,36 @@
 'use client';
 
-import AuthCard from '@/components/auth/auth-card';
-import { toast } from '@/components/ui/use-toast';
-import { errorsCodesAndMessages } from '@/helpers/auth-errors';
-import { useSearchParams } from 'next/navigation';
 import { FC } from 'react';
+
+import { useSearchParams } from 'next/navigation';
+
+import { toast } from '@/components/ui/use-toast';
+
+import AuthCard from '@/components/auth/auth-card';
+
+import { errorsCodesAndMessages } from '@/helpers/auth-errors';
 
 type PageProps = {};
 
 const Page: FC<PageProps> = ({}) => {
   const searchParams = useSearchParams();
 
-  const error = searchParams.get('error');
+  const authError = searchParams.get('error');
 
-  if (error) {
+  if (authError) {
+    let errorMessage = 'Something went wrong.';
+
+    try {
+      errorMessage =
+        errorsCodesAndMessages[authError as keyof typeof errorsCodesAndMessages]
+          .message;
+    } catch (error: any) {
+      console.log(error);
+    }
+
     toast({
       title: 'Error!',
-      description:
-        errorsCodesAndMessages[error as keyof typeof errorsCodesAndMessages]
-          .message,
+      description: errorMessage,
       variant: 'destructive',
     });
   }
