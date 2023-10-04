@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { redirect } from 'next/navigation';
+
 import {
   Card,
   CardContent,
@@ -33,9 +35,9 @@ const Page: FC<PageProps> = async ({ params }) => {
     'use server';
 
     await serverClient.schema.deleteSchema({ id: params.id });
-  };
 
-  console.log(schema.fields);
+    redirect('/dashboard/schemas');
+  };
 
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 dark:bg-oxford-blue-dark'>

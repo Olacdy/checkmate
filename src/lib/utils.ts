@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+import { prisma } from '@/lib/db';
+
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
 export const cn = (...inputs: ClassValue[]) => {
@@ -90,4 +92,42 @@ export const getOneSchemaStat = (schema: SchemaType) => {
   }, 0);
 
   return { validations, successes, errors };
+};
+
+export const getReferencesComparison = (
+  dbData: Awaited<ReturnType<typeof prisma.schemaReference.findMany>>,
+  incomingData: Awaited<ReturnType<typeof prisma.schemaReference.findMany>>
+) => {
+  if (!dbData)
+    return {
+      referencesToAdd: incomingData,
+      referencesToUpdate: [],
+      referencesToDelete: [],
+    };
+
+  if (!incomingData)
+    return {
+      referencesToAdd: [],
+      referencesToUpdate: [],
+      referencesToDelete: dbData,
+    };
+
+  const referringIdsDb = dbData.map((item) => item.referringId);
+  const referringIdsIncoming = incomingData.map((item) => item.referringId);
+
+  const referencesToAdd = incomingData.filter(
+    (item) => !referringIdsDb.includes(item.referringId)
+  );
+  const referencesToUpdate = incomingData.filter((item) =>
+    referringIdsDb.includes(item.referringId)
+  );
+  const referencesToDelete = dbData.filter(
+    (item) => !referringIdsIncoming.includes(item.referringId)
+  );
+
+  return {
+    referencesToAdd,
+    referencesToUpdate,
+    referencesToDelete,
+  };
 };
