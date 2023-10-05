@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 import { protectedProcedure, router } from '@/server/trpc';
 
 import { prisma } from '@/lib/db';
@@ -9,7 +11,6 @@ import {
   editSchemaSchema,
   getSchemaByIdSchema,
 } from '@/schemas/schema-route-schemas';
-import { Prisma } from '@prisma/client';
 
 export const schemaRouter = router({
   getSchemasCount: protectedProcedure.query(async ({ ctx }) => {
