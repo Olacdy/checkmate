@@ -1,10 +1,10 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 
 import AuthCard from '@/components/auth/auth-card';
 
@@ -17,23 +17,24 @@ const Page: FC<PageProps> = ({}) => {
 
   const authError = searchParams.get('error');
 
-  if (authError) {
-    let errorMessage = 'Something went wrong.';
+  useEffect(() => {
+    if (authError) {
+      let errorMessage = 'Something went wrong.';
 
-    try {
-      errorMessage =
-        errorsCodesAndMessages[authError as keyof typeof errorsCodesAndMessages]
-          .message;
-    } catch (error: any) {
-      console.log(error);
+      try {
+        errorMessage =
+          errorsCodesAndMessages[
+            authError as keyof typeof errorsCodesAndMessages
+          ].message;
+      } catch (error: any) {
+        console.log(error);
+      }
+
+      setTimeout(() => {
+        toast.error(errorMessage);
+      }, 0);
     }
-
-    toast({
-      title: 'Error!',
-      description: errorMessage,
-      variant: 'destructive',
-    });
-  }
+  }, [authError]);
 
   return (
     <main className='mx-auto flex min-h-screen max-w-sm items-center font-body'>

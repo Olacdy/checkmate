@@ -2,6 +2,8 @@
 
 import { FC, useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,9 +19,9 @@ import {
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getQueryKey } from '@trpc/react-query';
+import { toast } from 'sonner';
 
-import { useRouter } from 'next/navigation';
+import { getQueryKey } from '@trpc/react-query';
 
 import {
   DropdownMenu,
@@ -40,7 +42,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useToast } from '@/components/ui/use-toast';
 
 import { Icons } from '@/components/icons';
 
@@ -164,8 +165,6 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
 
   const router = useRouter();
 
-  const { toast } = useToast();
-
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
     initialData: initialSchemas,
   });
@@ -184,10 +183,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast({
-      variant: 'success',
-      title: 'Link copied to clipboard.',
-    });
+    toast('Link copied to clipboard.');
 
     navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
   };
@@ -195,10 +191,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   const handleDelete = (schemaId: string) => {
     deleteSchema.mutate({ id: schemaId });
 
-    toast({
-      variant: 'success',
-      title: 'Schema successfully deleted.',
-    });
+    toast.success('Schema successfully deleted.');
   };
 
   const handleDeleteMultiple = () => {
@@ -207,12 +200,11 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
     });
 
     if (selectedSchemaIds.length > 0)
-      toast({
-        title: `${selectedSchemaIds.length} ${
+      toast.success(
+        `${selectedSchemaIds.length} ${
           selectedSchemaIds.length > 1 ? 'schemas' : 'schema'
-        } deleted`,
-        variant: 'success',
-      });
+        } deleted`
+      );
   };
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
