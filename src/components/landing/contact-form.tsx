@@ -5,6 +5,8 @@ import { FC } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { toast } from 'sonner';
+
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -17,7 +19,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
 
 import sendEmail from '@/actions/send-email';
 
@@ -26,8 +27,6 @@ import { contactSchema } from '@/schemas/forms-schemas';
 type ContactFormProps = {};
 
 const ContactForm: FC<ContactFormProps> = ({}) => {
-  const { toast } = useToast();
-
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -40,9 +39,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
 
   const onSubmit = async (values: z.infer<typeof contactSchema>) => {
     form.reset();
-
-    toast({
-      title: 'Thank you!',
+    toast.message('Thank you!', {
       description: 'Your suggestion submitted successfuly.',
     });
 

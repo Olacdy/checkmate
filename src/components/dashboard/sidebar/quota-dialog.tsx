@@ -11,6 +11,8 @@ import * as z from 'zod';
 
 import { useForm } from 'react-hook-form';
 
+import { toast } from 'sonner';
+
 import { DialogProps } from '@radix-ui/react-dialog';
 
 import { Icons } from '@/components/icons';
@@ -31,7 +33,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
 
 import { trpc } from '@/trpc/client';
 
@@ -43,8 +44,6 @@ type QuotaDialogProps = DialogProps;
 
 const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
   const queryClient = useQueryClient();
-
-  const { toast } = useToast();
 
   const increaseQuota = trpc.user.increaseQuota.useMutation({
     onSettled: () => {
@@ -83,10 +82,7 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
 
     increaseQuota.mutate({ increaseBy: values.increaseBy as number });
 
-    toast({
-      title: `Your quota increased by ${values.increaseBy}`,
-      variant: 'success',
-    });
+    toast.success(`Your quota increased by ${values.increaseBy}`);
   };
 
   return (

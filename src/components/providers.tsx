@@ -8,7 +8,7 @@ import { LazyMotion, domMax } from 'framer-motion';
 
 import { SessionProvider } from 'next-auth/react';
 
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from 'sonner';
 
 import { client, trpc } from '@/trpc/client';
 
@@ -36,7 +36,7 @@ const Providers: FC<ProvidersProps> = ({ children }) => {
           </SessionProvider>
         </QueryClientProvider>
       </trpc.Provider>
-      <Toaster />
+      <Toaster richColors closeButton />
     </>
   );
 };

@@ -10,6 +10,8 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { getQueryKey } from '@trpc/react-query';
 
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -19,7 +21,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/components/ui/use-toast';
 
 import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
 
@@ -40,8 +41,6 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
 
   const router = useRouter();
 
-  const { toast } = useToast();
-
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
     initialData: initialData,
   });
@@ -58,20 +57,14 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast({
-      variant: 'success',
-      title: 'Link copied to clipboard.',
-    });
+    toast.success('Link copied to clipboard.');
     navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
   };
 
   const handleDelete = (schemaId: string) => {
     deleteSchema.mutate({ id: schemaId });
 
-    toast({
-      variant: 'success',
-      title: 'Schema successfully deleted.',
-    });
+    toast.success('Schema successfully deleted.');
   };
 
   return (
