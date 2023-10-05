@@ -116,10 +116,6 @@ export const schemaRouter = router({
       const { referencesToAdd, referencesToUpdate, referencesToDelete } =
         getReferencesComparison(currentReferences, incomingReferences);
 
-      console.log('To add ', referencesToAdd);
-      console.log('To update ', referencesToUpdate);
-      console.log('To delete ', referencesToDelete);
-
       await prisma.schemaReference.createMany({
         data: referencesToAdd,
       });
