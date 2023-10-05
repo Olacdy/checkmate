@@ -45,7 +45,7 @@ export const calculateDocumentScale = (
   return (input / inputMax) * outputMax;
 };
 
-export const formatDate = (date: Date): string => {
+export const formatDate = (date: Date | string): string => {
   const months = [
     'Jan',
     'Feb',
@@ -60,6 +60,10 @@ export const formatDate = (date: Date): string => {
     'Nov',
     'Dec',
   ];
+
+  if (typeof date === 'string') {
+    date = new Date(date);
+  }
 
   const day = date.getDate();
   const month = months[date.getMonth()];

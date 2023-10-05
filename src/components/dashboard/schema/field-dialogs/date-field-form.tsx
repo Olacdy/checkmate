@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -46,9 +46,16 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
   updateSchemaFields,
   closeDialog,
 }) => {
+  const [fromOpen, setFromOpen] = useState<boolean>(false);
+  const [toOpen, setToOpen] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof dateFieldSchema>>({
     resolver: zodResolver(dateFieldSchema),
-    defaultValues: defaultValues || {
+    defaultValues: (defaultValues && {
+      ...defaultValues,
+      from: defaultValues.from && new Date(defaultValues.from),
+      to: defaultValues.to && new Date(defaultValues.to),
+    }) || {
       name: '',
       isRequired: false,
       from: undefined,
@@ -116,7 +123,7 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
             render={({ field }) => (
               <FormItem className='flex flex-1 flex-col'>
                 <FormLabel>From</FormLabel>
-                <Popover>
+                <Popover open={fromOpen} onOpenChange={setFromOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -138,7 +145,10 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
                     <Calendar
                       mode='single'
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(e) => {
+                        field.onChange(e);
+                        setFromOpen(false);
+                      }}
                       disabled={(date) => date < new Date('1900-01-01')}
                       initialFocus
                     />
@@ -154,7 +164,7 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
             render={({ field }) => (
               <FormItem className='flex flex-1 flex-col'>
                 <FormLabel>To</FormLabel>
-                <Popover>
+                <Popover open={toOpen} onOpenChange={setToOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -176,7 +186,10 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
                     <Calendar
                       mode='single'
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(e) => {
+                        field.onChange(e);
+                        setToOpen(false);
+                      }}
                       disabled={(date) => date < new Date('1900-01-01')}
                       initialFocus
                     />

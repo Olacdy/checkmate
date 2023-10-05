@@ -43,10 +43,10 @@ const createDateField = (
 ) => {
   const { isRequired, from, to } = dateFieldConfig;
 
-  let dateField = z.date();
+  let dateField = z.coerce.date();
 
-  if (from) dateField = dateField.min(from);
-  if (to) dateField = dateField.max(to);
+  if (from) dateField = dateField.min(new Date(from));
+  if (to) dateField = dateField.max(new Date(to));
 
   // @ts-ignore
   if (!isRequired) dateField = dateField.optional();
