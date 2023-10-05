@@ -70,7 +70,8 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
 
   const handleIncreaseByChange = (e: ChangeEvent<HTMLInputElement>) => {
     const parsedIncreaseBy = parseInt(e.target.value);
-    const newIncreaseBy = isNaN(parsedIncreaseBy) || parsedIncreaseBy < 0 ? '' : parsedIncreaseBy;
+    const newIncreaseBy =
+      isNaN(parsedIncreaseBy) || parsedIncreaseBy < 0 ? '' : parsedIncreaseBy;
 
     setIncreaseBy(newIncreaseBy);
     form.setValue('increaseBy', newIncreaseBy);
@@ -105,7 +106,7 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
           </DialogHeader>
           <div className='flex items-center justify-center gap-2 text-center font-headings text-xl text-oxford-blue dark:text-off-white'>
             <span className='underline underline-offset-2'>Current price:</span>
-            <span className='dark:drop-shadow-md-dark text-3xl font-semibold text-crayola-blue drop-shadow-md'>
+            <span className='text-3xl font-semibold text-crayola-blue drop-shadow-md dark:drop-shadow-md-dark'>
               {increaseBy === '' ? 0 : increaseBy * quotaPrice}&#36;
             </span>
           </div>
