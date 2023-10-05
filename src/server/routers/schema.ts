@@ -9,6 +9,7 @@ import {
   editSchemaSchema,
   getSchemaByIdSchema,
 } from '@/schemas/schema-route-schemas';
+import { Prisma } from '@prisma/client';
 
 export const schemaRouter = router({
   getSchemasCount: protectedProcedure.query(async ({ ctx }) => {
@@ -158,6 +159,40 @@ export const schemaRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
       const { id: userId } = ctx.session.user;
+
+      const referrerers = await prisma.schemaReference.findMany({
+        where: {
+          referringId: id,
+        },
+      });
+
+      for (const referrer of referrerers) {
+        const schema = await prisma.schema.findFirst({
+          where: {
+            id: referrer.referrerId,
+            userId: userId,
+          },
+        });
+
+        const fields = schema?.fields as Prisma.JsonArray;
+
+        const clearedFields = fields.filter((field: any) => {
+          if (field.type === 'schema' && field.schema === id) {
+            return false;
+          }
+          return true;
+        });
+
+        await prisma.schema.update({
+          where: {
+            id: referrer.referrerId,
+            userId: userId,
+          },
+          data: {
+            fields: clearedFields,
+          },
+        });
+      }
 
       await prisma.schemaReference.deleteMany({
         where: {

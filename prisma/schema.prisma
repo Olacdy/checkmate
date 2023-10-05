@@ -61,7 +61,7 @@ model Schema {
 }
 
 model SchemaReference {
-  referrer    Schema @relation("referrer", fields: [referrerId], references: [id])
+  referrer    Schema @relation("referrer", fields: [referrerId], references: [id], onDelete: Cascade)
   referrerId  String
   referring   Schema @relation("referring", fields: [referringId], references: [id], onDelete: Cascade)
   referringId String
