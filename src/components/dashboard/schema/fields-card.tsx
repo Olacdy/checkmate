@@ -27,7 +27,6 @@ import { fields } from '@/helpers/data';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
@@ -73,7 +72,7 @@ const FieldsCard: FC<FieldsCardProps> = ({
     if (type === 'readonly') {
       return {
         fields: (
-          <ScrollArea className='max-h-[67vh] w-full'>
+          <div className='max-h-[67vh] w-full overflow-y-auto'>
             <div className='flex w-full flex-col gap-4 py-3'>
               {schemaFields.map((schemaField) => {
                 return (
@@ -85,7 +84,7 @@ const FieldsCard: FC<FieldsCardProps> = ({
                 );
               })}
             </div>
-          </ScrollArea>
+          </div>
         ),
         addField: <></>,
       };
@@ -102,24 +101,26 @@ const FieldsCard: FC<FieldsCardProps> = ({
 
       return {
         fields: (
-          <Reorder.Group
-            className='flex w-full flex-1 flex-col gap-4 overflow-hidden pt-3'
-            axis='y'
-            onReorder={setSchemaFields}
-            values={schemaFields}>
-            {schemaFields.map((schemaField) => {
-              return (
-                <Field
-                  key={schemaField.id}
-                  type='draggable'
-                  value={schemaField}
-                  editSchemaField={editSchemaField}
-                  removeSchemaFeild={() => removeSchemaField(schemaField)}
-                  updateSchemaFields={() => updateSchemaFields()}
-                />
-              );
-            })}
-          </Reorder.Group>
+          <div className='flex max-h-[50vh] w-full flex-1 overflow-y-auto'>
+            <Reorder.Group
+              className='flex w-full flex-1 flex-col gap-4 overflow-hidden pr-3 pt-5'
+              axis='y'
+              onReorder={setSchemaFields}
+              values={schemaFields}>
+              {schemaFields.map((schemaField) => {
+                return (
+                  <Field
+                    key={schemaField.id}
+                    type='draggable'
+                    value={schemaField}
+                    editSchemaField={editSchemaField}
+                    removeSchemaFeild={() => removeSchemaField(schemaField)}
+                    updateSchemaFields={() => updateSchemaFields()}
+                  />
+                );
+              })}
+            </Reorder.Group>
+          </div>
         ),
         addField: (
           <Dialog open={!!openedDialog} onOpenChange={handleOpenedDialogChange}>

@@ -53,15 +53,15 @@ model Schema {
   userId      String
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   fields      Json
-  referred    SchemaReference[] @relation("referrer")
-  referring   SchemaReference[] @relation("referring")
+  referred    SchemaReference[] @relation("referring")
+  referring   SchemaReference[] @relation("referrer")
   validations Validation[]
 
   @@index([userId, id])
 }
 
 model SchemaReference {
-  referrer    Schema @relation("referrer", fields: [referrerId], references: [id])
+  referrer    Schema @relation("referrer", fields: [referrerId], references: [id], onDelete: Cascade)
   referrerId  String
   referring   Schema @relation("referring", fields: [referringId], references: [id], onDelete: Cascade)
   referringId String

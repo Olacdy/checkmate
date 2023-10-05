@@ -103,7 +103,9 @@ export const booleanFieldSchema = fieldPropertiesSchema;
 
 export const schemaFieldSchema = fieldPropertiesSchema.and(
   z.object({
-    schema: z.string().cuid(),
+    schema: z.union([z.string().cuid(), z.literal('self')], {
+      required_error: 'Select one the schemas to reference.',
+    }),
   })
 );
 
