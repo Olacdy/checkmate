@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
-const createStringField = (
+const createStringField = async (
   stringFieldConfig: Extract<FieldType, { type: 'string' }>
 ) => {
   const { isRequired, isEmail, minLength, maxLength, regex } =
@@ -21,7 +21,7 @@ const createStringField = (
   return stringField;
 };
 
-const createNumberField = (
+const createNumberField = async (
   numberFieldConfig: Extract<FieldType, { type: 'number' }>
 ) => {
   const { isRequired, isInt, min, max } = numberFieldConfig;
@@ -38,7 +38,7 @@ const createNumberField = (
   return numberField;
 };
 
-const createDateField = (
+const createDateField = async (
   dateFieldConfig: Extract<FieldType, { type: 'date' }>
 ) => {
   const { isRequired, from, to } = dateFieldConfig;
@@ -54,7 +54,7 @@ const createDateField = (
   return dateField;
 };
 
-const createBooleanField = (
+const createBooleanField = async (
   booleanFieldConfig: Extract<FieldType, { type: 'boolean' }>
 ) => {
   const { isRequired } = booleanFieldConfig;
@@ -67,26 +67,41 @@ const createBooleanField = (
   return booleanField;
 };
 
+const createSchemaField = async (
+  schemaFieldConfig: Extract<FieldType, { type: 'schema' }>
+) => {
+  const { isRequired, referencedSchema, isArray } = schemaFieldConfig;
+
+  // if (referencedSchema === 'self') {
+  //   let selfReference = schema;
+
+  //   schema.setKey(
+  //     fieldConfig.name,
+  //     z.lazy(() => schema.array())
+  //   );
+  // }
+};
+
 const fieldCreators = {
   string: createStringField,
   number: createNumberField,
   date: createDateField,
   boolean: createBooleanField,
+  // schema: createSchemaField,
 };
 
-export const createSchema = (fieldConfigs: FieldType[]) => {
-  const schemaFields: Record<string, any> = {};
+export const createSchema = async (fieldConfigs: FieldType[]) => {
+  const schema = z.object({});
 
-  fieldConfigs.forEach((fieldConfig) => {
+  fieldConfigs.forEach(async (fieldConfig) => {
     // @ts-ignore
     const fieldSchema = fieldCreators[fieldConfig.type](fieldConfig);
 
     if (fieldSchema) {
-      schemaFields[fieldConfig.name.toLowerCase()] = fieldSchema;
+      // @ts-ignore
+      schema.shape[fieldConfig.name.toLowerCase()] = await fieldSchema;
     }
   });
-
-  const schema = z.object(schemaFields);
 
   return schema;
 };

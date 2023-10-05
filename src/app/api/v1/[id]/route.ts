@@ -37,9 +37,13 @@ export const POST = async (req: NextRequest, params: ParamsType) => {
   //   );
   // }
 
-  const runtimeSchema = createSchema(schema?.fields as FieldType[]);
+  const runtimeSchema = await createSchema(schema?.fields as FieldType[]);
+
+  console.log(runtimeSchema.shape);
 
   const result = await runtimeSchema.safeParseAsync(data);
+
+  console.log(result);
 
   if (!result.success) {
     const validationErrors: ZodError = result.error;

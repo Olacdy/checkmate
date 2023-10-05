@@ -103,9 +103,10 @@ export const booleanFieldSchema = fieldPropertiesSchema;
 
 export const schemaFieldSchema = fieldPropertiesSchema.and(
   z.object({
-    schema: z.union([z.string().cuid(), z.literal('self')], {
+    referencedSchema: z.union([z.string().cuid(), z.literal('self')], {
       required_error: 'Select one the schemas to reference.',
     }),
+    isArray: z.boolean(),
   })
 );
 
@@ -113,4 +114,5 @@ export type FieldType =
   | (z.infer<typeof stringFieldSchema> & { type: 'string' })
   | (z.infer<typeof numberFieldSchema> & { type: 'number' })
   | (z.infer<typeof dateFieldSchema> & { type: 'date' })
+  | (z.infer<typeof booleanFieldSchema> & { type: 'boolean' })
   | (z.infer<typeof schemaFieldSchema> & { type: 'schema' });
