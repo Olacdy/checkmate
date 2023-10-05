@@ -4,8 +4,9 @@ import { FC, HTMLAttributes, useState } from 'react';
 
 import { motion } from 'framer-motion';
 
-import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+
+import { Icons } from '@/components/icons';
 
 import { cn } from '@/lib/utils';
 

@@ -8,13 +8,15 @@ const createStringField = (
   const { isRequired, isEmail, minLength, maxLength, regex } =
     stringFieldConfig;
 
-  const stringField = z.string();
+  let stringField = z.string();
 
-  if (!isRequired) stringField.optional();
-  if (isEmail) stringField.email();
-  if (minLength) stringField.min(minLength);
-  if (maxLength) stringField.max(maxLength);
-  if (regex) stringField.regex(new RegExp(regex));
+  if (isEmail) stringField = stringField.email();
+  if (minLength) stringField = stringField.min(minLength);
+  if (maxLength) stringField = stringField.max(maxLength);
+  if (regex) stringField = stringField.regex(new RegExp(regex));
+
+  // @ts-ignore
+  if (!isRequired) stringField = stringField.optional();
 
   return stringField;
 };
@@ -24,12 +26,14 @@ const createNumberField = (
 ) => {
   const { isRequired, isInt, min, max } = numberFieldConfig;
 
-  const numberField = z.number();
+  let numberField = z.number();
 
-  if (!isRequired) numberField.optional();
-  if (isInt) numberField.int();
-  if (min) numberField.min(min);
-  if (max) numberField.max(max);
+  if (isInt) numberField = numberField.int();
+  if (min) numberField = numberField.min(min);
+  if (max) numberField = numberField.max(max);
+
+  // @ts-ignore
+  if (!isRequired) numberField = numberField.optional();
 
   return numberField;
 };
@@ -39,11 +43,13 @@ const createDateField = (
 ) => {
   const { isRequired, from, to } = dateFieldConfig;
 
-  const dateField = z.date();
+  let dateField = z.date();
 
-  if (!isRequired) dateField.optional();
-  if (from) dateField.min(from);
-  if (to) dateField.max(to);
+  if (from) dateField = dateField.min(from);
+  if (to) dateField = dateField.max(to);
+
+  // @ts-ignore
+  if (!isRequired) dateField = dateField.optional();
 
   return dateField;
 };
@@ -53,9 +59,10 @@ const createBooleanField = (
 ) => {
   const { isRequired } = booleanFieldConfig;
 
-  const booleanField = z.boolean();
+  let booleanField = z.boolean();
 
-  if (!isRequired) booleanField.optional();
+  // @ts-ignore
+  if (!isRequired) booleanField = booleanField.optional();
 
   return booleanField;
 };
@@ -75,7 +82,7 @@ export const createSchema = (fieldConfigs: FieldType[]) => {
     const fieldSchema = fieldCreators[fieldConfig.type](fieldConfig);
 
     if (fieldSchema) {
-      schemaFields[fieldConfig.name] = fieldSchema;
+      schemaFields[fieldConfig.name.toLowerCase()] = fieldSchema;
     }
   });
 

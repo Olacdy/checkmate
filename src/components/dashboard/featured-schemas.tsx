@@ -30,7 +30,7 @@ import { trpc } from '@/trpc/client';
 
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
-import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
+import { cn, formatDate, getBaseUrl, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
   initialData: SchemaType[];
@@ -57,8 +57,13 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast.success('Link copied to clipboard.');
-    navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
+    toast('Link copied to clipboard.');
+
+    const baseUrl = getBaseUrl();
+
+    console.log(baseUrl);
+
+    navigator.clipboard.writeText(`${baseUrl}/api/v1/${schemaId}`);
   };
 
   const handleDelete = (schemaId: string) => {
