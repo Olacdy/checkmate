@@ -20,7 +20,7 @@ const Page: FC<PageProps> = async ({}) => {
   const validations = await serverClient.validation.getValidations();
 
   return (
-    <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
+    <Card className='dashboard-section-container overflow-hidden bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
       <CardHeader>
         <CardTitle className='text-lg xs:text-3xl'>Overview</CardTitle>
         <CardDescription>Your schemas stats.</CardDescription>
@@ -28,7 +28,7 @@ const Page: FC<PageProps> = async ({}) => {
       <CardContent className='flex flex-1 flex-col gap-5'>
         <ValidationTabs
           type='multiple'
-          className='flex-1'
+          className='h-0 flex-grow'
           validations={validations}
         />
         <FeaturedSchemas initialData={schemas} />

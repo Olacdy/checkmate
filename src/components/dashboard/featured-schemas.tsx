@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import Link from 'next/link';
 
@@ -34,9 +34,13 @@ import { cn, formatDate, getBaseUrl, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
   initialData: SchemaType[];
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
+const FeaturedSchemas: FC<FeaturedSchemasProps> = ({
+  initialData,
+  className,
+  ...props
+}) => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
@@ -73,7 +77,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   return (
-    <div className='flex'>
+    <div className={cn('flex', className)} {...props}>
       {getSchemas?.data?.length !== 0 ? (
         <div className='flex w-full flex-1 flex-col justify-end gap-5'>
           <span className='text-2xl'>Featured schemas</span>

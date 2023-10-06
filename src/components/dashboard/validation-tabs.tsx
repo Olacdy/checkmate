@@ -37,8 +37,8 @@ const ValidationTabs: FC<ValidationTabsProps> = ({
           <span>Errors</span>
         </TabsTrigger>
       </TabsList>
-      <Card className='flex flex-1 bg-transparent dark:bg-transparent'>
-        <CardContent className='flex-1'>
+      <Card className='flex h-0 flex-grow bg-transparent dark:bg-transparent'>
+        <CardContent className='w-full overflow-auto'>
           <TabsContent value='validations'>
             <ValidationsTable type={type} validations={validations} />
           </TabsContent>

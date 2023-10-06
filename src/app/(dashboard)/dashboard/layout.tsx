@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   const session = await getServerAuthSession();
 
-  if (!!!session) {
+  if (!session) {
     redirect('/sign-in');
   }
 
