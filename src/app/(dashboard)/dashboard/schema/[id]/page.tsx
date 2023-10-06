@@ -28,6 +28,9 @@ const Page: FC<PageProps> = async ({ params }) => {
   const schema = await serverClient.schema.getSchemaById({
     id: params.id,
   });
+  const validations = await serverClient.validation.getValidationBySchemaId({
+    schemaId: params.id,
+  });
 
   if (!schema) return <div>No schema found!</div>;
 
@@ -55,7 +58,11 @@ const Page: FC<PageProps> = async ({ params }) => {
           name={schema?.name!}
           schemaFields={schema?.fields as FieldType[]}
         />
-        <ValidationTabs className='col-span-7' type='single' schema={schema} />
+        <ValidationTabs
+          className='col-span-7'
+          type='single'
+          validations={validations}
+        />
       </CardContent>
     </Card>
   );

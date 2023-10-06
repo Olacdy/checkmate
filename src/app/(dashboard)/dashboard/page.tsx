@@ -17,6 +17,7 @@ type PageProps = {};
 
 const Page: FC<PageProps> = async ({}) => {
   const schemas = await serverClient.schema.getSchemas();
+  const validations = await serverClient.validation.getValidations();
 
   return (
     <Card className='dashboard-section-container bg-slate-50 px-5 py-4 text-oxford-blue dark:bg-oxford-blue-dark dark:text-off-white'>
@@ -25,7 +26,11 @@ const Page: FC<PageProps> = async ({}) => {
         <CardDescription>Your schemas stats.</CardDescription>
       </CardHeader>
       <CardContent className='flex flex-1 flex-col gap-5'>
-        <ValidationTabs type='multiple' className='flex-1' schemas={schemas} />
+        <ValidationTabs
+          type='multiple'
+          className='flex-1'
+          validations={validations}
+        />
         <FeaturedSchemas initialData={schemas} />
       </CardContent>
     </Card>

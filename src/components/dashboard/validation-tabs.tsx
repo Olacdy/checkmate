@@ -9,34 +9,18 @@ import ValidationsTable from '@/components/dashboard/validations-table';
 
 import { cn } from '@/lib/utils';
 
-import { SchemaType, ValidationType } from '@/schemas/schema-route-schemas';
+import { ValidationType } from '@/schemas/validation-route-schemas';
 
-type BaseValidationsTabsProps = {} & HTMLAttributes<HTMLDivElement>;
+type ValidationTabsProps = {
+  type: 'single' | 'multiple';
+  validations: ValidationType[];
+} & HTMLAttributes<HTMLDivElement>;
 
-type SingleValidationTabsProps = {
-  type: 'single';
-  schema: SchemaType;
-};
-
-type MultipleValidationTabsProps = {
-  type: 'multiple';
-  schemas: SchemaType[];
-};
-
-type ValidationTabsProps = BaseValidationsTabsProps &
-  (SingleValidationTabsProps | MultipleValidationTabsProps);
-
-const ValidationTabs: FC<ValidationTabsProps> = (props) => {
-  const { type, className } = props;
-
-  const validations =
-    type === 'multiple'
-      ? props.schemas.reduce(
-          (accumulator, schema) => accumulator.concat(schema.validations),
-          [] as ValidationType[]
-        )
-      : props.schema.validations;
-
+const ValidationTabs: FC<ValidationTabsProps> = ({
+  type,
+  className,
+  validations,
+}) => {
   return (
     <Tabs defaultValue='validations' className={cn('flex flex-col', className)}>
       <TabsList>

@@ -2,6 +2,7 @@ import { router } from '@/server/trpc';
 
 import { schemaRouter } from '@/server/routers/schema';
 import { userRouter } from '@/server/routers/user';
+import { validationRouter } from '@/server/routers/validation';
 
 /**
  * This is the primary router for your server.
@@ -11,6 +12,7 @@ import { userRouter } from '@/server/routers/user';
 export const appRouter = router({
   user: userRouter,
   schema: schemaRouter,
+  validation: validationRouter,
 });
 
 // export type definition of API

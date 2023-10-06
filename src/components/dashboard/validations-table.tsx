@@ -17,7 +17,7 @@ import {
 
 import { cn, formatDate } from '@/lib/utils';
 
-import { ValidationType } from '@/schemas/schema-route-schemas';
+import { ValidationType } from '@/schemas/validation-route-schemas';
 
 type ValidationsTableProps = {
   type: 'single' | 'multiple';
