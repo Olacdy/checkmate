@@ -1,4 +1,15 @@
-import { z } from 'zod';
+import {
+  ZodBoolean,
+  ZodDate,
+  ZodNumber,
+  ZodObject,
+  ZodOptional,
+  ZodString,
+  ZodTypeAny,
+  z,
+} from 'zod';
+
+import { prisma } from '@/lib/db';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
@@ -8,14 +19,13 @@ const createStringField = async (
   const { isRequired, isEmail, minLength, maxLength, regex } =
     stringFieldConfig;
 
-  let stringField = z.string();
+  let stringField: ZodString | ZodOptional<ZodString> = z.string();
 
   if (isEmail) stringField = stringField.email();
   if (minLength) stringField = stringField.min(minLength);
   if (maxLength) stringField = stringField.max(maxLength);
   if (regex) stringField = stringField.regex(new RegExp(regex));
 
-  // @ts-ignore
   if (!isRequired) stringField = stringField.optional();
 
   return stringField;
@@ -26,13 +36,12 @@ const createNumberField = async (
 ) => {
   const { isRequired, isInt, min, max } = numberFieldConfig;
 
-  let numberField = z.number();
+  let numberField: ZodNumber | ZodOptional<ZodNumber> = z.number();
 
   if (isInt) numberField = numberField.int();
   if (min) numberField = numberField.min(min);
   if (max) numberField = numberField.max(max);
 
-  // @ts-ignore
   if (!isRequired) numberField = numberField.optional();
 
   return numberField;
@@ -43,12 +52,11 @@ const createDateField = async (
 ) => {
   const { isRequired, from, to } = dateFieldConfig;
 
-  let dateField = z.coerce.date();
+  let dateField: ZodDate | ZodOptional<ZodDate> = z.coerce.date();
 
   if (from) dateField = dateField.min(new Date(from));
   if (to) dateField = dateField.max(new Date(to));
 
-  // @ts-ignore
   if (!isRequired) dateField = dateField.optional();
 
   return dateField;
@@ -59,27 +67,51 @@ const createBooleanField = async (
 ) => {
   const { isRequired } = booleanFieldConfig;
 
-  let booleanField = z.boolean();
+  let booleanField: ZodBoolean | ZodOptional<ZodBoolean> = z.boolean();
 
-  // @ts-ignore
   if (!isRequired) booleanField = booleanField.optional();
 
   return booleanField;
 };
 
 const createSchemaField = async (
-  schemaFieldConfig: Extract<FieldType, { type: 'schema' }>
+  schemaFieldConfig: Extract<FieldType, { type: 'schema' }>,
+  schema: ZodObject<{}, 'strip', ZodTypeAny, {}, {}>
 ) => {
   const { isRequired, referencedSchema, isArray } = schemaFieldConfig;
 
-  // if (referencedSchema === 'self') {
-  //   let selfReference = schema;
+  let referencedSchemaField: any;
 
-  //   schema.setKey(
-  //     fieldConfig.name,
-  //     z.lazy(() => schema.array())
-  //   );
-  // }
+  if (referencedSchema !== 'self') {
+    const referencedSchemaFields = (
+      await prisma.schema.findFirst({
+        where: {
+          id: referencedSchema,
+        },
+        select: {
+          fields: true,
+        },
+      })
+    )?.fields;
+
+    if (referencedSchemaFields) {
+      referencedSchemaField = await createSchema(
+        referencedSchemaFields as FieldType[]
+      );
+    }
+  }
+
+  if (referencedSchema === 'self') referencedSchemaField = schema;
+
+  if (isArray) referencedSchemaField = referencedSchemaField.array();
+
+  if (!isRequired && referencedSchema !== 'self')
+    referencedSchemaField = referencedSchemaField.optional();
+
+  if (referencedSchema === 'self')
+    return z.lazy(() => referencedSchemaField).optional();
+
+  return referencedSchemaField;
 };
 
 const fieldCreators = {
@@ -87,21 +119,24 @@ const fieldCreators = {
   number: createNumberField,
   date: createDateField,
   boolean: createBooleanField,
-  // schema: createSchemaField,
+  schema: createSchemaField,
 };
 
 export const createSchema = async (fieldConfigs: FieldType[]) => {
   const schema = z.object({});
 
-  fieldConfigs.forEach(async (fieldConfig) => {
-    // @ts-ignore
-    const fieldSchema = fieldCreators[fieldConfig.type](fieldConfig);
+  for (const fieldConfig of fieldConfigs) {
+    const fieldSchema = await fieldCreators[fieldConfig.type](
+      // @ts-ignore
+      fieldConfig,
+      schema
+    );
 
     if (fieldSchema) {
       // @ts-ignore
-      schema.shape[fieldConfig.name.toLowerCase()] = await fieldSchema;
+      schema.shape[fieldConfig.name.toLowerCase()] = fieldSchema;
     }
-  });
-
+  }
+  
   return schema;
 };
