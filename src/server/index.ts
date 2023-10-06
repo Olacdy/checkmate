@@ -1,5 +1,6 @@
 import { router } from '@/server/trpc';
 
+import { apiKeyRoute } from '@/server/routers/api-key';
 import { schemaRouter } from '@/server/routers/schema';
 import { userRouter } from '@/server/routers/user';
 import { validationRouter } from '@/server/routers/validation';
@@ -13,6 +14,7 @@ export const appRouter = router({
   user: userRouter,
   schema: schemaRouter,
   validation: validationRouter,
+  apiKey: apiKeyRoute,
 });
 
 // export type definition of API

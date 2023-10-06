@@ -78,7 +78,6 @@ export const formatDate = (
     const hours = date.getHours();
     const minutes = date.getMinutes();
 
-    // Format hours and minutes with leading zeros if needed
     const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
 

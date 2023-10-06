@@ -1,41 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { ZodError } from 'zod';
+
 import { createSchema } from '@/lib/create-schema';
 import { prisma } from '@/lib/db';
-import { getServerAuthSession } from '@/lib/nextauth';
 
 import { FieldType } from '@/schemas/fields-schemas';
-import { ZodError } from 'zod';
 
 type ParamsType = {
   params: { id: string };
 };
 
 export const POST = async (req: NextRequest, params: ParamsType) => {
-  const session = await getServerAuthSession();
   const schemaId = params.params.id;
+
+  const apiKey = req.headers.get('authorization')?.trim();
 
   const data = await req.json();
 
-  // if (!session) {
-  //   return NextResponse.json(
-  //     { message: 'Unauthorized. Please, provide auth credentials.' },
-  //     { status: 401 }
-  //   );
-  // }
+  if (!apiKey) {
+    return NextResponse.json(
+      { message: "API key haven't been provided." },
+      { status: 401 }
+    );
+  }
+
+  const validApiKey = await prisma.apiKey.findFirst({
+    where: {
+      key: apiKey,
+      enabled: true,
+    },
+  });
+
+  if (!validApiKey) {
+    return NextResponse.json({ message: 'Invalid API key.' }, { status: 401 });
+  }
 
   const schema = await prisma.schema.findFirst({
     where: {
       id: schemaId,
     },
   });
-
-  // if (schema?.userId !== session.user.id) {
-  //   return NextResponse.json(
-  //     { message: 'Forbidden. You do not have access to this schema.' },
-  //     { status: 403 }
-  //   );
-  // }
 
   const runtimeSchema = await createSchema(schema?.fields as FieldType[]);
 
