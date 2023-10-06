@@ -11,6 +11,11 @@ export const validationRouter = router({
     const { id: userId } = ctx.session.user;
 
     return await prisma.validation.findMany({
+      orderBy: [
+        {
+          createdAt: 'desc',
+        },
+      ],
       where: {
         schema: {
           userId: userId,
@@ -49,6 +54,11 @@ export const validationRouter = router({
       const { schemaId } = input;
 
       return await prisma.validation.findMany({
+        orderBy: [
+          {
+            createdAt: 'desc',
+          },
+        ],
         where: {
           schemaId: schemaId,
         },
