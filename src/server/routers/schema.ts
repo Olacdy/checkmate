@@ -68,7 +68,7 @@ export const schemaRouter = router({
 
       const fields = JSON.parse(rawFields);
 
-      if (fields.length < 1)
+      if (fields.length === 0)
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Should be at least one field.',
@@ -114,7 +114,7 @@ export const schemaRouter = router({
 
       const fields = rawFields && JSON.parse(rawFields);
 
-      if (fields.length < 1)
+      if (fields.length === 0)
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Should be at least one field.',

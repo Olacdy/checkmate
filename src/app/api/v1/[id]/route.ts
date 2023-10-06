@@ -41,6 +41,14 @@ export const POST = async (req: NextRequest, params: ParamsType) => {
 
   const result = await runtimeSchema.safeParseAsync(data);
 
+  await prisma.validation.create({
+    data: {
+      input: data,
+      success: result.success,
+      schemaId: schemaId,
+    },
+  });
+
   if (!result.success) {
     const validationErrors: ZodError = result.error;
     return NextResponse.json(

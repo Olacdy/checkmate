@@ -211,7 +211,7 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
-    if (schemaFields.length < 1) {
+    if (schemaFields.length === 0) {
       toast.error('Please, add at least one field.');
       return;
     }
@@ -334,7 +334,7 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
-    if (schemaFields.length < 1) {
+    if (schemaFields.length === 0) {
       toast.error('Please, add at least one field.');
       return;
     }
