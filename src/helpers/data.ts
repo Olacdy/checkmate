@@ -73,6 +73,12 @@ export const sideBarButtons = [
     text: 'Schemas',
     icon: 'schemas',
   },
+  {
+    name: 'api-key',
+    path: '/dashboard/api-key',
+    text: 'API key',
+    icon: 'apiKey',
+  },
 ] satisfies {
   name: string;
   path: string;
