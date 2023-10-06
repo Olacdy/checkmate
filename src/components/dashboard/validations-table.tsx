@@ -72,7 +72,7 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
               )}
               <TableCell className='font-medium'>{validation.id}</TableCell>
               <TableCell className='hidden md:table-cell'>
-                {formatDate(validation.createdAt)}
+                {formatDate(validation.createdAt, { includeTime: true })}
               </TableCell>
               <TableCell className='text-right lg:text-center'>
                 <span

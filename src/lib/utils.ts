@@ -45,7 +45,10 @@ export const calculateDocumentScale = (
   return (input / inputMax) * outputMax;
 };
 
-export const formatDate = (date: Date | string): string => {
+export const formatDate = (
+  date: Date | string,
+  options?: { includeTime?: boolean }
+): string => {
   const months = [
     'Jan',
     'Feb',
@@ -69,7 +72,20 @@ export const formatDate = (date: Date | string): string => {
   const month = months[date.getMonth()];
   const year = date.getFullYear() % 100;
 
-  return `${day} ${month}. ${year}`;
+  let formattedDate = `${day} ${month}. ${year}`;
+
+  if (options?.includeTime) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // Format hours and minutes with leading zeros if needed
+    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+    formattedDate = `${formattedHours}:${formattedMinutes}, ${formattedDate}`;
+  }
+
+  return formattedDate;
 };
 
 export const getManySchemaStat = (schemas: SchemaType[]) => {
