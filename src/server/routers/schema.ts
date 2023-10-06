@@ -11,6 +11,7 @@ import {
   editSchemaSchema,
   getSchemaByIdSchema,
 } from '@/schemas/schema-route-schemas';
+import { TRPCError } from '@trpc/server';
 
 export const schemaRouter = router({
   getSchemasCount: protectedProcedure.query(async ({ ctx }) => {
@@ -67,6 +68,18 @@ export const schemaRouter = router({
 
       const fields = JSON.parse(rawFields);
 
+      if (fields.length < 1)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Should be at least one field.',
+        });
+
+      if (!fields.some((field: any) => field.type !== 'schema'))
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: "Should be at least one field not of the type 'schema'.",
+        });
+
       const schema = await prisma.schema.create({
         data: {
           name: name,
@@ -100,6 +113,18 @@ export const schemaRouter = router({
       const { id: userId } = ctx.session.user;
 
       const fields = rawFields && JSON.parse(rawFields);
+
+      if (fields.length < 1)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Should be at least one field.',
+        });
+
+      if (!fields.some((field: any) => field.type !== 'schema'))
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: "Should be at least one field not of the type 'schema'.",
+        });
 
       const incomingReferences = fields
         .filter((field: any) => field.type === 'schema')
