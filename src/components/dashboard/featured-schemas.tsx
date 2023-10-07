@@ -61,7 +61,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({
   };
 
   const handleCopy = (schemaId: string) => {
-    toast('Link copied to clipboard.');
+    toast('Link copied to a clipboard.');
 
     const baseUrl = getBaseUrl();
 

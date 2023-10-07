@@ -183,7 +183,7 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast('Link copied to clipboard.');
+    toast('Link copied to a clipboard.');
 
     const baseUrl = getBaseUrl();
 
