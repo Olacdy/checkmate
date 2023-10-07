@@ -65,8 +65,6 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({
 
     const baseUrl = getBaseUrl();
 
-    console.log(baseUrl);
-
     navigator.clipboard.writeText(`${baseUrl}/api/v1/${schemaId}`);
   };
 
