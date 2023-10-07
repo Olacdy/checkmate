@@ -1,5 +1,7 @@
 import { Prisma } from '@prisma/client';
 
+import { TRPCError } from '@trpc/server';
+
 import { protectedProcedure, router } from '@/server/trpc';
 
 import { prisma } from '@/lib/db';
@@ -67,6 +69,18 @@ export const schemaRouter = router({
 
       const fields = JSON.parse(rawFields);
 
+      if (fields.length === 0)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Should be at least one field.',
+        });
+
+      if (!fields.some((field: any) => field.type !== 'schema'))
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: "Should be at least one field not of the type 'schema'.",
+        });
+
       const schema = await prisma.schema.create({
         data: {
           name: name,
@@ -80,7 +94,10 @@ export const schemaRouter = router({
         .map((field: any) => {
           return {
             referrerId: schema.id,
-            referringId: field.schema === 'self' ? schema.id : field.schema,
+            referringId:
+              field.referencedSchema === 'self'
+                ? schema.id
+                : field.referencedSchema,
           };
         });
 
@@ -98,12 +115,25 @@ export const schemaRouter = router({
 
       const fields = rawFields && JSON.parse(rawFields);
 
+      if (fields.length === 0)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Should be at least one field.',
+        });
+
+      if (!fields.some((field: any) => field.type !== 'schema'))
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: "Should be at least one field not of the type 'schema'.",
+        });
+
       const incomingReferences = fields
         .filter((field: any) => field.type === 'schema')
         .map((field: any) => {
           return {
             referrerId: id,
-            referringId: field.schema === 'self' ? id : field.schema,
+            referringId:
+              field.referencedSchema === 'self' ? id : field.referencedSchema,
           };
         });
 
@@ -174,7 +204,7 @@ export const schemaRouter = router({
         const fields = schema?.fields as Prisma.JsonArray;
 
         const clearedFields = fields.filter((field: any) => {
-          if (field.type === 'schema' && field.schema === id) {
+          if (field.type === 'schema' && field.referencedSchema === id) {
             return false;
           }
           return true;

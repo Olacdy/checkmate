@@ -52,13 +52,3 @@ export type SchemaType = Prisma.SchemaGetPayload<{
     };
   };
 }>;
-
-export type ValidationType = Prisma.ValidationGetPayload<{
-  include: {
-    schema: {
-      select: {
-        name: true;
-      };
-    };
-  };
-}>;

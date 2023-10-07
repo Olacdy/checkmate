@@ -12,6 +12,7 @@ import {
   FileCode,
   GripVertical,
   Hash,
+  KeyRound,
   LogOut,
   Moon,
   MoreHorizontal,
@@ -33,6 +34,7 @@ export type Icon = LucideIcon;
 export const Icons = {
   sun: Sun,
   moon: Moon,
+  apiKey: KeyRound,
   increase: ArrowBigUp,
   settings: Sliders,
   drag: GripVertical,

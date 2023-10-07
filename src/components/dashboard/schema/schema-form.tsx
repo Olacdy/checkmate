@@ -211,8 +211,13 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
-    if (schemaFields.length < 1) {
+    if (schemaFields.length === 0) {
       toast.error('Please, add at least one field.');
+      return;
+    }
+
+    if (!schemaFields.some((field) => field.type !== 'schema')) {
+      toast.error("Please, add at least one field that is not 'schema' type.");
       return;
     }
 
@@ -329,8 +334,13 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
-    if (schemaFields.length < 1) {
+    if (schemaFields.length === 0) {
       toast.error('Please, add at least one field.');
+      return;
+    }
+
+    if (!schemaFields.some((field) => field.type !== 'schema')) {
+      toast.error("Please, add at least one field that is not 'schema' type.");
       return;
     }
 

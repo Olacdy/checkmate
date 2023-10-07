@@ -12,14 +12,14 @@ type DashboardLayoutProps = {
 };
 
 export const metadata: Metadata = {
-  title: 'CheckMate',
-  description: 'CheckMate dashboard',
+  title: 'CheckMate | Dashboard',
+  description: 'CheckMate dashboard.',
 };
 
 const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   const session = await getServerAuthSession();
 
-  if (!!!session) {
+  if (!session) {
     redirect('/sign-in');
   }
 

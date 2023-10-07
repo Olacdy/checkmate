@@ -41,6 +41,7 @@ const BooleanFieldForm: FC<BooleanFieldFormProps> = ({
     defaultValues: defaultValues || {
       name: '',
       isRequired: false,
+      isArray: false,
     },
   });
 
@@ -88,6 +89,22 @@ const BooleanFieldForm: FC<BooleanFieldFormProps> = ({
             render={({ field }) => (
               <FormItem className='flex items-end gap-3'>
                 <FormLabel>Required</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}

@@ -4,15 +4,16 @@ import { FC } from 'react';
 
 import Link from 'next/link';
 
+import JSONSnippet from '@/components/landing/code-snippet';
+import SchemaCreationLayout from '@/components/landing/schema-creation-layout';
 import { Button } from '@/components/ui/button';
-import CopyLink from '@/components/ui/copy-link';
+import CopyContent from '@/components/ui/copy-link';
 import { Line } from '@/components/ui/line';
 import Step from '@/components/ui/step';
 
-import JSONSnippet from '@/components/landing/code-snippet';
-import SchemaCreationLayout from '@/components/landing/schema-creation-layout';
-
 import { useSectionInView } from '@/hooks/useSectionInView';
+
+import { getBaseUrl } from '@/lib/utils';
 
 type ProductProps = {};
 
@@ -67,8 +68,8 @@ const Product: FC<ProductProps> = ({}) => {
           </div>
         </div>
         <Line className='hidden flex-1 lg:block' />
-        <CopyLink
-          link={'https://checkmate.com/api/schema/1'}
+        <CopyContent
+          content={`${getBaseUrl()}/api/v1/1`}
           className='md:max-w-md md:pl-10'
         />
       </div>

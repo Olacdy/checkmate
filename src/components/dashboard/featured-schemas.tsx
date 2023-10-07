@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import Link from 'next/link';
 
@@ -30,13 +30,17 @@ import { trpc } from '@/trpc/client';
 
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
-import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
+import { cn, formatDate, getBaseUrl, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
   initialData: SchemaType[];
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
+const FeaturedSchemas: FC<FeaturedSchemasProps> = ({
+  initialData,
+  className,
+  ...props
+}) => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
@@ -57,8 +61,13 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast.success('Link copied to clipboard.');
-    navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
+    toast('Link copied to a clipboard.');
+
+    const baseUrl = getBaseUrl();
+
+    console.log(baseUrl);
+
+    navigator.clipboard.writeText(`${baseUrl}/api/v1/${schemaId}`);
   };
 
   const handleDelete = (schemaId: string) => {
@@ -68,7 +77,7 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   return (
-    <div className='flex'>
+    <div className={cn('flex', className)} {...props}>
       {getSchemas?.data?.length !== 0 ? (
         <div className='flex w-full flex-1 flex-col justify-end gap-5'>
           <span className='text-2xl'>Featured schemas</span>

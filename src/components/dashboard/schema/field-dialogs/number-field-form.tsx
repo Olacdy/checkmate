@@ -41,6 +41,7 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
     defaultValues: defaultValues || {
       name: '',
       isRequired: false,
+      isArray: false,
       isInt: false,
       min: '',
       max: '',
@@ -107,6 +108,22 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
             render={({ field }) => (
               <FormItem className='flex items-end gap-3'>
                 <FormLabel>Int</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}

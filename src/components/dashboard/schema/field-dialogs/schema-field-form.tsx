@@ -57,11 +57,12 @@ const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
     defaultValues: defaultValues || {
       name: '',
       isRequired: false,
+      isArray: false,
     },
   });
 
   const [isRequiredEnabled, setIsRequiredEnabled] = useState<boolean>(
-    (defaultValues && defaultValues.schema !== 'self') ?? true
+    (defaultValues && defaultValues.referencedSchema !== 'self') ?? true
   );
 
   const [schemaId, setSchemaId] = useState<string | undefined>(
@@ -106,26 +107,44 @@ const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
             </FormItem>
           )}
         />
+        <div className='flex w-full gap-10'>
+          <FormField
+            control={form.control}
+            name='isRequired'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Required</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    disabled={!isRequiredEnabled}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
-          name='isRequired'
-          render={({ field }) => (
-            <FormItem className='flex items-end gap-3'>
-              <FormLabel>Required</FormLabel>
-              <FormControl>
-                <Checkbox
-                  disabled={!isRequiredEnabled}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='schema'
+          name='referencedSchema'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Schema</FormLabel>

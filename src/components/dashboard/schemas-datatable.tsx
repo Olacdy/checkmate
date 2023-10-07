@@ -50,7 +50,7 @@ import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
 
 import { trpc } from '@/trpc/client';
 
-import { cn, formatDate, getOneSchemaStat } from '@/lib/utils';
+import { cn, formatDate, getBaseUrl, getOneSchemaStat } from '@/lib/utils';
 
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
@@ -183,9 +183,11 @@ const SchemasDataTable: FC<SchemasDataTableProps> = ({ initialSchemas }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast('Link copied to clipboard.');
+    toast('Link copied to a clipboard.');
 
-    navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
+    const baseUrl = getBaseUrl();
+
+    navigator.clipboard.writeText(`${baseUrl}/api/v1/${schemaId}`);
   };
 
   const handleDelete = (schemaId: string) => {

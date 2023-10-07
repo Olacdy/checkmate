@@ -44,6 +44,7 @@ model User {
   sessions      Session[]
   quota         Int       @default(10)
   schemas       Schema[]
+  apikeys       ApiKey[]
 }
 
 model Schema {
@@ -80,4 +81,15 @@ model Validation {
   input     Json
 
   @@index([schemaId, id])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  key       String   @unique
+  enabled   Boolean  @default(true)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, id])
 }

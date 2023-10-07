@@ -43,6 +43,7 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
     defaultValues: defaultValues || {
       name: '',
       isRequired: false,
+      isArray: false,
       isEmail: false,
       minLength: '',
       maxLength: '',
@@ -94,6 +95,22 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
             render={({ field }) => (
               <FormItem className='flex items-end gap-3'>
                 <FormLabel>Required</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}
