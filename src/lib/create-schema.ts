@@ -1,4 +1,5 @@
 import {
+  ZodArray,
   ZodBoolean,
   ZodDate,
   ZodNumber,
@@ -16,15 +17,21 @@ import { FieldType } from '@/schemas/fields-schemas';
 const createStringField = async (
   stringFieldConfig: Extract<FieldType, { type: 'string' }>
 ) => {
-  const { isRequired, isEmail, minLength, maxLength, regex } =
+  const { isRequired, isArray, isEmail, minLength, maxLength, regex } =
     stringFieldConfig;
 
-  let stringField: ZodString | ZodOptional<ZodString> = z.string();
+  let stringField:
+    | ZodString
+    | ZodOptional<ZodString>
+    | ZodArray<ZodString, 'many'>
+    | ZodOptional<ZodArray<ZodString, 'many'>> = z.string();
 
   if (isEmail) stringField = stringField.email();
   if (minLength) stringField = stringField.min(minLength);
   if (maxLength) stringField = stringField.max(maxLength);
   if (regex) stringField = stringField.regex(new RegExp(regex));
+
+  if (isArray) stringField = stringField.array();
 
   if (!isRequired) stringField = stringField.optional();
 
@@ -34,13 +41,19 @@ const createStringField = async (
 const createNumberField = async (
   numberFieldConfig: Extract<FieldType, { type: 'number' }>
 ) => {
-  const { isRequired, isInt, min, max } = numberFieldConfig;
+  const { isRequired, isArray, isInt, min, max } = numberFieldConfig;
 
-  let numberField: ZodNumber | ZodOptional<ZodNumber> = z.number();
+  let numberField:
+    | ZodNumber
+    | ZodOptional<ZodNumber>
+    | ZodArray<ZodNumber, 'many'>
+    | ZodOptional<ZodArray<ZodNumber, 'many'>> = z.number();
 
   if (isInt) numberField = numberField.int();
   if (min) numberField = numberField.min(min);
   if (max) numberField = numberField.max(max);
+
+  if (isArray) numberField = numberField.array();
 
   if (!isRequired) numberField = numberField.optional();
 
@@ -50,12 +63,18 @@ const createNumberField = async (
 const createDateField = async (
   dateFieldConfig: Extract<FieldType, { type: 'date' }>
 ) => {
-  const { isRequired, from, to } = dateFieldConfig;
+  const { isRequired, isArray, from, to } = dateFieldConfig;
 
-  let dateField: ZodDate | ZodOptional<ZodDate> = z.coerce.date();
+  let dateField:
+    | ZodDate
+    | ZodOptional<ZodDate>
+    | ZodArray<ZodDate, 'many'>
+    | ZodOptional<ZodArray<ZodDate, 'many'>> = z.coerce.date();
 
   if (from) dateField = dateField.min(new Date(from));
   if (to) dateField = dateField.max(new Date(to));
+
+  if (isArray) dateField = dateField.array();
 
   if (!isRequired) dateField = dateField.optional();
 
@@ -65,9 +84,15 @@ const createDateField = async (
 const createBooleanField = async (
   booleanFieldConfig: Extract<FieldType, { type: 'boolean' }>
 ) => {
-  const { isRequired } = booleanFieldConfig;
+  const { isRequired, isArray } = booleanFieldConfig;
 
-  let booleanField: ZodBoolean | ZodOptional<ZodBoolean> = z.boolean();
+  let booleanField:
+    | ZodBoolean
+    | ZodOptional<ZodBoolean>
+    | ZodArray<ZodBoolean, 'many'>
+    | ZodOptional<ZodArray<ZodBoolean, 'many'>> = z.boolean();
+
+  if (isArray) booleanField = booleanField.array();
 
   if (!isRequired) booleanField = booleanField.optional();
 
@@ -78,7 +103,7 @@ const createSchemaField = async (
   schemaFieldConfig: Extract<FieldType, { type: 'schema' }>,
   schema: ZodObject<{}, 'strip', ZodTypeAny, {}, {}>
 ) => {
-  const { isRequired, referencedSchema, isArray } = schemaFieldConfig;
+  const { isRequired, isArray, referencedSchema } = schemaFieldConfig;
 
   let referencedSchemaField: any;
 
@@ -137,6 +162,6 @@ export const createSchema = async (fieldConfigs: FieldType[]) => {
       schema.shape[fieldConfig.name.toLowerCase()] = fieldSchema;
     }
   }
-  
+
   return schema;
 };

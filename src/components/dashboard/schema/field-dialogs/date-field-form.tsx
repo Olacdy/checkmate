@@ -58,6 +58,7 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
     }) || {
       name: '',
       isRequired: false,
+      isArray: false,
       from: undefined,
       to: undefined,
     },
@@ -100,22 +101,41 @@ const DateFieldForm: FC<DateFieldFormProps> = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name='isRequired'
-          render={({ field }) => (
-            <FormItem className='flex items-end gap-3'>
-              <FormLabel>Required</FormLabel>
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className='flex w-full gap-10'>
+          <FormField
+            control={form.control}
+            name='isRequired'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Required</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <div className='flex w-full items-center justify-between gap-5'>
           <FormField
             control={form.control}

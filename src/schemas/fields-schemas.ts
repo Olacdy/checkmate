@@ -6,6 +6,7 @@ const fieldPropertiesSchema = z.object({
     message: 'Field name must be at least 2 characters.',
   }),
   isRequired: z.boolean().optional(),
+  isArray: z.boolean().optional(),
 });
 
 export const stringFieldSchema = fieldPropertiesSchema
@@ -106,7 +107,6 @@ export const schemaFieldSchema = fieldPropertiesSchema.and(
     referencedSchema: z.union([z.string().cuid(), z.literal('self')], {
       required_error: 'Select one the schemas to reference.',
     }),
-    isArray: z.boolean(),
   })
 );
 

@@ -16,7 +16,13 @@ export const POST = async (req: NextRequest, params: ParamsType) => {
 
   const apiKey = req.headers.get('authorization')?.trim();
 
-  const data = await req.json();
+  let data;
+
+  try {
+    data = await req.json();
+  } catch (error) {
+    return NextResponse.json({ message: 'Invalid data.' }, { status: 400 });
+  }
 
   if (!apiKey) {
     return NextResponse.json(
