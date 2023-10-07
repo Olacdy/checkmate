@@ -84,7 +84,10 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
                 </span>
               </TableCell>
               <TableCell className='hidden text-right lg:table-cell'>
-                <Link href={`/validation/${validation.id}`}>
+                <Link
+                  href={`/validation/${validation.id}`}
+                  target='_blank'
+                  rel='noopener noreferrer'>
                   <Button variant='link' className='pr-0'>
                     Review
                   </Button>
