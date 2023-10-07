@@ -4,6 +4,8 @@ import { ZodError } from 'zod';
 
 import { createSchema } from '@/lib/create-schema';
 import { prisma } from '@/lib/db';
+import { pusherServer } from '@/lib/pusher';
+import { toPusherKey } from '@/lib/utils';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
@@ -52,13 +54,26 @@ export const POST = async (req: NextRequest, params: ParamsType) => {
 
   const result = await runtimeSchema.safeParseAsync(data);
 
-  await prisma.validation.create({
+  const validation = await prisma.validation.create({
     data: {
       input: data,
       success: result.success,
       schemaId: schemaId,
     },
+    include: {
+      schema: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
+
+  pusherServer.trigger(
+    toPusherKey(`user:${schema?.userId}:update_validations`),
+    'update_validations',
+    { ...validation }
+  );
 
   if (!result.success) {
     const validationErrors: ZodError = result.error;

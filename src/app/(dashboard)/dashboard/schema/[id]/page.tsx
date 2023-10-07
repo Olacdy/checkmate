@@ -12,10 +12,11 @@ import {
 
 import FieldsCard from '@/components/dashboard/schema/fields-card';
 import ReviewSchemaButtons from '@/components/dashboard/schema/review-schema-buttons';
-import ValidationTabs from '@/components/dashboard/validation-tabs';
 
 import { serverClient } from '@/trpc/server';
 
+import ValidationsSocketWrapper from '@/components/dashboard/validations-socket-wrapper';
+import { getServerAuthSession } from '@/lib/nextauth';
 import { FieldType } from '@/schemas/fields-schemas';
 
 type PageProps = {
@@ -25,12 +26,14 @@ type PageProps = {
 };
 
 const Page: FC<PageProps> = async ({ params }) => {
+  const session = await getServerAuthSession();
   const schema = await serverClient.schema.getSchemaById({
     id: params.id,
   });
-  const validations = await serverClient.validation.getValidationBySchemaId({
-    schemaId: params.id,
-  });
+  const initialValidations =
+    await serverClient.validation.getValidationBySchemaId({
+      schemaId: params.id,
+    });
 
   if (!schema) return <div>No schema found!</div>;
 
@@ -55,13 +58,15 @@ const Page: FC<PageProps> = async ({ params }) => {
         <FieldsCard
           className='col-span-5 gap-3'
           type='readonly'
-          name={schema?.name!}
-          schemaFields={schema?.fields as FieldType[]}
+          name={schema.name}
+          schemaFields={schema.fields as FieldType[]}
         />
-        <ValidationTabs
-          className='col-span-7'
+        <ValidationsSocketWrapper
           type='single'
-          validations={validations}
+          userId={session?.user.id!}
+          schemaId={schema.id}
+          initialValidations={initialValidations}
+          className='col-span-7'
         />
       </CardContent>
     </Card>

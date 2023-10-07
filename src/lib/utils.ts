@@ -156,3 +156,7 @@ export const getReferencesComparison = (
     referencesToDelete,
   };
 };
+
+export const toPusherKey = (key: string) => {
+  return key.replace(/:/g, '__');
+};
