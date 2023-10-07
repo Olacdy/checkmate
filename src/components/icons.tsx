@@ -12,6 +12,7 @@ import {
   FileCode,
   GripVertical,
   Hash,
+  KeyRound,
   LogOut,
   Moon,
   MoreHorizontal,
@@ -19,6 +20,7 @@ import {
   Search,
   Sliders,
   Sun,
+  ToggleLeft,
   Trash2,
   Type,
   X,
@@ -32,6 +34,7 @@ export type Icon = LucideIcon;
 export const Icons = {
   sun: Sun,
   moon: Moon,
+  apiKey: KeyRound,
   increase: ArrowBigUp,
   settings: Sliders,
   drag: GripVertical,
@@ -52,6 +55,7 @@ export const Icons = {
   calendar: Calendar,
   string: Type,
   number: Hash,
+  boolean: ToggleLeft,
   schema: FileCode,
   menu: ({ ...props }: LucideProps) => (
     <svg

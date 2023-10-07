@@ -9,7 +9,6 @@ const config = {
     require.resolve('prettier-plugin-organize-imports'),
     require.resolve('prettier-plugin-tailwindcss'),
   ],
-  pluginSearchDirs: false,
 };
 
 module.exports = config;

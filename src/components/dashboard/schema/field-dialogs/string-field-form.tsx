@@ -25,7 +25,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import { stringFieldSchema } from '@/schemas/fields-schemas';
 
-import { fieldErrors } from '@/helpers/schema-creation-errors';
+import { fieldErrors } from '@/helpers/field-creation-errors';
 
 import { AnyFieldDialogProps } from '.';
 
@@ -43,6 +43,7 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
     defaultValues: defaultValues || {
       name: '',
       isRequired: false,
+      isArray: false,
       isEmail: false,
       minLength: '',
       maxLength: '',
@@ -56,14 +57,14 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
       id: defaultValues ? defaultValues.id : uuidv4(),
     });
 
-    if (result) {
+    if (result === 'SUCCESS') {
       closeDialog();
 
       return;
     }
 
     form.setError('name', {
-      message: fieldErrors[result].message,
+      message: fieldErrors.find((error) => error.code === result)?.message,
     });
   };
 
@@ -94,6 +95,22 @@ const StringFieldForm: FC<StringFieldFormProps> = ({
             render={({ field }) => (
               <FormItem className='flex items-end gap-3'>
                 <FormLabel>Required</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}

@@ -11,6 +11,8 @@ import * as z from 'zod';
 
 import { useForm } from 'react-hook-form';
 
+import { toast } from 'sonner';
+
 import { DialogProps } from '@radix-ui/react-dialog';
 
 import { Icons } from '@/components/icons';
@@ -31,7 +33,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
 
 import { trpc } from '@/trpc/client';
 
@@ -43,8 +44,6 @@ type QuotaDialogProps = DialogProps;
 
 const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
   const queryClient = useQueryClient();
-
-  const { toast } = useToast();
 
   const increaseQuota = trpc.user.increaseQuota.useMutation({
     onSettled: () => {
@@ -69,16 +68,9 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
   });
 
   const handleIncreaseByChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // TODO: write proper validation
-
     const parsedIncreaseBy = parseInt(e.target.value);
-
-    const definedIncreaseBy = isNaN(parsedIncreaseBy) ? '' : parsedIncreaseBy;
-
     const newIncreaseBy =
-      definedIncreaseBy !== '' && definedIncreaseBy < 0
-        ? ''
-        : definedIncreaseBy;
+      isNaN(parsedIncreaseBy) || parsedIncreaseBy < 0 ? '' : parsedIncreaseBy;
 
     setIncreaseBy(newIncreaseBy);
     form.setValue('increaseBy', newIncreaseBy);
@@ -90,10 +82,7 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
 
     increaseQuota.mutate({ increaseBy: values.increaseBy as number });
 
-    toast({
-      title: `Your quota increased by ${values.increaseBy}`,
-      variant: 'success',
-    });
+    toast.success(`Your quota increased by ${values.increaseBy}`);
   };
 
   return (
@@ -113,7 +102,7 @@ const QuotaDialog: FC<QuotaDialogProps> = ({ ...props }) => {
           </DialogHeader>
           <div className='flex items-center justify-center gap-2 text-center font-headings text-xl text-oxford-blue dark:text-off-white'>
             <span className='underline underline-offset-2'>Current price:</span>
-            <span className='dark:drop-shadow-md-dark text-3xl font-semibold text-crayola-blue drop-shadow-md'>
+            <span className='text-3xl font-semibold text-crayola-blue drop-shadow-md dark:drop-shadow-md-dark'>
               {increaseBy === '' ? 0 : increaseBy * quotaPrice}&#36;
             </span>
           </div>

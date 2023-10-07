@@ -9,34 +9,18 @@ import ValidationsTable from '@/components/dashboard/validations-table';
 
 import { cn } from '@/lib/utils';
 
-import { SchemaType, ValidationType } from '@/schemas/schema-route-schemas';
+import { ValidationType } from '@/schemas/validation-route-schemas';
 
-type BaseValidationsTabsProps = {} & HTMLAttributes<HTMLDivElement>;
+type ValidationTabsProps = {
+  type: 'single' | 'multiple';
+  validations: ValidationType[];
+} & HTMLAttributes<HTMLDivElement>;
 
-type SingleValidationTabsProps = {
-  type: 'single';
-  schema: SchemaType;
-};
-
-type MultipleValidationTabsProps = {
-  type: 'multiple';
-  schemas: SchemaType[];
-};
-
-type ValidationTabsProps = BaseValidationsTabsProps &
-  (SingleValidationTabsProps | MultipleValidationTabsProps);
-
-const ValidationTabs: FC<ValidationTabsProps> = (props) => {
-  const { type, className } = props;
-
-  const validations =
-    type === 'multiple'
-      ? props.schemas.reduce(
-          (accumulator, schema) => accumulator.concat(schema.validations),
-          [] as ValidationType[]
-        )
-      : props.schema.validations;
-
+const ValidationTabs: FC<ValidationTabsProps> = ({
+  type,
+  className,
+  validations,
+}) => {
   return (
     <Tabs defaultValue='validations' className={cn('flex flex-col', className)}>
       <TabsList>
@@ -53,8 +37,8 @@ const ValidationTabs: FC<ValidationTabsProps> = (props) => {
           <span>Errors</span>
         </TabsTrigger>
       </TabsList>
-      <Card className='flex flex-1 bg-transparent dark:bg-transparent'>
-        <CardContent className='flex-1'>
+      <Card className='flex h-0 flex-grow bg-transparent dark:bg-transparent'>
+        <CardContent className='w-full overflow-auto'>
           <TabsContent value='validations'>
             <ValidationsTable type={type} validations={validations} />
           </TabsContent>

@@ -2,6 +2,8 @@
 
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
@@ -9,11 +11,11 @@ import { useForm } from 'react-hook-form';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { toast } from 'sonner';
+
 import { getQueryKey } from '@trpc/react-query';
 
-import { useRouter } from 'next/navigation';
-
-import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -25,7 +27,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast, type toast as Toast } from '@/components/ui/use-toast';
 
 import FieldsCard from '@/components/dashboard/schema/fields-card';
 
@@ -36,7 +37,7 @@ import { trpc } from '@/trpc/client';
 import { FieldType } from '@/schemas/fields-schemas';
 import { SchemaType, createSchemaSchema } from '@/schemas/schema-route-schemas';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
 type CreateSchemaFormProps = {
   type?: 'add';
@@ -48,7 +49,6 @@ type EditSchemaFormProps = {
 };
 
 type AnySchemaFromProps = {
-  toast: typeof Toast;
   router: AppRouterInstance;
   onSettled: () => void;
   schemaFields: FieldType[];
@@ -76,9 +76,6 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
   // Getting schema form type
   const { type } = props;
 
-  // Getting toast for messages
-  const { toast } = useToast();
-
   // Getting router
   const router = useRouter();
 
@@ -100,7 +97,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
 
       updateSchemaFields([...schemaFields, schemaField]);
 
-      return true;
+      return 'SUCCESS';
     };
 
     const editSchemaField = (schemaField: FieldType): FieldActionResultType => {
@@ -110,7 +107,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
         )
       );
 
-      return true;
+      return 'SUCCESS';
     };
 
     const removeSchemaField = (
@@ -120,7 +117,7 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
         schemaFields.filter((field) => field.id !== schemaField.id)
       );
 
-      return true;
+      return 'SUCCESS';
     };
 
     return { addSchemaField, editSchemaField, removeSchemaField };
@@ -129,7 +126,6 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
   if (type === 'add')
     return (
       <AddSchema
-        toast={toast}
         router={router}
         onSettled={onSettled}
         schemaFields={schemaFields}
@@ -141,7 +137,6 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
     return (
       <EditSchema
         schema={props.schema}
-        toast={toast}
         router={router}
         onSettled={onSettled}
         schemaFields={schemaFields}
@@ -154,7 +149,6 @@ const SchemaForm: FC<SchemaFormProps> = (props) => {
 export default SchemaForm;
 
 const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
-  toast,
   router,
   onSettled,
   schemaFields,
@@ -200,7 +194,7 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
   // Setting schema fields according to a state stored in localStorage
   useEffect(() => {
     setSchemaFields(storedFields);
-  }, []);
+  }, [storedFields, setSchemaFields]);
 
   const handleCancelClick = () => {
     router.back();
@@ -217,11 +211,13 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
-    if (schemaFields.length < 1) {
-      toast({
-        variant: 'destructive',
-        title: 'Please, add at least one field.',
-      });
+    if (schemaFields.length === 0) {
+      toast.error('Please, add at least one field.');
+      return;
+    }
+
+    if (!schemaFields.some((field) => field.type !== 'schema')) {
+      toast.error("Please, add at least one field that is not 'schema' type.");
       return;
     }
 
@@ -234,10 +230,7 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
 
     router.replace('/dashboard/schemas');
 
-    toast({
-      variant: 'success',
-      title: 'Schema successfully created',
-    });
+    toast.success('Schema successfully created');
   };
 
   return (
@@ -299,7 +292,6 @@ const AddSchema: FC<AnySchemaFromProps & CreateSchemaFormProps> = ({
 
 const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
   schema,
-  toast,
   router,
   onSettled,
   schemaFields,
@@ -322,7 +314,7 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
   // Setting schema fields from passed schema
   useEffect(() => {
     setSchemaFields(schema.fields as FieldType[]);
-  }, []);
+  }, [schema.fields, setSchemaFields]);
 
   // Update schemas with passed value or update only global store after reorder
   const updateSchemaFields = (fields?: FieldType[]) => {
@@ -342,11 +334,13 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
 
   // Handle submittion
   const onSubmit = async (values: z.infer<typeof createSchemaSchema>) => {
-    if (schemaFields.length < 1) {
-      toast({
-        variant: 'destructive',
-        title: 'Please, add at least one field.',
-      });
+    if (schemaFields.length === 0) {
+      toast.error('Please, add at least one field.');
+      return;
+    }
+
+    if (!schemaFields.some((field) => field.type !== 'schema')) {
+      toast.error("Please, add at least one field that is not 'schema' type.");
       return;
     }
 
@@ -359,10 +353,7 @@ const EditSchema: FC<AnySchemaFromProps & EditSchemaFormProps> = ({
     router.replace(`/dashboard/schema/${schema.id}`);
     router.refresh();
 
-    toast({
-      variant: 'success',
-      title: 'Schema successfully edited',
-    });
+    toast.success('Schema successfully edited');
   };
 
   return (

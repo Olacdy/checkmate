@@ -44,6 +44,7 @@ model User {
   sessions      Session[]
   quota         Int       @default(10)
   schemas       Schema[]
+  apikeys       ApiKey[]
 }
 
 model Schema {
@@ -53,15 +54,15 @@ model Schema {
   userId      String
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   fields      Json
-  referred    SchemaReferring[] @relation("referrer")
-  referring   SchemaReferring[] @relation("referring")
+  referred    SchemaReference[] @relation("referring")
+  referring   SchemaReference[] @relation("referrer")
   validations Validation[]
 
   @@index([userId, id])
 }
 
-model SchemaReferring {
-  referrer    Schema @relation("referrer", fields: [referrerId], references: [id])
+model SchemaReference {
+  referrer    Schema @relation("referrer", fields: [referrerId], references: [id], onDelete: Cascade)
   referrerId  String
   referring   Schema @relation("referring", fields: [referringId], references: [id], onDelete: Cascade)
   referringId String
@@ -80,4 +81,15 @@ model Validation {
   input     Json
 
   @@index([schemaId, id])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  key       String   @unique
+  enabled   Boolean  @default(true)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, id])
 }

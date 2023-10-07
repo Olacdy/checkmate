@@ -27,7 +27,8 @@ import { fields } from '@/helpers/data';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { Separator } from '@/components/ui/separator';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
 type BaseFieldsCardProps = {
   schemaFields: FieldType[];
@@ -69,15 +70,24 @@ const FieldsCard: FC<FieldsCardProps> = ({
 
   const correspondingFields = () => {
     if (type === 'readonly') {
-      return (
-        <div className='flex w-full flex-col gap-4 pt-3'>
-          {schemaFields.map((schemaField) => {
-            return (
-              <Field key={schemaField.id} type='readonly' value={schemaField} />
-            );
-          })}
-        </div>
-      );
+      return {
+        fields: (
+          <div className='max-h-[67vh] w-full overflow-y-auto'>
+            <div className='flex w-full flex-col gap-4 py-3'>
+              {schemaFields.map((schemaField) => {
+                return (
+                  <Field
+                    key={schemaField.id}
+                    type='readonly'
+                    value={schemaField}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ),
+        addField: <></>,
+      };
     }
 
     if (type === 'edit') {
@@ -89,26 +99,30 @@ const FieldsCard: FC<FieldsCardProps> = ({
         updateSchemaFields,
       } = props;
 
-      return (
-        <>
-          <Reorder.Group
-            className='flex w-full flex-col gap-4 pt-3'
-            axis='y'
-            onReorder={setSchemaFields}
-            values={schemaFields}>
-            {schemaFields.map((schemaField) => {
-              return (
-                <Field
-                  key={schemaField.id}
-                  type='draggable'
-                  value={schemaField}
-                  editSchemaField={editSchemaField}
-                  removeSchemaFeild={() => removeSchemaField(schemaField)}
-                  updateSchemaFields={() => updateSchemaFields()}
-                />
-              );
-            })}
-          </Reorder.Group>
+      return {
+        fields: (
+          <div className='flex max-h-[50vh] w-full flex-1 overflow-y-auto'>
+            <Reorder.Group
+              className='flex w-full flex-1 flex-col gap-4 overflow-hidden pr-3 pt-5'
+              axis='y'
+              onReorder={setSchemaFields}
+              values={schemaFields}>
+              {schemaFields.map((schemaField) => {
+                return (
+                  <Field
+                    key={schemaField.id}
+                    type='draggable'
+                    value={schemaField}
+                    editSchemaField={editSchemaField}
+                    removeSchemaFeild={() => removeSchemaField(schemaField)}
+                    updateSchemaFields={() => updateSchemaFields()}
+                  />
+                );
+              })}
+            </Reorder.Group>
+          </div>
+        ),
+        addField: (
           <Dialog open={!!openedDialog} onOpenChange={handleOpenedDialogChange}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -161,9 +175,11 @@ const FieldsCard: FC<FieldsCardProps> = ({
               />
             )}
           </Dialog>
-        </>
-      );
+        ),
+      };
     }
+
+    return { fields: <></>, addField: <></> };
   };
 
   return (
@@ -180,11 +196,16 @@ const FieldsCard: FC<FieldsCardProps> = ({
       </CardTitle>
       <Card className='flex flex-1 border-oxford-blue/10 bg-transparent dark:border-slate-600/30 dark:bg-transparent'>
         <CardContent
-          className={cn('flex flex-1 flex-col items-center justify-between', {
-            'justify-center p-0 pl-2': schemaFields.length === 0,
-            'pt-3': type === 'readonly',
-          })}>
-          {correspondingFields()}
+          className={cn(
+            'flex flex-1 flex-col items-center justify-between gap-3 pb-2',
+            {
+              'justify-center p-0 pl-2': schemaFields.length === 0,
+              'pt-3': type === 'readonly',
+            }
+          )}>
+          {schemaFields.length !== 0 && correspondingFields().fields}
+          {type === 'edit' && schemaFields.length !== 0 && <Separator />}
+          {type === 'edit' && correspondingFields().addField}
         </CardContent>
       </Card>
     </Card>

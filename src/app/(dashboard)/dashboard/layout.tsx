@@ -12,21 +12,21 @@ type DashboardLayoutProps = {
 };
 
 export const metadata: Metadata = {
-  title: 'CheckMate',
-  description: 'CheckMate dashboard',
+  title: 'CheckMate | Dashboard',
+  description: 'CheckMate dashboard.',
 };
 
 const DashboardLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   const session = await getServerAuthSession();
 
-  if (!!!session) {
+  if (!session) {
     redirect('/sign-in');
   }
 
   return (
-    <main className='flex min-h-screen flex-col font-body xl:flex-row'>
+    <main className='flex h-screen max-h-screen flex-col font-body xl:flex-row'>
       <Sidebar />
-      <section className='flex max-h-screen flex-1 pt-2 xl:p-4 xl:pl-0 xl:pt-4'>
+      <section className='flex flex-1 pt-2 xl:p-4 xl:pl-0 xl:pt-4'>
         {children}
       </section>
     </main>

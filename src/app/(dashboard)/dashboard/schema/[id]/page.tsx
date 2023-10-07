@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { redirect } from 'next/navigation';
+
 import {
   Card,
   CardContent,
@@ -10,22 +12,28 @@ import {
 
 import FieldsCard from '@/components/dashboard/schema/fields-card';
 import ReviewSchemaButtons from '@/components/dashboard/schema/review-schema-buttons';
-import ValidationTabs from '@/components/dashboard/validation-tabs';
 
 import { serverClient } from '@/trpc/server';
 
+import ValidationsSocketWrapper from '@/components/dashboard/validations-socket-wrapper';
+import { getServerAuthSession } from '@/lib/nextauth';
 import { FieldType } from '@/schemas/fields-schemas';
 
-type pageProps = {
+type PageProps = {
   params: {
     id: string;
   };
 };
 
-const page: FC<pageProps> = async ({ params }) => {
+const Page: FC<PageProps> = async ({ params }) => {
+  const session = await getServerAuthSession();
   const schema = await serverClient.schema.getSchemaById({
     id: params.id,
   });
+  const initialValidations =
+    await serverClient.validation.getValidationBySchemaId({
+      schemaId: params.id,
+    });
 
   if (!schema) return <div>No schema found!</div>;
 
@@ -33,6 +41,8 @@ const page: FC<pageProps> = async ({ params }) => {
     'use server';
 
     await serverClient.schema.deleteSchema({ id: params.id });
+
+    redirect('/dashboard/schemas');
   };
 
   return (
@@ -48,13 +58,19 @@ const page: FC<pageProps> = async ({ params }) => {
         <FieldsCard
           className='col-span-5 gap-3'
           type='readonly'
-          name={schema?.name!}
-          schemaFields={schema?.fields as FieldType[]}
+          name={schema.name}
+          schemaFields={schema.fields as FieldType[]}
         />
-        <ValidationTabs className='col-span-7' type='single' schema={schema} />
+        <ValidationsSocketWrapper
+          type='single'
+          userId={session?.user.id!}
+          schemaId={schema.id}
+          initialValidations={initialValidations}
+          className='col-span-7'
+        />
       </CardContent>
     </Card>
   );
 };
 
-export default page;
+export default Page;

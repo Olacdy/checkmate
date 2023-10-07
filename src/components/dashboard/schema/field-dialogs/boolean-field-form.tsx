@@ -27,11 +27,11 @@ import { fieldErrors } from '@/helpers/field-creation-errors';
 
 import { AnyFieldDialogProps } from '.';
 
-type NumberFieldFormProps = {
+type BooleanFieldFormProps = {
   defaultValues?: z.infer<typeof numberFieldSchema>;
 } & AnyFieldDialogProps;
 
-const NumberFieldForm: FC<NumberFieldFormProps> = ({
+const BooleanFieldForm: FC<BooleanFieldFormProps> = ({
   defaultValues,
   updateSchemaFields,
   closeDialog,
@@ -42,9 +42,6 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
       name: '',
       isRequired: false,
       isArray: false,
-      isInt: false,
-      min: '',
-      max: '',
     },
   });
 
@@ -104,22 +101,6 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
           />
           <FormField
             control={form.control}
-            name='isInt'
-            render={({ field }) => (
-              <FormItem className='flex items-end gap-3'>
-                <FormLabel>Int</FormLabel>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name='isArray'
             render={({ field }) => (
               <FormItem className='flex items-end gap-3'>
@@ -129,34 +110,6 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className='flex w-full items-center justify-between gap-5'>
-          <FormField
-            control={form.control}
-            name='min'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Min value</FormLabel>
-                <FormControl>
-                  <Input type='number' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='max'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Max value</FormLabel>
-                <FormControl>
-                  <Input type='number' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -174,4 +127,4 @@ const NumberFieldForm: FC<NumberFieldFormProps> = ({
   );
 };
 
-export default NumberFieldForm;
+export default BooleanFieldForm;

@@ -6,6 +6,7 @@ const fieldPropertiesSchema = z.object({
     message: 'Field name must be at least 2 characters.',
   }),
   isRequired: z.boolean().optional(),
+  isArray: z.boolean().optional(),
 });
 
 export const stringFieldSchema = fieldPropertiesSchema
@@ -99,9 +100,13 @@ export const dateFieldSchema = fieldPropertiesSchema
     }
   });
 
+export const booleanFieldSchema = fieldPropertiesSchema;
+
 export const schemaFieldSchema = fieldPropertiesSchema.and(
   z.object({
-    schema: z.string().cuid(),
+    referencedSchema: z.union([z.string().cuid(), z.literal('self')], {
+      required_error: 'Select one the schemas to reference.',
+    }),
   })
 );
 
@@ -109,4 +114,5 @@ export type FieldType =
   | (z.infer<typeof stringFieldSchema> & { type: 'string' })
   | (z.infer<typeof numberFieldSchema> & { type: 'number' })
   | (z.infer<typeof dateFieldSchema> & { type: 'date' })
+  | (z.infer<typeof booleanFieldSchema> & { type: 'boolean' })
   | (z.infer<typeof schemaFieldSchema> & { type: 'schema' });

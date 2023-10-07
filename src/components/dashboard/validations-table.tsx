@@ -15,9 +15,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 
-import { ValidationType } from '@/schemas/schema-route-schemas';
+import { ValidationType } from '@/schemas/validation-route-schemas';
 
 type ValidationsTableProps = {
   type: 'single' | 'multiple';
@@ -38,14 +38,20 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
 }) => {
   return (
     <Table>
-      <TableCaption>{captions[display]}</TableCaption>
+      {!validations.some((validation) => {
+        if (display === 'all') return true;
+        if (display === 'success') return validation.success;
+        if (display === 'error') return !validation.success;
+      }) && <TableCaption>{captions[display]}</TableCaption>}
       <TableHeader>
         <TableRow>
           {type === 'multiple' && <TableHead>Schema</TableHead>}
-          <TableHead className='w-[100px]'>Id</TableHead>
-          <TableHead>Created At</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead className='text-right'>Data</TableHead>
+          <TableHead className='w-[200px]'>Id</TableHead>
+          <TableHead className='hidden md:table-cell'>Created At</TableHead>
+          <TableHead className='text-right lg:text-center'>Status</TableHead>
+          <TableHead className='hidden text-right lg:table-cell'>
+            Data
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -58,16 +64,33 @@ const ValidationsTable: FC<ValidationsTableProps> = ({
               {type === 'multiple' && (
                 <TableCell>
                   <Link href={`/dashboard/schema/${validation.schemaId}`}>
-                    <Button variant='link'>{validation.schema.name}</Button>
+                    <Button variant='link' className='pl-0'>
+                      {validation.schema.name}
+                    </Button>
                   </Link>
                 </TableCell>
               )}
               <TableCell className='font-medium'>{validation.id}</TableCell>
-              <TableCell>{formatDate(validation.createdAt)}</TableCell>
-              <TableCell>{validation.success}</TableCell>
-              <TableCell className='text-right'>
-                <Link href={`/validation/${validation.id}`}>
-                  <Button variant='link'>Review</Button>
+              <TableCell className='hidden md:table-cell'>
+                {formatDate(validation.createdAt, { includeTime: true })}
+              </TableCell>
+              <TableCell className='text-right lg:text-center'>
+                <span
+                  className={cn({
+                    'text-emerald-500 dark:text-success': validation.success,
+                    'text-error': !validation.success,
+                  })}>
+                  {validation.success ? 'Success' : 'Error'}
+                </span>
+              </TableCell>
+              <TableCell className='hidden text-right lg:table-cell'>
+                <Link
+                  href={`/validation/${validation.id}`}
+                  target='_blank'
+                  rel='noopener noreferrer'>
+                  <Button variant='link' className='pr-0'>
+                    Review
+                  </Button>
                 </Link>
               </TableCell>
             </TableRow>

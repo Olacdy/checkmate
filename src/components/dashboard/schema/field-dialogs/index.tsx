@@ -10,18 +10,20 @@ import {
 } from '@/components/ui/dialog';
 import {
   FieldType,
+  booleanFieldSchema,
   dateFieldSchema,
   numberFieldSchema,
   schemaFieldSchema,
   stringFieldSchema,
 } from '@/schemas/fields-schemas';
 
+import BooleanFieldForm from './boolean-field-form';
 import DateFieldForm from './date-field-form';
 import NumberFieldForm from './number-field-form';
 import SchemaFieldForm from './schema-field-form';
 import StringFieldForm from './string-field-form';
 
-import { FieldActionResultType } from '@/helpers/schema-creation-errors';
+import { FieldActionResultType } from '@/helpers/field-creation-errors';
 
 export type AnyFieldDialogProps = {
   updateSchemaFields: (
@@ -50,6 +52,11 @@ type DateFieldDialogProps = {
   defaultValues?: z.infer<typeof dateFieldSchema>;
 };
 
+type BooleanFieldDialogProps = {
+  fieldType?: 'boolean';
+  defaultValues?: z.infer<typeof booleanFieldSchema>;
+};
+
 type SchemaFieldDialogProps = {
   fieldType?: 'schema';
   defaultValues?: z.infer<typeof schemaFieldSchema>;
@@ -60,6 +67,7 @@ export type FieldDialogProps = BaseFieldDialogProps &
     | StringFieldDialogProps
     | NumberFieldDialogProps
     | DateFieldDialogProps
+    | BooleanFieldDialogProps
     | SchemaFieldDialogProps
   );
 
@@ -104,6 +112,16 @@ const FieldDialog: FC<FieldDialogProps> = (props) => {
     if (fieldType === 'date') {
       return (
         <DateFieldForm
+          defaultValues={defaultValues}
+          updateSchemaFields={updateSchemaFields}
+          closeDialog={closeDialog}
+        />
+      );
+    }
+
+    if (fieldType === 'boolean') {
+      return (
+        <BooleanFieldForm
           defaultValues={defaultValues}
           updateSchemaFields={updateSchemaFields}
           closeDialog={closeDialog}

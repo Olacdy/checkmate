@@ -25,7 +25,7 @@ const courier = Courier_Prime({
 
 export const metadata: Metadata = {
   title: 'CheckMate',
-  description: 'Define schemas to validate your data',
+  description: 'Define schemas to validate your data.',
 };
 
 type RootLayoutProps = {

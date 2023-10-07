@@ -16,7 +16,7 @@ type AuthCardProps = {} & HTMLAttributes<HTMLDivElement>;
 const AuthCard: FC<AuthCardProps> = ({ className, ...props }) => {
   return (
     <Card className={className} {...props}>
-      <CardHeader>
+      <CardHeader className='-space-y-4'>
         <CardTitle>
           <div className='-ml-2 flex items-center gap-1'>
             <div className='relative h-16 w-16'>
@@ -39,7 +39,7 @@ const AuthCard: FC<AuthCardProps> = ({ className, ...props }) => {
             </span>
           </div>
         </CardTitle>
-        <CardDescription className='text-base'>
+        <CardDescription className='ml-[3.75rem] text-xs'>
           Start creating your validation schemas.
         </CardDescription>
       </CardHeader>

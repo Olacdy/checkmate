@@ -1,13 +1,18 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
+
+import { useParams } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -30,6 +35,8 @@ import { trpc } from '@/trpc/client';
 
 import { schemaFieldSchema } from '@/schemas/fields-schemas';
 
+import { fieldErrors } from '@/helpers/field-creation-errors';
+
 import { AnyFieldDialogProps } from '.';
 
 type SchemaFieldFormProps = {
@@ -41,18 +48,43 @@ const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
   updateSchemaFields,
   closeDialog,
 }) => {
+  const params = useParams();
+
   const schemas = trpc.schema.getSchemas.useQuery().data;
 
   const form = useForm<z.infer<typeof schemaFieldSchema>>({
     resolver: zodResolver(schemaFieldSchema),
     defaultValues: defaultValues || {
       name: '',
-      schema: '',
+      isRequired: false,
+      isArray: false,
     },
   });
 
+  const [isRequiredEnabled, setIsRequiredEnabled] = useState<boolean>(
+    (defaultValues && defaultValues.referencedSchema !== 'self') ?? true
+  );
+
+  const [schemaId, setSchemaId] = useState<string | undefined>(
+    params.id as string
+  );
+
   const onSubmit = (values: z.infer<typeof schemaFieldSchema>) => {
-    closeDialog();
+    const result = updateSchemaFields({
+      ...values,
+      isRequired: isRequiredEnabled ? values.isRequired : false,
+      id: defaultValues ? defaultValues.id : uuidv4(),
+    });
+
+    if (result === 'SUCCESS') {
+      closeDialog();
+
+      return;
+    }
+
+    form.setError('name', {
+      message: fieldErrors.find((error) => error.code === result)?.message,
+    });
   };
 
   return (
@@ -69,34 +101,79 @@ const SchemaFieldForm: FC<SchemaFieldFormProps> = ({
             <FormItem>
               <FormLabel>Field name</FormLabel>
               <FormControl>
-                <Input
-                  className='bg-oxford-blue/90 text-base'
-                  placeholder='Type field name...'
-                  {...field}
-                />
+                <Input placeholder='Type field name...' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <div className='flex w-full gap-10'>
+          <FormField
+            control={form.control}
+            name='isRequired'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Required</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    disabled={!isRequiredEnabled}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='isArray'
+            render={({ field }) => (
+              <FormItem className='flex items-end gap-3'>
+                <FormLabel>Array</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
-          name='schema'
+          name='referencedSchema'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Schema</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={(event) => {
+                  field.onChange(event);
+                  setIsRequiredEnabled(event !== 'self');
+                }}
+                defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder='Select a verified email to display' />
+                    <SelectValue placeholder='Select one of the schemas' />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {schemas?.map((schema) => (
-                    <SelectItem key={schema.id} value={schema.id}>
-                      {schema.name}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value='self'>
+                    Self &#40;would refer to itself&#41;
+                  </SelectItem>
+                  {schemas?.map((schema) => {
+                    if (schemaId !== schema.id) {
+                      return (
+                        <SelectItem
+                          key={schema.id}
+                          value={schema.id.toString()}>
+                          {schema.name}
+                        </SelectItem>
+                      );
+                    }
+                  })}
                 </SelectContent>
               </Select>
               <FormDescription>Select one of your schemas.</FormDescription>

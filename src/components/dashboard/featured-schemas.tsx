@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import Link from 'next/link';
 
@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { getQueryKey } from '@trpc/react-query';
+
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +21,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/components/ui/use-toast';
 
 import MoreSchemasActions from '@/components/dashboard/more-schemas-actions';
 
@@ -29,18 +30,20 @@ import { trpc } from '@/trpc/client';
 
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
-import { formatDate, getOneSchemaStat } from '@/lib/utils';
+import { cn, formatDate, getBaseUrl, getOneSchemaStat } from '@/lib/utils';
 
 type FeaturedSchemasProps = {
   initialData: SchemaType[];
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
+const FeaturedSchemas: FC<FeaturedSchemasProps> = ({
+  initialData,
+  className,
+  ...props
+}) => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
-
-  const { toast } = useToast();
 
   const getSchemas = trpc.schema.getSchemas.useQuery(undefined, {
     initialData: initialData,
@@ -58,29 +61,28 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
   };
 
   const handleCopy = (schemaId: string) => {
-    toast({
-      variant: 'success',
-      title: 'Link copied to clipboard.',
-    });
-    navigator.clipboard.writeText(`https://checkmate/api/${schemaId}`);
+    toast('Link copied to a clipboard.');
+
+    const baseUrl = getBaseUrl();
+
+    console.log(baseUrl);
+
+    navigator.clipboard.writeText(`${baseUrl}/api/v1/${schemaId}`);
   };
 
   const handleDelete = (schemaId: string) => {
     deleteSchema.mutate({ id: schemaId });
 
-    toast({
-      variant: 'success',
-      title: 'Schema successfully deleted.',
-    });
+    toast.success('Schema successfully deleted.');
   };
 
   return (
-    <div className='flex flex-1'>
+    <div className={cn('flex', className)} {...props}>
       {getSchemas?.data?.length !== 0 ? (
         <div className='flex w-full flex-1 flex-col justify-end gap-5'>
           <span className='text-2xl'>Featured schemas</span>
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3-featured-schemas'>
-            {getSchemas?.data?.slice(0, 3).map((featuredSchema) => {
+            {getSchemas?.data?.slice(0, 3).map((featuredSchema, index) => {
               const { id, name, createdAt } = featuredSchema;
               const { validations, successes, errors } =
                 getOneSchemaStat(featuredSchema);
@@ -88,7 +90,13 @@ const FeaturedSchemas: FC<FeaturedSchemasProps> = ({ initialData }) => {
               return (
                 <Card
                   key={id}
-                  className='w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-200/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30'>
+                  className={cn(
+                    'w-full max-w-sm border-oxford-blue/10 bg-transparent transition hover:bg-slate-200/40 hover:shadow-lg dark:border-slate-600/30 dark:bg-transparent dark:hover:bg-slate-950/30',
+                    {
+                      'hidden sm:block': index === 1,
+                      'hidden lg:block': index === 2,
+                    }
+                  )}>
                   <CardHeader className='relative space-y-0 p-4'>
                     <CardTitle className='font-heading text-xl'>
                       {name}

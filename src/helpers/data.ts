@@ -73,6 +73,12 @@ export const sideBarButtons = [
     text: 'Schemas',
     icon: 'schemas',
   },
+  {
+    name: 'api-key',
+    path: '/dashboard/api-key',
+    text: 'API key',
+    icon: 'apiKey',
+  },
 ] satisfies {
   name: string;
   path: string;
@@ -95,6 +101,11 @@ export const fields = [
     name: 'date',
     type: 'date',
     icon: 'calendar',
+  },
+  {
+    name: 'boolean',
+    type: 'boolean',
+    icon: 'boolean',
   },
   {
     name: 'schema',
