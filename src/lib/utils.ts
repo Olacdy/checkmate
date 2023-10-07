@@ -6,6 +6,7 @@ import { prisma } from '@/lib/db';
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
 export const getBaseUrl = () => {
+  console.log(process.env.VERCEL_URL);
   const vc = process.env.VERCEL_URL;
   if (vc) return 'https://' + vc;
   return 'http://localhost:3000';
