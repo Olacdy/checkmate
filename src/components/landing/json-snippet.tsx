@@ -17,10 +17,12 @@ const JSONSnippet: FC<JSONSnippetProps> = ({ className, ...props }) => {
           <span className='code'>{'{'}</span>
           <div className='flex flex-col pl-10'>
             <span className='code'>
-              &quot;firstName&quot;: &quot;John&quot;
+              &quot;firstName&quot;: &quot;John&quot;&#44;
             </span>
-            <span className='code'>&quot;lastName&quot;: &quot;Doe&quot;</span>
-            <span className='code'>&quot;age&quot;: 10</span>
+            <span className='code'>
+              &quot;lastName&quot;: &quot;Doe&quot;&#44;{' '}
+            </span>
+            <span className='code'>&quot;age&quot;: 10&#44;</span>
             <span className='code'>
               &quot;birthDate&quot;: &quot;10-10-1990&quot;
             </span>
