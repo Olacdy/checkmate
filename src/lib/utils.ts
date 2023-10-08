@@ -160,3 +160,7 @@ export const getReferencesComparison = (
 export const toPusherKey = (key: string) => {
   return key.replace(/:/g, '__');
 };
+
+export const toLowerCaseFirstLetter = (name: string) => {
+  return name.charAt(0).toLowerCase() + name.slice(1);
+};

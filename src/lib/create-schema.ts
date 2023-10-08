@@ -11,6 +11,7 @@ import {
 } from 'zod';
 
 import { prisma } from '@/lib/db';
+import { toLowerCaseFirstLetter } from '@/lib/utils';
 
 import { FieldType } from '@/schemas/fields-schemas';
 
@@ -159,7 +160,7 @@ export const createSchema = async (fieldConfigs: FieldType[]) => {
 
     if (fieldSchema) {
       // @ts-ignore
-      schema.shape[fieldConfig.name.toLowerCase()] = fieldSchema;
+      schema.shape[toLowerCaseFirstLetter(fieldConfig.name)] = fieldSchema;
     }
   }
 

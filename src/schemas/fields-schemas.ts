@@ -57,8 +57,8 @@ export const numberFieldSchema = fieldPropertiesSchema
   .and(
     z.object({
       isInt: z.boolean().optional(),
-      min: z.union([z.coerce.number(), z.literal('')]).optional(),
-      max: z.union([z.coerce.number(), z.literal('')]).optional(),
+      min: z.union([z.coerce.number().min(1), z.literal('')]).optional(),
+      max: z.union([z.coerce.number().min(1), z.literal('')]).optional(),
     })
   )
   .superRefine((val, ctx) => {

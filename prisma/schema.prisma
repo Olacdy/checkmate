@@ -51,8 +51,8 @@ model Schema {
   id          String            @id @default(cuid())
   name        String
   createdAt   DateTime          @default(now())
-  userId      String
-  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+  user        User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
   fields      Json
   referred    SchemaReference[] @relation("referring")
   referring   SchemaReference[] @relation("referrer")
