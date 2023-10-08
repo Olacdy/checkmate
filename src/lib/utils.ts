@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { SchemaType } from '@/schemas/schema-route-schemas';
 
 export const getBaseUrl = () => {
-  const publicUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
+  const publicUrl = process.env.NEXT_PUBLIC_PRODUCTION_URL;
   if (publicUrl) return 'https://' + publicUrl;
   return 'http://localhost:3000';
 };
