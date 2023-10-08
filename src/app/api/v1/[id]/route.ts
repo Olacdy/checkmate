@@ -50,6 +50,13 @@ export const POST = async (req: NextRequest, params: ParamsType) => {
     },
   });
 
+  if (!schema) {
+    return NextResponse.json(
+      { message: 'No such schema found.' },
+      { status: 400 }
+    );
+  }
+
   const runtimeSchema = await createSchema(schema?.fields as FieldType[]);
 
   const result = await runtimeSchema.safeParseAsync(data);

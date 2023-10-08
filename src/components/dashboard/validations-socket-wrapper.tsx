@@ -37,19 +37,32 @@ const ValidationsSocketWrapper: FC<ValidationsSocketWrapperProps> = ({
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`user:${userId}:update_validations`));
+    pusherClient.subscribe(toPusherKey(`user:${userId}:delete_validations`));
 
     const updateValidations = (validation: ValidationType) => {
       if (!(props.type === 'single' && props.schemaId !== validation.schemaId))
         setValidations((prev) => [validation, ...prev]);
     };
 
+    const deleteValidations = (schemaId: string) => {
+      if (!(props.type === 'single' && props.schemaId !== schemaId)) {
+        setValidations([]);
+      }
+    };
+
     pusherClient.bind('update_validations', updateValidations);
+    pusherClient.bind('delete_validations', deleteValidations);
 
     return () => {
       pusherClient.unsubscribe(
         toPusherKey(`user:${userId}:update_validations`)
       );
+      pusherClient.unsubscribe(
+        toPusherKey(`user:${userId}:delete_validations`)
+      );
+
       pusherClient.unbind('update_validations', updateValidations);
+      pusherClient.unbind('delete_validations', deleteValidations);
     };
   }, []);
 
