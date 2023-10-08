@@ -4,8 +4,6 @@ import superjson from 'superjson';
 
 import { appRouter } from '@/server';
 
-import { getUrl } from './shared';
-
 export const serverClient = appRouter.createCaller({
   transformer: superjson,
   links: [
@@ -15,7 +13,9 @@ export const serverClient = appRouter.createCaller({
         (op.direction === 'down' && op.result instanceof Error),
     }),
     httpBatchLink({
-      url: getUrl(),
+      url: process.env.NEXT_APP_URL
+        ? `${process.env.NEXT_APP_URL}/api/trpc`
+        : 'http://localhost:3000/api/trpc',
     }),
   ],
 });
