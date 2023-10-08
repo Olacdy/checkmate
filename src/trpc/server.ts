@@ -14,7 +14,7 @@ export const serverClient = appRouter.createCaller({
     }),
     httpBatchLink({
       url: process.env.PRODUCTION_URL
-        ? `${process.env.PRODUCTION_URL}/api/trpc`
+        ? `https://${process.env.PRODUCTION_URL}/api/trpc`
         : 'http://localhost:3000/api/trpc',
     }),
   ],
