@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 import Link from 'next/link';
 
-import JSONSnippet from '@/components/landing/code-snippet';
+import JSONSnippet from '@/components/landing/json-snippet';
 import SchemaCreationLayout from '@/components/landing/schema-creation-layout';
 import { Button } from '@/components/ui/button';
 import CopyContent from '@/components/ui/copy-link';

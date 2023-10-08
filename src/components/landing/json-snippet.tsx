@@ -22,7 +22,7 @@ const JSONSnippet: FC<JSONSnippetProps> = ({ className, ...props }) => {
             <span className='code'>
               &quot;lastName&quot;: &quot;Doe&quot;&#44;{' '}
             </span>
-            <span className='code'>&quot;age&quot;: 10&#44;</span>
+            <span className='code'>&quot;age&quot;: 33&#44;</span>
             <span className='code'>
               &quot;birthDate&quot;: &quot;10-10-1990&quot;
             </span>
