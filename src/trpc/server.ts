@@ -13,8 +13,8 @@ export const serverClient = appRouter.createCaller({
         (op.direction === 'down' && op.result instanceof Error),
     }),
     httpBatchLink({
-      url: process.env.NEXT_APP_URL
-        ? `${process.env.NEXT_APP_URL}/api/trpc`
+      url: process.env.PRODUCTION_URL
+        ? `${process.env.PRODUCTION_URL}/api/trpc`
         : 'http://localhost:3000/api/trpc',
     }),
   ],
