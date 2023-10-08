@@ -5,7 +5,8 @@ import { TRPCError } from '@trpc/server';
 import { protectedProcedure, router } from '@/server/trpc';
 
 import { prisma } from '@/lib/db';
-import { getReferencesComparison } from '@/lib/utils';
+import { pusherServer } from '@/lib/pusher';
+import { getReferencesComparison, toPusherKey } from '@/lib/utils';
 
 import {
   addSchemaSchema,
@@ -226,6 +227,12 @@ export const schemaRouter = router({
           referrerId: id,
         },
       });
+
+      pusherServer.trigger(
+        toPusherKey(`user:${userId}:delete_validations`),
+        'delete_validations',
+        { schemaId: id }
+      );
 
       return await prisma.schema.delete({
         where: { id: id, userId: userId },
